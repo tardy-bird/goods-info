@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
-    <resultMap id="" type="">
-        <result property="" column=""/>
+<mapper namespace="com.tardybird.goodsinfo.mapper">
+    <!--<resultMap id="" type="">-->
+        <!--<result property="" column=""/>-->
 
-    </resultMap>
+    <!--</resultMap>-->
 
+    <select id="gerAllBrands" resultType="com.tardybird.goodsinfo.domain.Brand">
+        select * from brand
+    </select>
+
+    <select id="getBrandsById" resultType="com.tardybird.goodsinfo.domain.Brand">
+        select * from brand where id = #{id}
+    </select>
+
+    <insert id="addBrand" parameterType="com.tardybird.goodsinfo.domain.Brand" useGeneratedKeys="true" keyProperty="id">
+        insert into brand (name, "describe", pic_url, gmt_create, gmt_modified)
+        values (#{name},#{describe},#{picUrl},#{gmtCreate},#{gmtModified})
+    </insert>
+
+    <update id="updateBrand">
+        update brand
+        set
+        where id = #{id}
+    </update>
+
+    <update id="deleteBrand">
+        update brand
+        set is_deleted = #{isDeleted}
+        where id = #{id}
+    </update>
 
 </mapper>
