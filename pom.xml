@@ -12,7 +12,7 @@
     <artifactId>goods-info</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>goods-info</name>
-    <description>Goods-info microservice.</description>
+    <description>Goods-info micro service.</description>
 
     <properties>
         <java.version>1.8</java.version>
