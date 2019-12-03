@@ -1,8 +1,6 @@
 package com.tardybird.goodsinfo.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author nick
@@ -54,4 +52,45 @@ public class GoodsController {
         return null;
     }
 
+    /*
+     * ========= following are admin apis ==============
+     */
+
+    /**
+     * 新建/上架一个商品
+     */
+    @PostMapping("/goods")
+    public void addGoods() {
+    }
+
+    /**
+     * 根据id获取某个商品
+     */
+    @GetMapping("/goods/{id}")
+    public Object getGoods(@PathVariable("id") Long id) {
+        return null;
+    }
+
+    /**
+     * 根据id更新商品信息
+     */
+    @PutMapping("/goods/{id}")
+    public Object updateGoods(@PathVariable("id") Long id) {
+        return null;
+    }
+
+    /**
+     * 根据id删除商品信息
+     */
+    @DeleteMapping("/goods/{id}")
+    public void deleteGoods(@PathVariable("id") Long id) {
+    }
+
+    /**
+     * 获取分类和品牌
+     */
+    @GetMapping("/goods/catAndBrand")
+    public Object getAllCategoriesAndBrands() {
+        return null;
+    }
 }
