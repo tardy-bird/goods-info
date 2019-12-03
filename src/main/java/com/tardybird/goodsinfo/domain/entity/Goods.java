@@ -79,9 +79,9 @@ public class Goods {
     /*
      *0：默认模板计算邮费 1：特殊模板计算邮费
      * */
-    private Boolean isSpecial;
+    private Boolean beSpecial;
 
-    private Boolean isDeleted;
+    private Boolean beDeleted;
 
     @Override
     public String toString() {
@@ -104,8 +104,8 @@ public class Goods {
                 ", weight=" + weight +
                 ", volume='" + volume + '\'' +
                 ", specialFreightId=" + specialFreightId +
-                ", isSpecial=" + isSpecial +
-                ", isDeleted=" + isDeleted +
+                ", beSpecial=" + beSpecial +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -270,19 +270,19 @@ public class Goods {
         this.specialFreightId = specialFreightId;
     }
 
-    public Boolean getIsSpecial() {
-        return isSpecial;
+    public Boolean getBeSpecial() {
+        return beSpecial;
     }
 
-    public void setIsSpecial(Boolean isSpecial) {
-        this.isSpecial = isSpecial;
+    public void setBeSpecial(Boolean beSpecial) {
+        this.beSpecial = beSpecial;
     }
 
-    public Boolean getDeleted() {
-        return isDeleted;
+    public Boolean getBeDeleted() {
+        return beDeleted;
     }
 
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 }

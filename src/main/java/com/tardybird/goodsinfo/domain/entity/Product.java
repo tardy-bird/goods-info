@@ -41,7 +41,8 @@ public class Product {
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean isDeleted;
+    private Boolean beDeleted;
+
 
     @Override
     public String toString() {
@@ -55,7 +56,7 @@ public class Product {
                 ", saftyStock=" + saftyStock +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", isDeleted=" + isDeleted +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -149,11 +150,11 @@ public class Product {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getDeleted() {
-        return isDeleted;
+    public Boolean getBeDeleted() {
+        return beDeleted;
     }
 
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 }

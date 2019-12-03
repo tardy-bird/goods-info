@@ -1,5 +1,4 @@
 package com.tardybird.goodsinfo.domain.entity;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,22 +11,22 @@ import java.util.Objects;
 
 public class Brand {
     private Integer id;
-    /**
-     * 品牌名称
-     */
+    /*
+     *品牌名称
+     * */
     private String name;
-    /**
-     * 品牌描述
-     */
+    /*
+     *品牌描述
+     * */
     private String describe;
-    /**
-     * 品牌图片链接
-     */
+    /*
+     *品牌图片链接
+     * */
     private String picUrl;
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean isDeleted;
+    private Boolean beDeleted;
 
     @Override
     public String toString() {
@@ -38,7 +37,7 @@ public class Brand {
                 ", picUrl='" + picUrl + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", isDeleted=" + isDeleted +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -107,11 +106,11 @@ public class Brand {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
+    public Boolean getBeDeleted() {
+        return beDeleted;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 }

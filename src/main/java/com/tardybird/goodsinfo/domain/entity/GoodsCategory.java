@@ -23,7 +23,7 @@ public class GoodsCategory {
     private Integer pid;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean isDelete;
+    private Boolean beDelete;
 
     @Override
     public String toString() {
@@ -33,7 +33,7 @@ public class GoodsCategory {
                 ", pid=" + pid +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", isDelete=" + isDelete +
+                ", beDelete=" + beDelete +
                 '}';
     }
 
@@ -94,11 +94,11 @@ public class GoodsCategory {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getDelete() {
-        return isDelete;
+    public Boolean getBeDelete() {
+        return beDelete;
     }
 
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
+    public void setBeDelete(Boolean beDelete) {
+        this.beDelete = beDelete;
     }
 }
