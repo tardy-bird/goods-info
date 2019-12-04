@@ -33,4 +33,10 @@
         </set>
     </update>
 
+    <update id="deleteProduct" parameterType="com.tardybird.goodsinfo.domain.Product">
+        update product
+        set is_deleted=1
+        where id=#{id}
+    </update>
+
 </mapper>

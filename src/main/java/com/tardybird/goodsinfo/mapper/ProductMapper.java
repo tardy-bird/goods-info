@@ -16,7 +16,7 @@ public interface ProductMapper {
      * @param goodsId
      * @return
      */
-    List<Product> getProductByGoodsId(@Param("goodsId") Long goodsId);
+    List<Product> getProductByGoodsId(@Param("goodsId") Integer goodsId);
 
     /**
      * 查看单个货品信息
@@ -38,4 +38,11 @@ public interface ProductMapper {
      * @return
      */
     int updateProduct(Product product);
+
+    /**
+     * 删除一个商品
+     * @param id
+     * @return
+     */
+    int deleteProduct(@Param("id") Integer id);
 }

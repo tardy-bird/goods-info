@@ -9,7 +9,7 @@
         select * from goods_category
     </select>
 
-    <select id="getLevelOne" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
+    <select id="getLevelOneCategories" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
         select * from goods_category
         where pid is not null
     </select>
@@ -19,7 +19,7 @@
         where id=#{id}
     </select>
 
-    <select id="getLevelOneByPid" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
+    <select id="getLevelTwoByPid" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
         select * from goods_category
         where pid=#{pid}
     </select>

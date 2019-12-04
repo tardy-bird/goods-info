@@ -20,7 +20,7 @@ public interface GoodsMapper {
      */
     Goods getGoodsByGoodsSn(@Param("goodsSn") String goodsSn);
 
-    /***
+    /**
      * 通过商品名字查找商品
      * @param name
      * @return goods
@@ -50,9 +50,10 @@ public interface GoodsMapper {
 
     /**
      * 逻辑删除商品
+     * @param id
      * @return
      */
-    int deleteGoods();
+    int deleteGoods(@Param("id") Integer id);
 
 
 }
