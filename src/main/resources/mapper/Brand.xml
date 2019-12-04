@@ -16,7 +16,7 @@
 
     <insert id="addBrand" parameterType="com.tardybird.goodsinfo.domain.Brand" useGeneratedKeys="true" keyProperty="id">
         insert into brand (name, "describe", pic_url, gmt_create, gmt_modified)
-        values (#{name},#{describe},#{picUrl},#{gmtCreate},#{gmtModified})
+        values (#{name},#{describe},#{picUrl},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
     </insert>
 
     <update id="updateBrand" parameterType="brand">
@@ -28,13 +28,14 @@
             <if test="describe!=null">
                 'describe'=#{describe},
             </if>
+            gmt_modified=CURRENT_TIMESTAMP
         </trim>
         where id = #{id}
     </update>
 
     <update id="deleteBrand">
         update brand
-        set is_deleted = #{isDeleted}
+        set is_deleted = 1
         where id = #{id}
     </update>
 
