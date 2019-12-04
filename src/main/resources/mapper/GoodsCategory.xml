@@ -24,6 +24,11 @@
         where pid=#{pid}
     </select>
 
+    <select id="getGoodsCategoryName" resultType="String">
+        select name from goods_category
+        where id=#{id}
+    </select>
+
     <update id="updateCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
         update goods_category
         <set>

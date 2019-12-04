@@ -2,12 +2,14 @@ package com.tardybird.goodsinfo.mapper;
 
 import com.tardybird.goodsinfo.domain.GoodsCategory;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @author DIX
  */
+@Repository
 public interface GoodsCategoryMapper {
 
     /**

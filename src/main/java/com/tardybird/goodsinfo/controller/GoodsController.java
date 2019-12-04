@@ -1,12 +1,10 @@
 package com.tardybird.goodsinfo.controller;
 
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author nick
@@ -24,8 +22,10 @@ public class GoodsController {
      * 获取商品分类信息
      */
     @GetMapping("/category/{id}")
-    public Object getGoodsCategory(@PathVariable("id") Long id) {
-        return null;
+    public String getGoodsCategory(@PathVariable("id") Integer id) {
+        Goods goods = goodsService.getGoodsById(id);
+        GoodsCategory goodsCategory = goods.getGoodsCategory();
+        return goodsCategory.getName();
     }
 
     /**
@@ -49,7 +49,7 @@ public class GoodsController {
      */
     @GetMapping("/goodsCounts")
     public Integer getGoodsCounts() {
-        return 0;
+        return goodsService.getGoodsCount();
     }
 
     /**
@@ -69,7 +69,7 @@ public class GoodsController {
      */
     @PostMapping("/goods")
     public boolean addGoods(@RequestBody Goods goods) {
-        if (goods != null && !goods.equals("")) {
+        if (goods != null) {
             return goodsService.createGoods(goods);
         } else {
             return false;

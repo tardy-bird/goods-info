@@ -1,18 +1,22 @@
 package com.tardybird.goodsinfo.service;
 
-import com.tardybird.goodsinfo.controller.vo.GoodsVo;
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
 
+/**
+ * @author LENOVO
+ */
 @Service
 public class GoodsService {
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    GoodsCategoryMapper goodsCategoryMapper;
 
     public boolean createGoods(Goods goods) {
         if (goodsMapper.createGoods(goods) != 0) {
@@ -27,8 +31,8 @@ public class GoodsService {
     }
 
     public Goods searchGoodsByConditions(Goods goods) {
-        boolean judgeGoodsSn = (goods.getNameSn() != null && !goods.getNameSn().equals("") && goods.getId() == null);
-        boolean judgeGoodsId = (goods.getId() != null && (goods.getNameSn() == null || goods.getNameSn().equals("")));
+        boolean judgeGoodsSn = (goods.getNameSn() != null && !"".equals(goods.getNameSn()) && goods.getId() == null);
+        boolean judgeGoodsId = (goods.getId() != null && (goods.getNameSn() == null || "".equals(goods.getNameSn())));
         if (judgeGoodsSn) {
             return goodsMapper.getGoodsByGoodsSn(goods.getNameSn());
         } else if (judgeGoodsId) {
@@ -38,7 +42,11 @@ public class GoodsService {
         }
     }
 
-    public Integer getGoodsCount(){
+    public Integer getGoodsCount() {
+        return 0;
+    }
 
+    public GoodsCategory getGoodsCategory(Integer id){
+        return goodsCategoryMapper.getCategory(id);
     }
 }
