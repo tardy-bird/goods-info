@@ -16,14 +16,14 @@ public interface ProductMapper {
      * @param goodsId
      * @return
      */
-    List<Product> getProductByGoodsId(@Param("goodsId") Integer goodsId);
+    List<Product> getProductByGoodsId(@Param("goodsId") Long goodsId);
 
     /**
      * 查看单个货品信息
      * @param id
      * @return
      */
-    Product getProductById(@Param("id") Integer id);
+    Product getProductById(@Param("id") Long id);
 
     /**
      * 新建一个货品

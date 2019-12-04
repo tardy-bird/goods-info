@@ -14,8 +14,30 @@ import java.util.List;
 @Repository
 public interface BrandMapper {
 
+    /**
+     * 查找所有品牌
+     * @return
+     */
     List<Brand> getAllBrands();
-    Brand getBrandsById(@Param("id") Integer id);
+
+    /**
+     * 通过id查品牌
+     * @param id
+     * @return
+     */
+    Brand getBrandsById(@Param("id") Long id);
+
+    /**
+     * 添加品牌
+     * @param brand
+     * @return
+     */
     Brand addBrand(@Param("brand") Brand brand);
-    boolean deleteBrand(@Param("id")Integer id);
+
+    /**
+     * 删除品牌
+     * @param id
+     * @return
+     */
+    boolean deleteBrand(@Param("id")Long id);
 }

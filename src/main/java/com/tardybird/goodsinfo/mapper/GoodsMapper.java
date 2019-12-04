@@ -32,7 +32,7 @@ public interface GoodsMapper {
      * @param id
      * @return goods
      */
-    Goods getGoodsById(@Param("id") Integer id);
+    Goods getGoodsById(@Param("id") Long id);
 
     /**
      * 更新商品信息
