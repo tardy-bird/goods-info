@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
-    <resultMap id="" type="">
-        <result property="" column=""/>
+<mapper namespace="com.tardybird.goodsinfo.mapper.ProductMapper">
+    <!--<resultMap id="" type="">-->
+        <!--<result property="" column=""/>-->
 
-    </resultMap>
+    <!--</resultMap>-->
+    <select id="getProductById" resultType="com.tardybird.goodsinfo.domain.Product">
+        select * from product where id=#{id}
+    </select>
+    
+    <select id="getProductByGoodsId" resultType="com.tardybird.goodsinfo.domain.Product">
+        select * from product where goods_id=#{goodsId}
+    </select>
 
+    <insert id="createProduct" parameterType="com.tardybird.goodsinfo.domain.Product" useGeneratedKeys="true" keyProperty="id">
+        insert  into product(product_ids, pic_url, specifications, goods_id, price, safty_stock, gmt_create, gmt_modified)
+        values {#{productIds},#{picUrl},#{specifications},#{goodsId},#{price},#{safetyStock},#{gmtCreate},#{gmtModified}}
+    </insert>
+
+    <update id="updateProduct" parameterType="com.tardybird.goodsinfo.domain.Product">
+        update product
+        <set>
+            <if test="price != null">
+                price=#{price}
+            </if>
+            <if test="safetyStock != null">
+                safty_stock=#{safetyStock}
+            </if>
+            <if test="picUrl != null">
+                pic_url=#{picUrl}
+            </if>
+        </set>
+    </update>
 
 </mapper>

@@ -34,10 +34,19 @@ public class Product {
      * 产品价格
      */
     private BigDecimal price;
+
+    public Integer getSafetyStock() {
+        return safetyStock;
+    }
+
+    public void setSafetyStock(Integer safetyStock) {
+        this.safetyStock = safetyStock;
+    }
+
     /**
      * 产品安全库存
      */
-    private Integer saftyStock;
+    private Integer safetyStock;
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
@@ -53,7 +62,7 @@ public class Product {
                 ", picUrl='" + picUrl + '\'' +
                 ", specifications='" + specifications + '\'' +
                 ", price=" + price +
-                ", saftyStock=" + saftyStock +
+                ", saftyStock=" + safetyStock +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", beDeleted=" + beDeleted +
@@ -123,14 +132,6 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Integer getSaftyStock() {
-        return saftyStock;
-    }
-
-    public void setSaftyStock(Integer saftyStock) {
-        this.saftyStock = saftyStock;
     }
 
 

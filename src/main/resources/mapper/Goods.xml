@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="com.tardybird.goodsinfo.mapper.GoodsMapper">
     <!--<resultMap id="" type="">-->
         <!--<result property="" column=""/>-->
 
@@ -13,13 +13,17 @@
         select * from goods where name=#{name}
     </select>
 
+    <select id="getGoodsById" resultType="com.tardybird.goodsinfo.domain.Goods">
+        select * from goods where id=#{id}
+    </select>
+
     <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true" keyProperty="id">
         insert into goods(name,gmt_create,gmt_modified,good_sn,short_name,share_url,description,detail,brief,pic_url,status,share_url,gallery,goods_category_ids,brand_id,is_deleted,weight,volume,special_freight_id,is_special)
         values{#{name},#{gmtCreate},#{gmtModified},#{goodsSn},#{shortName},#{shareUrl},#{description},#{detail},#{brief},#{picUrl},#{status},#{shareUrl},#{gallery},#{goodsCategoryIds},#{brandId},#{beDeleted},#{weight},#{volume},#{specialFreightId},#{beSpecial}}
 
     </insert>
 
-    <update id="update" parameterType="com.tardybird.goodsinfo.domain.Goods">
+    <update id="updateGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
         update goods
         <set>
             <if test="status != null">
