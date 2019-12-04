@@ -19,9 +19,16 @@
         values (#{name},#{describe},#{picUrl},#{gmtCreate},#{gmtModified})
     </insert>
 
-    <update id="updateBrand">
+    <update id="updateBrand" parameterType="brand">
         update brand
-        set
+        <trim prefix="set" prefixOverrides=",">
+            <if test="name!=null">
+                'name'=#{name},
+            </if>
+            <if test="describe!=null">
+                'describe'=#{describe},
+            </if>
+        </trim>
         where id = #{id}
     </update>
 
