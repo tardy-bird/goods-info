@@ -48,5 +48,11 @@ public interface GoodsMapper {
      */
     int createGoods(Goods goods);
 
+    /**
+     * 逻辑删除商品
+     * @return
+     */
+    int deleteGoods();
+
 
 }

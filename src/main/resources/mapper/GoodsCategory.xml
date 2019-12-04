@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
-    <resultMap id="" type="">
-        <result property="" column=""/>
+<mapper namespace="com.tardybird.goodsinfo.mapper.GoodsCategoryMapper">
+    <!--<resultMap id="" type="">-->
+        <!--<result property="" column=""/>-->
 
-    </resultMap>
+    <!--</resultMap>-->
+    <select id="getAllCategories" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        select * from goods_category
+    </select>
 
+    <select id="getLevelOne" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        select * from goods_category
+        where pid is not null
+    </select>
 
+    <select id="getCategory" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        select * from goods_category
+        where id=#{id}
+    </select>
+
+    <select id="getLevelOneByPid" resultType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        select * from goods_category
+        where pid=#{pid}
+    </select>
 </mapper>
