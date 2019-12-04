@@ -1,1 +1,6 @@
-
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.96.159.71:3306/oomall
+    username: oomall
+    password: oomallp@$$w0rd
