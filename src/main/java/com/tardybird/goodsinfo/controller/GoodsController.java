@@ -1,6 +1,12 @@
 package com.tardybird.goodsinfo.controller;
 
+import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author nick
@@ -8,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class GoodsController {
 
+    @Autowired
+    GoodsService goodsService;
     /*
      * ========= following are wx apis ==============
      */
@@ -32,8 +40,8 @@ public class GoodsController {
      * 根据条件搜素商品
      */
     @GetMapping("/goods/searchinformation")
-    public Object searchGoodsByConditions() {
-        return null;
+    public Goods searchGoodsByConditions(@RequestBody Goods goods) {
+        return goodsService.searchGoodsByConditions(goods);
     }
 
     /**
@@ -60,15 +68,20 @@ public class GoodsController {
      * 新建/上架一个商品
      */
     @PostMapping("/goods")
-    public void addGoods() {
+    public boolean addGoods(@RequestBody Goods goods) {
+        if (goods != null && !goods.equals("")) {
+            return goodsService.createGoods(goods);
+        } else {
+            return false;
+        }
     }
 
     /**
      * 根据id获取某个商品
      */
     @GetMapping("/goods/{id}")
-    public Object getGoods(@PathVariable("id") Long id) {
-        return null;
+    public Goods getGoods(@PathVariable("id") Integer id) {
+        return goodsService.getGoodsById(id);
     }
 
     /**
