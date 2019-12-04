@@ -23,7 +23,7 @@ public interface ProductMapper {
      * @param id
      * @return
      */
-    Product getProductById(@Param("id") Long id);
+    Product getProductById(@Param("id") Integer id);
 
     /**
      * 新建一个货品

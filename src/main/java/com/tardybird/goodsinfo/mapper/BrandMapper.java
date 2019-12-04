@@ -25,7 +25,7 @@ public interface BrandMapper {
      * @param id
      * @return
      */
-    Brand getBrandsById(@Param("id") Long id);
+    Brand getBrandsById(@Param("id") Integer id);
 
     /**
      * 添加品牌
@@ -39,5 +39,5 @@ public interface BrandMapper {
      * @param id
      * @return
      */
-    boolean deleteBrand(@Param("id")Long id);
+    boolean deleteBrand(@Param("id") Integer id);
 }
