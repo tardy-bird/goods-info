@@ -1,6 +1,7 @@
 package com.tardybird.goodsinfo.mapper;
 
 import com.tardybird.goodsinfo.domain.Product;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,14 +16,14 @@ public interface ProductMapper {
      * @param goodsId
      * @return
      */
-    List<Product> getProductByGoodsId(Integer goodsId);
+    List<Product> getProductByGoodsId(@Param("goodsId") Integer goodsId);
 
     /**
      * 查看单个货品信息
      * @param id
      * @return
      */
-    Product getProductById(Integer id);
+    Product getProductById(@Param("id") Integer id);
 
     /**
      * 新建一个货品

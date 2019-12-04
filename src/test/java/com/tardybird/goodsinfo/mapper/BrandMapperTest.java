@@ -16,6 +16,6 @@ public class BrandMapperTest {
     private BrandMapper brandMapper;
     @Test
     public List<Brand> getAllBrand(){
-        return brandMapper.gerAllBrands();
+        return brandMapper.getAllBrands();
     }
 }

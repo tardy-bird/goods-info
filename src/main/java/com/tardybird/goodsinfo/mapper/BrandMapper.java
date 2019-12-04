@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface BrandMapper {
 
-    List<Brand> gerAllBrands();
+    List<Brand> getAllBrands();
     Brand getBrandsById(@Param("id") Integer id);
     Brand addBrand(@Param("brand") Brand brand);
     boolean deleteBrand(@Param("id")Integer id);
