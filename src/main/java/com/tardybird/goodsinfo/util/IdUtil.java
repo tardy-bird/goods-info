@@ -2,6 +2,9 @@ package com.tardybird.goodsinfo.util;
 
 import java.security.SecureRandom;
 
+/**
+ * @author nick
+ */
 public class IdUtil {
 
     public static String getValue(int length) {
