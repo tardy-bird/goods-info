@@ -20,12 +20,20 @@ public class BrandService {
         return brandMapper.getAllBrands();
     }
 
-    public Brand getBrandsById(Long id) {
+    public Brand getBrandsById(Integer id) {
         return brandMapper.getBrandsById(id);
     }
 
     public void addBrand(Brand brand) {
         brandMapper.addBrand(brand);
+    }
+
+    public void deleteBrand(Integer id) {
+        brandMapper.deleteBrand(id);
+    }
+
+    public void updateBrand(Brand brand) {
+        brandMapper.updateBrand(brand);
     }
 
 }
