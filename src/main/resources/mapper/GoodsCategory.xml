@@ -23,4 +23,29 @@
         select * from goods_category
         where pid=#{pid}
     </select>
+
+    <update id="updateCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        update goods_category
+        <set>
+            <if test="pid!=null">
+                pid=#{pid}
+            </if>
+            <if test="name!=null">
+                'name'=#{name}
+            </if>
+
+        </set>
+    </update>
+
+    <update id="deleteCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        update  goods_category
+        set is_deleted=1
+        where id=#{id}
+    </update>
+
+    <insert id="createCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
+        insert into goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
+        values (#{name},#{pid},current_timestamp ,current_timestamp,#{beDeleted})
+    </insert>
+
 </mapper>

@@ -19,7 +19,7 @@
 
     <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true" keyProperty="id">
         insert into goods(name,gmt_create,gmt_modified,good_sn,short_name,share_url,description,detail,brief,pic_url,status,share_url,gallery,goods_category_ids,brand_id,is_deleted,weight,volume,special_freight_id,is_special)
-        values{#{name},#{gmtCreate},#{gmtModified},#{nameSn},#{shortName},#{shareUrl},#{description},#{detail},#{brief},#{picUrl},#{status},#{shareUrl},#{gallery},#{goodsCategoryIds},#{brandId},#{beDeleted},#{weight},#{volume},#{specialFreightId},#{beSpecial}}
+        values(#{name},current_timestamp ,current_timestamp ,#{nameSn},#{shortName},#{shareUrl},#{description},#{detail},#{brief},#{picUrl},#{status},#{shareUrl},#{gallery},#{goodsCategoryIds},#{brandId},#{beDeleted},#{weight},#{volume},#{specialFreightId},#{beSpecial})
 
     </insert>
 
@@ -38,6 +38,7 @@
             <if test="beDeleted != null">
                 beDeleted=#{beDeleted}
             </if>
+            gmt_modified=current_timestamp
         </set>
     </update>
 
