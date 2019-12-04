@@ -40,4 +40,6 @@ public interface BrandMapper {
      * @return
      */
     boolean deleteBrand(@Param("id") Integer id);
+
+    int updateBrand(@Param("brand") Brand brand);
 }
