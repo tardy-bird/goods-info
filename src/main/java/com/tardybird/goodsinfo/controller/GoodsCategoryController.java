@@ -1,6 +1,12 @@
 package com.tardybird.goodsinfo.controller;
 
+import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.service.GoodsCategoryService;
+import io.swagger.models.auth.In;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author nick
@@ -14,41 +20,45 @@ public class GoodsCategoryController {
     /**
      * 获取分类数据
      */
+
+    @Autowired
+    GoodsCategoryService goodsCategoryService;
+
     @GetMapping("/categories")
-    public Object getAllCategories() {
-        return null;
+    public List<GoodsCategory> getAllCategories() {
+        return goodsCategoryService.getAllCategory();
     }
 
     /**
      * 获取分类详情
      */
     @GetMapping("/categories/{id}")
-    public Object getSingleCategory(@PathVariable("id") Long id) {
-        return null;
+    public GoodsCategory getSingleCategory(@PathVariable("id") Integer id) {
+        return goodsCategoryService.getCategory(id);
     }
 
     /**
      * 获取1级种类
      */
     @GetMapping("/categories/l1")
-    public Object getFirstCategories() {
-        return null;
+    public List<GoodsCategory> getFirstCategories() {
+        return goodsCategoryService.getLevelOneCategories();
     }
 
-    /**
-     * 获取2级种类
-     */
-    @GetMapping("/categories/l2")
-    public Object getSecondCategories() {
-        return null;
-    }
+//    /**
+////     * 获取2级种类
+////     */
+////    @GetMapping("/categories/l2")
+////    public Object getSecondCategories() {
+////        return null;
+////    }
 
     /**
      * 获取当前一级分类下的二级分类
      */
     @GetMapping("/categories/l1/{id}/l2")
-    public Object get2rdCategoryOf1st(@PathVariable("id") Long id) {
-        return null;
+    public List<GoodsCategory> get2rdCategoryOf1st(@PathVariable("id") Integer pid) {
+        return goodsCategoryService.getLevelTwoByPid(pid);
     }
 
     /*
@@ -59,24 +69,26 @@ public class GoodsCategoryController {
      * 新建一个分类
      */
     @PostMapping("/categories")
-    public Object addCategory() {
-        return null;
+    public int addCategory(@RequestBody GoodsCategory goodsCategory) {
+        return goodsCategoryService.createCategory(goodsCategory);
     }
 
     /**
      * 修改分类信息
      */
     @PutMapping("/categories/{id}")
-    public Object updateCategory(@PathVariable("id") Long id) {
-        return null;
+    public int updateCategory(@PathVariable("id") Integer id,@RequestBody GoodsCategory goodsCategory) {
+
+        goodsCategory.setId(id);
+        return goodsCategoryService.updateCategory(goodsCategory);
     }
 
     /**
      * 删除单个分类
      */
     @DeleteMapping("/categories/{id}")
-    public Object deleteCategory(@PathVariable("id") Long id) {
-        return null;
+    public int deleteCategory(@PathVariable("id") Integer id) {
+        return goodsCategoryService.deleteCategory(id);
     }
 
 }
