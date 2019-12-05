@@ -3,6 +3,9 @@ package com.tardybird.goodsinfo.controller;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.service.GoodsService;
+import com.tardybird.goodsinfo.validator.LoginUser;
+import com.tardybird.goodsinfo.validator.Order;
+import com.tardybird.goodsinfo.validator.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,16 +35,43 @@ public class GoodsController {
      * 获取商品信息列表
      */
     @GetMapping("/goods")
-    public Object getGoodsList() {
+    public Object getGoodsList(String goodsSn, String name,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "10") Integer limit,
+                               @Sort @RequestParam(defaultValue = "add_time") String sort,
+                               @Order @RequestParam(defaultValue = "desc") String order) {
         return null;
     }
 
     /**
      * 根据条件搜素商品
+     * 1. 这里的前五个参数都是可选的，甚至都是空
+     * 2. 用户是可选登录，如果登录，则记录用户的搜索关键字
+     *
+     * @param goodsCategoryId 分类类目ID，可选
+     * @param brandId         品牌商ID，可选
+     * @param keyword         关键字，可选
+     * @param isNew           是否新品，可选
+     * @param isHot           是否热买，可选
+     * @param userId          用户ID
+     * @param page            分页页数
+     * @param limit           分页大小
+     * @param sort            排序方式，支持"add_time", "retail_price"或"name"
+     * @param order           排序类型，顺序或者降序
+     * @return 根据条件搜素的商品详情
      */
     @GetMapping("/goods/searchinformation")
-    public Goods searchGoodsByConditions(@RequestBody Goods goods) {
-        return goodsService.searchGoodsByConditions(goods);
+    public Object searchGoodsByConditions(Integer goodsCategoryId,
+                                          Integer brandId,
+                                          String keyword,
+                                          Boolean isNew,
+                                          Boolean isHot,
+                                          @LoginUser Integer userId,
+                                          @RequestParam(defaultValue = "1") Integer page,
+                                          @RequestParam(defaultValue = "10") Integer limit,
+                                          @Sort(accepts = {"add_time", "retail_price", "name"}) @RequestParam(defaultValue = "add_time") String sort,
+                                          @Order @RequestParam(defaultValue = "desc") String order) {
+        return null;
     }
 
     /**

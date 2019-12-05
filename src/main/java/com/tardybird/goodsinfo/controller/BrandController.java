@@ -6,9 +6,13 @@ import com.tardybird.goodsinfo.service.BrandService;
 import com.tardybird.goodsinfo.util.FileUploadUtil;
 import com.tardybird.goodsinfo.util.IdUtil;
 import com.tardybird.goodsinfo.util.ResponseUtil;
+import com.tardybird.goodsinfo.validator.Order;
+import com.tardybird.goodsinfo.validator.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author nick
@@ -27,7 +31,10 @@ public class BrandController {
      * 查看所有品牌
      */
     @GetMapping("/brands")
-    public Object getAllBrands() {
+    public Object getAllBrands(@RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "10") Integer limit,
+                               @Sort @RequestParam(defaultValue = "add_time") String sort,
+                               @Order @RequestParam(defaultValue = "desc") String order) {
         return brandService.getAllBrands();
     }
 
@@ -35,7 +42,7 @@ public class BrandController {
      * 查看品牌详情
      */
     @GetMapping("/brands/{id}")
-    public Object getBrandDetails(@PathVariable("id") Integer id) {
+    public Object getBrandDetails(@NotNull @PathVariable("id") Integer id) {
         return brandService.getBrandsById(id);
     }
 
@@ -47,7 +54,11 @@ public class BrandController {
      * 根据条件搜索品牌
      */
     @GetMapping("/admins/brands")
-    public Object getBrandsByCondition() {
+    public Object getBrandsByCondition(@NotNull String id, String name,
+                                       @RequestParam(defaultValue = "1") Integer page,
+                                       @RequestParam(defaultValue = "10") Integer limit,
+                                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                                       @Order @RequestParam(defaultValue = "desc") String order) {
         return null;
     }
 
@@ -79,7 +90,7 @@ public class BrandController {
      * 创建一个品牌
      */
     @PostMapping("/brands")
-    public Object addBrand(BrandVo brandVo) {
+    public Object addBrand(@RequestBody BrandVo brandVo) {
         if (brandVo == null) {
             return ResponseUtil.fail();
         }
@@ -92,7 +103,7 @@ public class BrandController {
      * 修改单个品牌的信息
      */
     @PutMapping("/brands/{id}")
-    public Object updateBrand(@PathVariable("id") Integer id,
+    public Object updateBrand(@NotNull @PathVariable("id") Integer id,
                               @RequestBody BrandVo brandVo) {
         if (brandVo == null) {
             return ResponseUtil.fail();
