@@ -20,7 +20,7 @@ public class GoodsCategoryService {
     @Autowired
     GoodsCategoryMapper goodsCategoryMapper;
 
-    public List<GoodsCategory> getAllCategory(){return goodsCategoryMapper.getAllCategories();}
+    public List<GoodsCategory> getAllCategories(){return goodsCategoryMapper.getAllCategories();}
 
     public List<GoodsCategory> getLevelOneCategories(){return goodsCategoryMapper.getLevelOneCategories();}
 

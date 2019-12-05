@@ -26,7 +26,7 @@ public class GoodsCategoryController {
 
     @GetMapping("/categories")
     public List<GoodsCategory> getAllCategories() {
-        return goodsCategoryService.getAllCategory();
+        return goodsCategoryService.getAllCategories();
     }
 
     /**
