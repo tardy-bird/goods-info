@@ -1,6 +1,14 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.96.159.71:3306/oomall
+    url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
     username: oomall
     password: oomallp@$$w0rd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  type-aliases-package: com.tardybird.goodsinfo.domain
+  mapper-locations: classpath:mapper/*.xml
+
+server:
+  port: 8080
+  address: 0.0.0.0
