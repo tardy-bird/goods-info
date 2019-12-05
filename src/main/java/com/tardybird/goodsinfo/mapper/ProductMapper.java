@@ -2,6 +2,7 @@ package com.tardybird.goodsinfo.mapper;
 
 import com.tardybird.goodsinfo.domain.Product;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * @author DIX
  * @date 2019/12/4 17:09
  */
+@Repository
 public interface ProductMapper {
 
     /**

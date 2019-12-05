@@ -1,4 +1,4 @@
-package com.tardybird.goodsinfo.domain.entity;
+package com.tardybird.goodsinfo.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

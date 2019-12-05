@@ -1,39 +1,43 @@
-package com.tardybird.goodsinfo.domain.entity;
-
+package com.tardybird.goodsinfo.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * @Author: 数据库与对象模型标准组
- * @Description:商品种类的信息
+ * @Description:品牌信息
  * @Data:Created in 14:50 2019/11/29
  * @Modified By:
  **/
 
-public class GoodsCategory {
+public class Brand {
     private Integer id;
-    /**
-     * 种类的名称
-     */
+    /*
+     *品牌名称
+     * */
     private String name;
-    /**
-     * |
-     * 该种类的父种类ID
-     */
-    private Integer pid;
+    /*
+     *品牌描述
+     * */
+    private String describe;
+    /*
+     *品牌图片链接
+     * */
+    private String picUrl;
+
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDelete;
+    private Boolean beDeleted;
 
     @Override
     public String toString() {
-        return "GoodsCategory{" +
+        return "Brand{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", pid=" + pid +
+                ", describe='" + describe + '\'' +
+                ", picUrl='" + picUrl + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", beDelete=" + beDelete +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -45,8 +49,8 @@ public class GoodsCategory {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        GoodsCategory that = (GoodsCategory) o;
-        return Objects.equals(id, that.id);
+        Brand brand = (Brand) o;
+        return Objects.equals(id, brand.id);
     }
 
     @Override
@@ -70,12 +74,20 @@ public class GoodsCategory {
         this.name = name;
     }
 
-    public Integer getPid() {
-        return pid;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public LocalDateTime getGmtCreate() {
@@ -94,11 +106,11 @@ public class GoodsCategory {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDelete() {
-        return beDelete;
+    public Boolean getBeDeleted() {
+        return beDeleted;
     }
 
-    public void setBeDelete(Boolean beDelete) {
-        this.beDelete = beDelete;
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 }

@@ -4,6 +4,6 @@ import java.util.List;
 /**
  * @author nick
  */
-public class Brand extends com.tardybird.goodsinfo.domain.entity.Brand {
+public class Brand extends com.tardybird.goodsinfo.entity.Brand {
     private List<Goods> goodsList;
 }
