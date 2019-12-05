@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tardybird.goodsinfo.mapper">
+<mapper namespace="com.tardybird.goodsinfo.mapper.BrandMapper">
     <!--<resultMap id="" type="">-->
         <!--<result property="" column=""/>-->
 
     <!--</resultMap>-->
 
-    <select id="gerAllBrands" resultType="com.tardybird.goodsinfo.domain.Brand">
+    <select id="getAllBrands" resultType="com.tardybird.goodsinfo.domain.Brand">
         select * from brand
     </select>
 
