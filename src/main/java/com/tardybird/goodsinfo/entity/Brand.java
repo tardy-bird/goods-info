@@ -1,4 +1,5 @@
 package com.tardybird.goodsinfo.entity;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class Brand {
+public class Brand implements Serializable {
     private Integer id;
     /*
      *品牌名称

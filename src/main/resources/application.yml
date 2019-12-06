@@ -30,3 +30,9 @@ mybatis:
 server:
   port: 8080
   address: 0.0.0.0
+
+GoodsInfo:
+  #redis缓存失效时间，单位分钟
+  redisExpireTime: 1
+  #预提库存数量
+  preDeductQty: 3

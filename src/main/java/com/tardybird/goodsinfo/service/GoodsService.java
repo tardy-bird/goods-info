@@ -1,7 +1,9 @@
 package com.tardybird.goodsinfo.service;
 
+import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class GoodsService {
     @Autowired
     GoodsCategoryMapper goodsCategoryMapper;
 
+    @Autowired
+    GoodsDao goodsDao;
+
     public boolean createGoods(Goods goods) {
         if (goodsMapper.createGoods(goods) != 0) {
             return true;
@@ -27,8 +32,9 @@ public class GoodsService {
     }
 
     public Goods getGoodsById(Integer id) {
-        return goodsMapper.getGoodsById(id);
+        return goodsDao.getGoodsById(id);
     }
+
 
     public Goods searchGoodsByConditions(Goods goods) {
         boolean judgeGoodsSn = (goods.getNameSn() != null && !"".equals(goods.getNameSn()) && goods.getId() == null);

@@ -1,5 +1,6 @@
 package com.tardybird.goodsinfo.service;
 
+import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class BrandService {
 
     @Autowired
     BrandMapper brandMapper;
+
+    @Autowired
+    GoodsDao goodsDao;
 
     public List<Brand> getAllBrands() {
         return brandMapper.getAllBrands();

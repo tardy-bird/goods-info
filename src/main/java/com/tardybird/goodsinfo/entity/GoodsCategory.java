@@ -1,5 +1,6 @@
 package com.tardybird.goodsinfo.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class GoodsCategory {
+public class GoodsCategory implements Serializable {
     private Integer id;
     /**
      * 种类的名称

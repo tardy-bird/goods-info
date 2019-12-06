@@ -1,11 +1,12 @@
 package com.tardybird.goodsinfo.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author nick
  */
-public class Goods extends com.tardybird.goodsinfo.entity.Goods {
+public class Goods extends com.tardybird.goodsinfo.entity.Goods implements Serializable {
     private Brand brand;
     private GoodsCategory goodsCategory;
     private List<Product> productList;

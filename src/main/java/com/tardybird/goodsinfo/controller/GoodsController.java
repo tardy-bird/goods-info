@@ -1,7 +1,9 @@
 package com.tardybird.goodsinfo.controller;
 
+import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.validator.LoginUser;
 import com.tardybird.goodsinfo.validator.Order;
@@ -17,6 +19,9 @@ public class GoodsController {
 
     @Autowired
     GoodsService goodsService;
+
+    @Autowired
+    GoodsDao goodsDao;
     /*
      * ========= following are wx apis ==============
      */
