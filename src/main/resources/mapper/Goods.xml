@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.GoodsMapper">
-    <!--<resultMap id="" type="">-->
-        <!--<result property="" column=""/>-->
-
-    <!--</resultMap>-->
-    <select id="getGoodsByGoodsSn" resultType="com.tardybird.goodsinfo.domain.Goods">
+    <resultMap id="goods" type="com.tardybird.goodsinfo.domain.Goods">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="name" column="name"/>
+        <result property="nameSn" column="good_sn"/>
+        <result property="shortName" column="short_name"/>
+        <result property="description" column="description"/>
+        <result property="brief" column="brief"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="detail" column="detail"/>
+        <result property="status" column="status"/>
+        <result property="shareUrl" column="share_url"/>
+        <result property="gallery" column="gallery"/>
+        <result property="goodsCategoryId" column="goods_category_ids"/>
+        <result property="brandId" column="brand_id"/>
+        <result property="beDeleted" column="is_deleted"/>
+        <result property="weight" column="weight"/>
+        <result property="volume" column="volume"/>
+        <result property="specialFreightId" column="special_freight_id"/>
+        <result property="beSpecial" column="is_special"/>
+    </resultMap>
+    <select id="getGoodsByGoodsSn" resultMap="goods">
         select * from goods where good_sn=#{nameSn}
     </select>
     
-    <select id="getGoodsByName" resultType="com.tardybird.goodsinfo.domain.Goods">
+    <select id="getGoodsByName" resultMap="goods">
         select * from goods where name=#{name}
     </select>
 
-    <select id="getGoodsById" resultType="com.tardybird.goodsinfo.domain.Goods">
+    <select id="getGoodsById" resultMap="goods">
         select * from goods where id=#{id}
     </select>
 
@@ -48,5 +66,9 @@
         where id=#{id}
     </update>
 
+    <select id="selectOnSaleGoods" resultType="Integer">
+        select count(status) from goods
+        where status=0
+    </select>
 
 </mapper>

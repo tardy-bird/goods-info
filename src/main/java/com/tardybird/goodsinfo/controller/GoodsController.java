@@ -24,7 +24,7 @@ public class GoodsController {
     /**
      * 获取商品分类信息
      */
-    @GetMapping("/category/{id}")
+    @GetMapping("/categories/{id}/goods")
     public String getGoodsCategory(@PathVariable("id") Integer id) {
         Goods goods = goodsService.getGoodsById(id);
         GoodsCategory goodsCategory = goods.getGoodsCategory();
@@ -126,7 +126,8 @@ public class GoodsController {
      * 根据id删除商品信息
      */
     @DeleteMapping("/goods/{id}")
-    public void deleteGoods(@PathVariable("id") Long id) {
+    public boolean deleteGoods(@PathVariable("id") Integer id) {
+        return goodsService.deleteGood(id);
     }
 
     /**

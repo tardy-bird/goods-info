@@ -43,10 +43,19 @@ public class GoodsService {
     }
 
     public Integer getGoodsCount() {
-        return 0;
+        return goodsMapper.selectOnSaleGoods();
     }
 
     public GoodsCategory getGoodsCategory(Integer id){
         return goodsCategoryMapper.getCategory(id);
+    }
+
+    public boolean deleteGood(Integer id){
+        if (goodsMapper.deleteGoods(id)!=0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

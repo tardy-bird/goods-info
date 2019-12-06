@@ -54,11 +54,13 @@ public interface GoodsMapper {
     int createGoods(Goods goods);
 
     /**
-     * 逻辑删除商品
-     *
+     * 路基删除商品
+     * @param id
      * @return
      */
-    int deleteGoods();
+    int deleteGoods(@Param("id") Integer id);
+
+    Integer selectOnSaleGoods();
 
 
 }
