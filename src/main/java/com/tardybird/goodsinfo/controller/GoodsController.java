@@ -42,10 +42,19 @@ public class GoodsController {
     @GetMapping("/goods")
     public Object getGoodsList(String goodsSn, String name,
                                @RequestParam(defaultValue = "1") Integer page,
-                               @RequestParam(defaultValue = "10") Integer limit,
-                               @Sort @RequestParam(defaultValue = "add_time") String sort,
-                               @Order @RequestParam(defaultValue = "desc") String order) {
+                               @RequestParam(defaultValue = "10") Integer limit)
+//                               @Sort @RequestParam(defaultValue = "add_time") String sort,
+//                               @Order @RequestParam(defaultValue = "desc") String order)
+    {
+
         return null;
+    }
+
+    @GetMapping("/goodss")
+    public Object getAllGoods(@RequestParam(defaultValue = "1") Integer page,
+                              @RequestParam(defaultValue = "10") Integer limit)
+    {
+        return goodsService.getAllGoods(page, limit);
     }
 
     /**

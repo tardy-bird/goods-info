@@ -1,5 +1,7 @@
 package com.tardybird.goodsinfo.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
@@ -8,6 +10,8 @@ import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /**
@@ -22,6 +26,15 @@ public class GoodsService {
 
     @Autowired
     GoodsDao goodsDao;
+
+    public Object getAllGoods(Integer pageNum,Integer pageSize)
+    {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Goods> goods=goodsDao.getAllGoods();
+        PageInfo<Goods> pageInfo=new PageInfo<>(goods);
+        return pageInfo;
+    }
+
 
     public boolean createGoods(Goods goods) {
         if (goodsMapper.createGoods(goods) != 0) {

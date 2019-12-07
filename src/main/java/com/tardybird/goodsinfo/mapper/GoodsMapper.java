@@ -22,6 +22,12 @@ public interface GoodsMapper {
      */
     Goods getGoodsByGoodsSn(@Param("goodsSn") String goodsSn);
 
+    /**
+     * 获得所有商品
+     * @return
+     */
+    List<Goods> getAllGoods();
+
     /***
      * 通过商品名字查找商品
      * @param name

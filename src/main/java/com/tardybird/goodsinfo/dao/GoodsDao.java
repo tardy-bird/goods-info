@@ -89,4 +89,11 @@ public class GoodsDao {
         System.out.println(endTime-startTime);
         return goods;
     }
+
+    /**
+     * 获得所有商品
+     * @return
+     */
+    public List<Goods> getAllGoods(){return goodsMapper.getAllGoods();}
+
 }

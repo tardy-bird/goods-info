@@ -26,6 +26,10 @@
     <select id="getGoodsByGoodsSn" resultMap="goods">
         select * from goods where good_sn=#{nameSn}
     </select>
+
+    <select id="getAllGoods" resultMap="goods">
+        select * from goods
+    </select>
     
     <select id="getGoodsByName" resultMap="goods">
         select * from goods where name=#{name}
