@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.domain.GoodsIdPic;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
@@ -33,6 +34,11 @@ public class GoodsService {
         List<Goods> goods=goodsDao.getAllGoods();
         PageInfo<Goods> pageInfo=new PageInfo<>(goods);
         return pageInfo;
+    }
+
+    public List<GoodsIdPic> getAllGoodsIdPic()
+    {
+        return goodsMapper.getAllGoodsIdPic();
     }
 
 

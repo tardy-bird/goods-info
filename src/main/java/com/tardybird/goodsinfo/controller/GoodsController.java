@@ -104,6 +104,9 @@ public class GoodsController {
         return null;
     }
 
+    @GetMapping("users/goods")
+    public Object getAllGoodsIdPic(){return goodsService.getAllGoodsIdPic();}
+
     /*
      * ========= following are admin apis ==============
      */
