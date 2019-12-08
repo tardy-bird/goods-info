@@ -1,11 +1,8 @@
-
 pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
   helper-dialect: mysql
-
-
 
 spring:
   redis:
@@ -18,13 +15,12 @@ spring:
     #      nodes: xxx.xxx.xxx.xxx:xxxx,xxx.xxx.xxx.xxx:xxxx,xxx.xxx.xxx.xxx:xxxx
     #      #默认值是5 一般当此值设置过大时，容易报：Too many Cluster redirections
     #      maxRedirects: 3
-    pool:
-
-      max-active: 8
-      min-idle: 0
-      max-idle: 8
-      max-wait: -1
     password:
+    jedis:
+      pool:
+        max-idle: 8
+        max-wait:
+        min-idle: 0
 
   datasource:
     url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
