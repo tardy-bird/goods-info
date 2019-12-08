@@ -6,7 +6,7 @@
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
         <result property="name" column="name"/>
-        <result property="nameSn" column="good_sn"/>
+        <result property="goodsSn" column="good_sn"/>
         <result property="shortName" column="short_name"/>
         <result property="description" column="description"/>
         <result property="brief" column="brief"/>
@@ -29,8 +29,12 @@
         <result property="picUrl" column="pic_url"/>
     </resultMap>
 
-    <select id="getGoodsByGoodsSn" resultMap="goods">
-        select * from goods where good_sn=#{nameSn}
+    <select id="getGoodsByGoodsSn" resultMap="GoodsIdPic">
+        select id,pic_url from goods where goods_sn=#{goodsSn}
+    </select>
+
+    <select id="getGoodsByName" resultMap="GoodsIdPic">
+        select id,pic_url from goods where name like CONCAT('%',#{name},'%')
     </select>
 
     <select id="getAllGoods" resultMap="goods">
@@ -39,11 +43,11 @@
 
     <select id="getAllGoodsIdPic" resultMap="GoodsIdPic">
         select id,pic_url from goods
-         where status=1
     </select>
-    
-    <select id="getGoodsByName" resultMap="goods">
-        select * from goods where name=#{name}
+
+    <select id="getHotGoodsIdPic" resultMap="GoodsIdPic">
+        select id,pic_url from goods
+         where status=1
     </select>
 
     <select id="getGoodsById" resultMap="goods">

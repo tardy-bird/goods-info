@@ -46,55 +46,17 @@ public class GoodsController {
 //                               @Sort @RequestParam(defaultValue = "add_time") String sort,
 //                               @Order @RequestParam(defaultValue = "desc") String order)
     {
-
-        return null;
+        return goodsService.getAllGoodsByConditions(goodsSn,name,page,limit);
     }
 
-    @GetMapping("/goodss")
+    @GetMapping("/admins/goods")
     public Object getAllGoods(@RequestParam(defaultValue = "1") Integer page,
                               @RequestParam(defaultValue = "10") Integer limit)
     {
-        return goodsService.getAllGoods(page, limit);
+        return goodsService.getAllGoodsIdPic(page, limit);
     }
 
-    /**
-     * 根据条件搜素商品
-     * 1. 这里的前五个参数都是可选的，甚至都是空
-     * 2. 用户是可选登录，如果登录，则记录用户的搜索关键字
-     *
-     * @param goodsCategoryId 分类类目ID，可选
-     * @param brandId         品牌商ID，可选
-     * @param keyword         关键字，可选
-     * @param isNew           是否新品，可选
-     * @param isHot           是否热买，可选
-     * @param userId          用户ID
-     * @param page            分页页数
-     * @param limit           分页大小
-     * @param sort            排序方式，支持"add_time", "retail_price"或"name"
-     * @param order           排序类型，顺序或者降序
-     * @return 根据条件搜素的商品详情
-     */
-    @GetMapping("/goods/searchinformation")
-    public Object searchGoodsByConditions(Integer goodsCategoryId,
-                                          Integer brandId,
-                                          String keyword,
-                                          Boolean isNew,
-                                          Boolean isHot,
-                                          @LoginUser Integer userId,
-                                          @RequestParam(defaultValue = "1") Integer page,
-                                          @RequestParam(defaultValue = "10") Integer limit,
-                                          @Sort(accepts = {"add_time", "retail_price", "name"}) @RequestParam(defaultValue = "add_time") String sort,
-                                          @Order @RequestParam(defaultValue = "desc") String order) {
-        return null;
-    }
 
-    /**
-     * 查看在售的商品总数
-     */
-    @GetMapping("/goodsCounts")
-    public Integer getGoodsCounts() {
-        return goodsService.getGoodsCount();
-    }
 
     /**
      * 查看推荐商品
@@ -104,8 +66,16 @@ public class GoodsController {
         return null;
     }
 
+    /**
+     * 用户查看商品（默认hot）
+     * @param page
+     * @param limit
+     * @return
+     */
     @GetMapping("users/goods")
-    public Object getAllGoodsIdPic(){return goodsService.getAllGoodsIdPic();}
+    public Object getAllGoodsIdPic(@RequestParam(defaultValue = "1") Integer page,
+                                   @RequestParam(defaultValue = "10") Integer limit)
+    {return goodsService.getHotGoodsIdPic(page,limit);}
 
     /*
      * ========= following are admin apis ==============

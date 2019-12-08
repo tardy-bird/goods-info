@@ -21,7 +21,14 @@ public interface GoodsMapper {
      * @param goodsSn
      * @return goods
      */
-    Goods getGoodsByGoodsSn(@Param("goodsSn") String goodsSn);
+    List<GoodsIdPic> getGoodsByGoodsSn(@Param("goodsSn") String goodsSn);
+
+    /***
+     * 通过商品名字查找商品
+     * @param name
+     * @return goods
+     */
+    List<GoodsIdPic> getGoodsByName(@Param("name") String name);
 
     /**
      * 获得所有商品
@@ -30,17 +37,18 @@ public interface GoodsMapper {
     List<Goods> getAllGoods();
 
     /**
-     * 获得商品列表（只有id和pic）
+     * （用户）默认获得热卖商品列表（只有id和pic）
+     * @return
+     */
+    List<GoodsIdPic> getHotGoodsIdPic();
+
+    /**
+     * 管理员获得所有商品列表（只有id和pic）
      * @return
      */
     List<GoodsIdPic> getAllGoodsIdPic();
 
-    /***
-     * 通过商品名字查找商品
-     * @param name
-     * @return goods
-     */
-    Goods getGoodsByName(@Param("name") String name);
+
 
     /**
      * 通过商品id查找商品
