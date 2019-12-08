@@ -23,12 +23,17 @@
         <result property="specialFreightId" column="special_freight_id"/>
         <result property="beSpecial" column="is_special"/>
     </resultMap>
+
     <select id="getGoodsByGoodsSn" resultMap="goods">
         select * from goods where good_sn=#{nameSn}
     </select>
 
     <select id="getAllGoods" resultMap="goods">
         select * from goods
+    </select>
+
+    <select id="getAllGoodsList" resultMap="goods">
+        select id,pic_url from goods
     </select>
     
     <select id="getGoodsByName" resultMap="goods">

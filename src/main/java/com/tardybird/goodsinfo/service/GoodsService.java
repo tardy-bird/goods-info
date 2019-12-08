@@ -50,10 +50,10 @@ public class GoodsService {
 
 
     public Goods searchGoodsByConditions(Goods goods) {
-        boolean judgeGoodsSn = (goods.getNameSn() != null && !"".equals(goods.getNameSn()) && goods.getId() == null);
-        boolean judgeGoodsId = (goods.getId() != null && (goods.getNameSn() == null || "".equals(goods.getNameSn())));
+        boolean judgeGoodsSn = (goods.getGoodsSn() != null && !"".equals(goods.getGoodsSn()) && goods.getId() == null);
+        boolean judgeGoodsId = (goods.getId() != null && (goods.getGoodsSn() == null || "".equals(goods.getGoodsSn())));
         if (judgeGoodsSn) {
-            return goodsMapper.getGoodsByGoodsSn(goods.getNameSn());
+            return goodsMapper.getGoodsByGoodsSn(goods.getGoodsSn());
         } else if (judgeGoodsId) {
             return goodsMapper.getGoodsById(goods.getId());
         } else {
