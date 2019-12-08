@@ -1,6 +1,7 @@
 package com.tardybird.goodsinfo.mapper;
 
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.domain.GoodsIdPic;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,12 @@ public interface GoodsMapper {
      * @return
      */
     List<Goods> getAllGoods();
+
+    /**
+     * 获得商品列表（只有id和pic）
+     * @return
+     */
+    List<GoodsIdPic> getAllGoodsIdPic();
 
     /***
      * 通过商品名字查找商品

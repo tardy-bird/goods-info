@@ -12,7 +12,7 @@
         <result property="brief" column="brief"/>
         <result property="picUrl" column="pic_url"/>
         <result property="detail" column="detail"/>
-        <result property="status" column="status"/>
+        <result property="statusCode" column="status"/>
         <result property="shareUrl" column="share_url"/>
         <result property="gallery" column="gallery"/>
         <result property="goodsCategoryId" column="goods_category_ids"/>
@@ -24,6 +24,11 @@
         <result property="beSpecial" column="is_special"/>
     </resultMap>
 
+    <resultMap id="GoodsIdPic" type="com.tardybird.goodsinfo.domain.GoodsIdPic">
+        <result property="id" column="id"/>
+        <result property="picUrl" column="pic_url"/>
+    </resultMap>
+
     <select id="getGoodsByGoodsSn" resultMap="goods">
         select * from goods where good_sn=#{nameSn}
     </select>
@@ -32,8 +37,9 @@
         select * from goods
     </select>
 
-    <select id="getAllGoodsList" resultMap="goods">
+    <select id="getAllGoodsIdPic" resultMap="GoodsIdPic">
         select id,pic_url from goods
+         where status=1
     </select>
     
     <select id="getGoodsByName" resultMap="goods">

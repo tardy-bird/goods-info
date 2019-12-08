@@ -81,7 +81,7 @@ public class BrandController {
     private Brand wrapBrandVo(BrandVo brandVo) {
         Brand brand = new Brand();
         brand.setName(brandVo.getName());
-        brand.setDescribe(brandVo.getDescription());
+        brand.setDescription(brandVo.getDescription());
         String url = handleUploadPicture(brandVo.getPicture());
         brand.setPicUrl(url);
         return brand;

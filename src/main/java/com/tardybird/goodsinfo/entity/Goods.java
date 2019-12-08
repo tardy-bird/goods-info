@@ -44,10 +44,12 @@ public class Goods {
      * 商品详情
      */
     private String detail;
+
+
     /**
      * 0：上架 1：下架
      */
-    private Boolean statusCode;
+    private Integer statusCode;
     /**
      * 分享链接
      */
@@ -208,14 +210,6 @@ public class Goods {
         this.detail = detail;
     }
 
-    public Boolean getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(Boolean statusCode) {
-        this.statusCode = statusCode;
-    }
-
     public String getShareUrl() {
         return shareUrl;
     }
@@ -286,5 +280,14 @@ public class Goods {
 
     public void setBeDeleted(Boolean beDeleted) {
         this.beDeleted = beDeleted;
+    }
+
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 }
