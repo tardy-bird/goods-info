@@ -16,39 +16,52 @@ public interface BrandMapper {
     /**
      * 查找所有品牌
      *
-     * @return
+     * @param sort  x
+     * @param order x
+     * @return x
      */
-    List<Brand> getAllBrands();
+    List<Brand> getAllBrands(String sort, String order);
 
     /**
      * 通过id查品牌
      *
-     * @param id
-     * @return
+     * @param id xxx
+     * @return xxx
      */
-    Brand getBrandsById(@Param("id") Integer id);
+    Brand getBrandById(@Param("id") Integer id);
+
+    /**
+     * x
+     *
+     * @param id    x
+     * @param name  x
+     * @param sort  x
+     * @param order x
+     * @return x
+     */
+    List<Brand> getBrandsByCondition(String id, String name, String sort, String order);
 
     /**
      * 添加品牌
      *
-     * @param brand
-     * @return
+     * @param brand xxx
+     * @return xxx
      */
-    Brand addBrand(@Param("brand") Brand brand);
+    Integer addBrand(Brand brand);
 
     /**
      * 删除品牌
      *
-     * @param id
-     * @return
+     * @param id xxx
+     * @return xxx
      */
     boolean deleteBrand(@Param("id") Integer id);
 
     /**
      * 更新商品
      *
-     * @param brand
-     * @return
+     * @param brand xxx
+     * @return xxx
      */
-    int updateBrand(@Param("brand") Brand brand);
+    int updateBrand(Brand brand);
 }
