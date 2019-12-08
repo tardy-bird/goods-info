@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author nick
@@ -32,10 +31,10 @@ public class BrandController {
      * 查看所有品牌
      */
     @GetMapping("/brands")
-    public List<Brand> getAllBrands(@RequestParam(defaultValue = "1") Integer page,
-                                    @RequestParam(defaultValue = "10") Integer limit,
-                                    @Sort @RequestParam(defaultValue = "add_time") String sort,
-                                    @Order @RequestParam(defaultValue = "desc") String order) {
+    public Object getAllBrands(@RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "10") Integer limit,
+                               @Sort @RequestParam(defaultValue = "add_time") String sort,
+                               @Order @RequestParam(defaultValue = "desc") String order) {
         return brandService.getAllBrands();
     }
 
@@ -43,7 +42,7 @@ public class BrandController {
      * 查看品牌详情
      */
     @GetMapping("/brands/{id}")
-    public Brand getBrandDetails(@NotNull @PathVariable("id") Integer id) {
+    public Object getBrandDetails(@NotNull @PathVariable("id") Integer id) {
         return brandService.getBrandsById(id);
     }
 
