@@ -8,7 +8,6 @@ import com.tardybird.goodsinfo.util.IdUtil;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import com.tardybird.goodsinfo.validator.Order;
 import com.tardybird.goodsinfo.validator.Sort;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +19,12 @@ import javax.validation.constraints.NotNull;
 @RestController
 public class BrandController {
 
-    @Autowired
+    final
     BrandService brandService;
+
+    public BrandController(BrandService brandService) {
+        this.brandService = brandService;
+    }
 
     /*
      * ========= following are wx apis ==============
@@ -33,9 +36,13 @@ public class BrandController {
     @GetMapping("/brands")
     public Object getAllBrands(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "10") Integer limit,
-                               @Sort @RequestParam(defaultValue = "add_time") String sort,
+                               @Sort @RequestParam(defaultValue = "gmt_create") String sort,
                                @Order @RequestParam(defaultValue = "desc") String order) {
-        return brandService.getAllBrands();
+        if (page < 0 || limit < 0 || sort == null || order == null) {
+            return ResponseUtil.badArgument();
+        }
+        Object brands = brandService.getAllBrands(page, limit, sort, order);
+        return ResponseUtil.ok(brands);
     }
 
     /**
@@ -43,7 +50,8 @@ public class BrandController {
      */
     @GetMapping("/brands/{id}")
     public Object getBrandDetails(@NotNull @PathVariable("id") Integer id) {
-        return brandService.getBrandsById(id);
+        Brand brand = brandService.getBrandById(id);
+        return ResponseUtil.ok(brand);
     }
 
     /*
@@ -59,7 +67,11 @@ public class BrandController {
                                        @RequestParam(defaultValue = "10") Integer limit,
                                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                                        @Order @RequestParam(defaultValue = "desc") String order) {
-        return null;
+        if (id == null || name == null || page < 0 || limit < 0) {
+            return ResponseUtil.badArgument();
+        }
+        Object brands = brandService.getBrandsByCondition(id, name, page, limit, sort, order);
+        return ResponseUtil.ok(brands);
     }
 
     private String handleUploadPicture(MultipartFile file) {
@@ -95,8 +107,8 @@ public class BrandController {
             return ResponseUtil.fail();
         }
         Brand brand = wrapBrandVo(brandVo);
-        brandService.addBrand(brand);
-        return ResponseUtil.ok();
+        brand = brandService.addBrand(brand);
+        return ResponseUtil.ok(brand);
     }
 
     /**

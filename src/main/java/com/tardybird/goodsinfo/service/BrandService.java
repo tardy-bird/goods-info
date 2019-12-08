@@ -1,9 +1,10 @@
 package com.tardybird.goodsinfo.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,30 +15,46 @@ import java.util.List;
 @Service
 public class BrandService {
 
-    @Autowired
+    final
     BrandMapper brandMapper;
 
-    @Autowired
+    final
     GoodsDao goodsDao;
 
-    public List<Brand> getAllBrands() {
-        return brandMapper.getAllBrands();
+    public BrandService(BrandMapper brandMapper, GoodsDao goodsDao) {
+        this.brandMapper = brandMapper;
+        this.goodsDao = goodsDao;
     }
 
-    public Brand getBrandsById(Integer id) {
-        return brandMapper.getBrandsById(id);
+    public Object getAllBrands(Integer page, Integer limit, String sort, String order) {
+        PageHelper.startPage(page, limit);
+        List<Brand> brands = brandMapper.getAllBrands(sort, order);
+        return new PageInfo<>(brands);
     }
 
-    public void addBrand(Brand brand) {
-        brandMapper.addBrand(brand);
+    public Brand getBrandById(Integer id) {
+        return brandMapper.getBrandById(id);
     }
 
-    public void deleteBrand(Integer id) {
-        brandMapper.deleteBrand(id);
+    public Object getBrandsByCondition(String id, String name, Integer page, Integer limit, String sort, String order) {
+        PageHelper.startPage(page, limit);
+        List<Brand> brands = brandMapper.getBrandsByCondition(id, name, sort, order);
+        return new PageInfo<>(brands);
     }
 
-    public void updateBrand(Brand brand) {
-        brandMapper.updateBrand(brand);
+
+    public Brand addBrand(Brand brand) {
+        Integer id = brandMapper.addBrand(brand);
+        brand.setId(id);
+        return brand;
+    }
+
+    public Boolean deleteBrand(Integer id) {
+        return brandMapper.deleteBrand(id);
+    }
+
+    public Integer updateBrand(Brand brand) {
+        return brandMapper.updateBrand(brand);
     }
 
 }
