@@ -1,6 +1,5 @@
 package com.tardybird.goodsinfo.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,7 +11,7 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class Product implements Serializable {
+public class Product {
 
     private Integer id;
     /**
@@ -35,19 +34,10 @@ public class Product implements Serializable {
      * 产品价格
      */
     private BigDecimal price;
-
-    public Integer getSafetyStock() {
-        return safetyStock;
-    }
-
-    public void setSafetyStock(Integer safetyStock) {
-        this.safetyStock = safetyStock;
-    }
-
     /**
      * 产品安全库存
      */
-    private Integer safetyStock;
+    private Integer saftyStock;
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
@@ -63,7 +53,7 @@ public class Product implements Serializable {
                 ", picUrl='" + picUrl + '\'' +
                 ", specifications='" + specifications + '\'' +
                 ", price=" + price +
-                ", saftyStock=" + safetyStock +
+                ", saftyStock=" + saftyStock +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", beDeleted=" + beDeleted +
@@ -133,6 +123,14 @@ public class Product implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getSaftyStock() {
+        return saftyStock;
+    }
+
+    public void setSaftyStock(Integer saftyStock) {
+        this.saftyStock = saftyStock;
     }
 
 

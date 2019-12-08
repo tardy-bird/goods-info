@@ -1,6 +1,7 @@
 package com.tardybird.goodsinfo.entity;
 
-import java.io.Serializable;
+import org.apache.ibatis.type.Alias;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,7 +12,8 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class GoodsCategory implements Serializable {
+@Alias("goodsCategory")
+public class GoodsCategory {
     private Integer id;
     /**
      * 种类的名称
@@ -24,7 +26,7 @@ public class GoodsCategory implements Serializable {
     private Integer pid;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDelete;
+    private Boolean beDeleted;
 
     @Override
     public String toString() {
@@ -34,7 +36,7 @@ public class GoodsCategory implements Serializable {
                 ", pid=" + pid +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", beDelete=" + beDelete +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -95,11 +97,11 @@ public class GoodsCategory implements Serializable {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDelete() {
-        return beDelete;
+    public Boolean getBeDeleted() {
+        return beDeleted;
     }
 
-    public void setBeDelete(Boolean beDelete) {
-        this.beDelete = beDelete;
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 }

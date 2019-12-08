@@ -1,5 +1,5 @@
 package com.tardybird.goodsinfo.entity;
-import java.io.Serializable;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,19 +10,19 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class Brand implements Serializable {
+public class Brand {
     private Integer id;
-    /*
-     *品牌名称
-     * */
+    /**
+     * 品牌名称
+     */
     private String name;
-    /*
-     *品牌描述
-     * */
-    private String describe;
-    /*
-     *品牌图片链接
-     * */
+    /**
+     * 品牌描述
+     */
+    private String description;
+    /**
+     * 品牌图片链接
+     */
     private String picUrl;
 
     private LocalDateTime gmtCreate;
@@ -34,7 +34,7 @@ public class Brand implements Serializable {
         return "Brand{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", describe='" + describe + '\'' +
+                ", description='" + description + '\'' +
                 ", picUrl='" + picUrl + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
@@ -75,12 +75,12 @@ public class Brand implements Serializable {
         this.name = name;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPicUrl() {
