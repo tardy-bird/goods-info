@@ -11,29 +11,53 @@
         <result property="beDeleted" column="is_deleted"/>
     </resultMap>
 
-    <select id="getAllBrands" resultMap="Brand">
-        select * from brand
+    <select id="getAllBrands" parameterType="java.lang.String" resultMap="Brand">
+        SELECT * FROM brand ORDER BY
+        <if test="sort!=null">
+            ${sort}
+            <if test="order!=null">
+                ${order}
+            </if>
+        </if>
     </select>
 
-    <select id="getBrandsById" resultMap="Brand">
-        select * from brand where id = #{id}
+    <select id="getBrandsByCondition" parameterType="java.lang.String" resultMap="Brand">
+        SELECT * FROM brand
+        WHERE id=#{id} OR name=#{name}
+        ORDER BY
+        <if test="sort!=null">
+            ${sort}
+            <if test="order!=null">
+                ${order}
+            </if>
+        </if>
+    </select>
+
+
+    <select id="getBrandById" resultMap="Brand">
+        select *
+        from brand
+        where id = #{id}
     </select>
 
     <insert id="addBrand" parameterType="com.tardybird.goodsinfo.domain.Brand" useGeneratedKeys="true" keyProperty="id">
-        insert into brand (name, "describe", pic_url, gmt_create, gmt_modified,is_deleted)
-        values (#{name},#{describe},#{picUrl},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#{beDeleted})
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into brand (name, description, pic_url, gmt_create, gmt_modified, is_deleted)
+        values (#{name}, #{description}, #{picUrl}, now(), now(), #{beDeleted})
     </insert>
 
     <update id="updateBrand" parameterType="com.tardybird.goodsinfo.domain.Brand">
         update brand
         <trim prefix="set" prefixOverrides=",">
             <if test="name!=null">
-                'name'=#{name},
+                name=#{name},
             </if>
-            <if test="describe!=null">
-                'describe'=#{describe},
+            <if test="description!=null">
+                description=#{description},
             </if>
-            gmt_modified=CURRENT_TIMESTAMP
+            gmt_modified=now()
         </trim>
         where id = #{id}
     </update>
