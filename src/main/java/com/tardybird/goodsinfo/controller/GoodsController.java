@@ -117,11 +117,4 @@ public class GoodsController {
         return goodsService.deleteGood(id);
     }
 
-    /**
-     * 获取分类和品牌
-     */
-    @GetMapping("/goods/catAndBrand")
-    public Object getAllCategoriesAndBrands() {
-        return null;
-    }
 }
