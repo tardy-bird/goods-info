@@ -14,27 +14,28 @@ public interface GoodsCategoryMapper {
 
     /**
      * 获得所有分类
-     * @return
+     *
+     * @return x
      */
     List<GoodsCategory> getAllCategories();
 
     /**
      * 获得一级分类
-     * @return
+     * @return x
      */
     List<GoodsCategory> getLevelOneCategories();
 
     /**
      * 获得一个分类信息
-     * @param id
-     * @return
+     * @param id x
+     * @return x
      */
     GoodsCategory getCategory(@Param("id") Integer id);
 
     /**
      * 获得一个一级分类的二级分类
-     * @param pid
-     * @return
+     * @param pid x
+     * @return x
      */
     List<GoodsCategory> getLevelTwoByPid(@Param("pid") Integer pid);
 

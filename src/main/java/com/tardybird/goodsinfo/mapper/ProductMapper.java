@@ -15,8 +15,9 @@ public interface ProductMapper {
 
     /**
      * 获得一个商品的所有对应货品
-     * @param goodsId
-     * @return
+     *
+     * @param goodsId x
+     * @return x
      */
     List<Product> getProductByGoodsId(@Param("goodsId") Integer goodsId);
 
