@@ -1,5 +1,6 @@
 package com.tardybird.goodsinfo.controller;
 
+import com.tardybird.goodsinfo.controller.vo.GoodsVo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
@@ -72,10 +73,20 @@ public class GoodsController {
      * @param limit
      * @return
      */
+//    @GetMapping("users/goods")
+//    public Object getAllGoodsIdPic(@RequestParam(defaultValue = "1") Integer page,
+//                                   @RequestParam(defaultValue = "10") Integer limit)
+//    {return goodsService.getHotGoodsIdPic(page,limit);}
+
     @GetMapping("users/goods")
     public Object getAllGoodsIdPic(@RequestParam(defaultValue = "1") Integer page,
                                    @RequestParam(defaultValue = "10") Integer limit)
-    {return goodsService.getHotGoodsIdPic(page,limit);}
+    {
+        GoodsVo goodsVo=new GoodsVo();
+        goodsVo.setGoods((Goods)goodsService.getHotGoods(page,limit));
+
+        return null;
+    }
 
     /*
      * ========= following are admin apis ==============

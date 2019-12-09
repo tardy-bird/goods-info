@@ -69,10 +69,8 @@ public class GoodsDao {
      */
     public Goods getGoodsById(Integer id)
     {
-        long startTime=System.currentTimeMillis();
         String key="G_"+id;
         Goods goods =(Goods) redisTemplate.opsForValue().get(key);
-        System.out.println(key);
         if(goods==null)
         {
             System.out.println(key);
@@ -84,9 +82,6 @@ public class GoodsDao {
             redisTemplate.opsForValue().set(key, goods,redisConfig.getRedisExpireTime(),TimeUnit.MINUTES);
             //,redisConfig.getRedisExpireTime(),TimeUnit.MINUTES
         }
-        long endTime=System.currentTimeMillis();
-        System.out.println(key);
-        System.out.println(endTime-startTime);
         return goods;
     }
 

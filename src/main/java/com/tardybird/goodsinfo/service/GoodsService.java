@@ -68,6 +68,14 @@ public class GoodsService {
         return pageInfo;
     }
 
+    public Object getHotGoods(Integer pageNum, Integer pageSize)
+    {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Goods> goods=goodsMapper.getHotGoods();
+        PageInfo<Goods> pageInfo=new PageInfo<>(goods);
+        return pageInfo;
+    }
+
     public Object getAllGoodsIdPic(Integer pageNum, Integer pageSize)
     {
         PageHelper.startPage(pageNum,pageSize);

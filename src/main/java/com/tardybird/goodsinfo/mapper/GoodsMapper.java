@@ -43,6 +43,12 @@ public interface GoodsMapper {
     List<GoodsIdPic> getHotGoodsIdPic();
 
     /**
+     * （用户）默认获得热卖商品列表（只有id和pic）
+     * @return
+     */
+    List<Goods> getHotGoods();
+
+    /**
      * 管理员获得所有商品列表（只有id和pic）
      * @return
      */

@@ -50,6 +50,11 @@
          where status=1
     </select>
 
+    <select id="getHotGoods" resultMap="goods">
+        select * from goods
+         where status=1
+    </select>
+
     <select id="getGoodsById" resultMap="goods">
         select * from goods where id=#{id}
     </select>
@@ -77,6 +82,7 @@
             </if>
             gmt_modified=current_timestamp
         </set>
+        where id=#{id}
     </update>
 
     <update id="deleteGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
