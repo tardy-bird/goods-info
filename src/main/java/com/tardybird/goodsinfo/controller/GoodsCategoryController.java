@@ -2,7 +2,6 @@ package com.tardybird.goodsinfo.controller;
 
 import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.service.GoodsCategoryService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,13 +44,6 @@ public class GoodsCategoryController {
         return goodsCategoryService.getLevelOneCategories();
     }
 
-//    /**
-////     * 获取2级种类
-////     */
-////    @GetMapping("/categories/l2")
-////    public Object getSecondCategories() {
-////        return null;
-////    }
 
     /**
      * 获取当前一级分类下的二级分类

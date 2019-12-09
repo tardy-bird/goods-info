@@ -130,8 +130,9 @@ public class BrandController {
      * 删除一个品牌
      */
     @DeleteMapping("/brands/{id}")
-    public void deleteBrand(@PathVariable("id") Integer id) {
+    public Object deleteBrand(@PathVariable("id") Integer id) {
         brandService.deleteBrand(id);
+        return ResponseUtil.ok();
     }
 
 }

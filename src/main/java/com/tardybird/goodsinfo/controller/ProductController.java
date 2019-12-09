@@ -1,7 +1,8 @@
 package com.tardybird.goodsinfo.controller;
+
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProductController {
 
-    @Autowired
+    final
     GoodsDao goodsDao;
 
+    public ProductController(GoodsDao goodsDao) {
+        this.goodsDao = goodsDao;
+    }
 
     @GetMapping("/product/{id}")
-    public Product getProduct(@PathVariable("id") Integer id) {
-        return goodsDao.getProductById(id);
+    public Object getProduct(@PathVariable("id") Integer id) {
+        Product product = goodsDao.getProductById(id);
+        return ResponseUtil.ok(product);
     }
 }
