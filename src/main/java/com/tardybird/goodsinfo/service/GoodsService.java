@@ -41,8 +41,8 @@ public class GoodsService {
     }
 
 
-    public boolean createGoods(Goods goods) {
-        return goodsMapper.createGoods(goods) != 0;
+    public void createGoods(Goods goods) {
+        goodsMapper.createGoods(goods);
     }
 
     public Goods getGoodsById(Integer id) {
