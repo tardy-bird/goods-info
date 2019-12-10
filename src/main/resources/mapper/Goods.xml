@@ -24,61 +24,95 @@
         <result property="beSpecial" column="is_special"/>
     </resultMap>
 
-    <resultMap id="GoodsIdPic" type="com.tardybird.goodsinfo.domain.GoodsIdPic">
-        <result property="id" column="id"/>
-        <result property="picUrl" column="pic_url"/>
-    </resultMap>
-
-    <select id="getGoodsByGoodsSn" resultMap="GoodsIdPic">
-        select id,pic_url from goods where goods_sn=#{goodsSn}
+    <select id="getGoodsByCondition" parameterType="java.lang.String" resultMap="com.tardybird.goodsinfo.domain.Goods">
+        SELECT *
+        FROM goods
+        WHERE goods_sn = #{goodsSn}
+           OR name = #{name}
     </select>
 
-    <select id="getGoodsByName" resultMap="GoodsIdPic">
-        select id,pic_url from goods where name like CONCAT('%',#{name},'%')
-    </select>
 
     <select id="getAllGoods" resultMap="goods">
-        select * from goods
-    </select>
-
-    <select id="getAllGoodsIdPic" resultMap="GoodsIdPic">
-        select id,pic_url from goods
-    </select>
-
-    <select id="getHotGoodsIdPic" resultMap="GoodsIdPic">
-        select id,pic_url from goods
-         where status=1
+        select *
+        from goods
     </select>
 
     <select id="getHotGoods" resultMap="goods">
-        select * from goods
-         where status=1
+        select *
+        from goods
+        where status = 1
     </select>
 
     <select id="getGoodsById" resultMap="goods">
-        select * from goods where id=#{id}
+        select *
+        from goods
+        where id = #{id}
     </select>
 
-    <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true" keyProperty="id">
-        insert into goods(name,gmt_create,gmt_modified,good_sn,short_name,share_url,description,detail,brief,pic_url,status,share_url,gallery,goods_category_ids,brand_id,is_deleted,weight,volume,special_freight_id,is_special)
-        values(#{name},current_timestamp ,current_timestamp ,#{nameSn},#{shortName},#{shareUrl},#{description},#{detail},#{brief},#{picUrl},#{status},#{shareUrl},#{gallery},#{goodsCategoryIds},#{brandId},#{beDeleted},#{weight},#{volume},#{specialFreightId},#{beSpecial})
+    <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into goods(name, gmt_create, gmt_modified, goods_sn, short_name, share_url, description, detail, brief,
+                          pic_url, status, share_url, gallery, goods_category_id, brand_id, is_deleted, weight, volume,
+                          special_freight_id, is_special)
+        values (#{name}, current_timestamp, current_timestamp, #{nameSn}, #{shortName}, #{shareUrl}, #{description},
+                #{detail}, #{brief}, #{picUrl}, #{status}, #{shareUrl}, #{gallery}, #{goodsCategoryIds}, #{brandId},
+                #{beDeleted}, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial})
 
     </insert>
 
     <update id="updateGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
         update goods
         <set>
-            <if test="status != null">
-                status=#{status}
+            <if test="name != null">
+                name=#{name}
+            </if>
+            <if test="goodsSn != null">
+                goods_sn=#{goodsSn}
+            </if>
+            <if test="shortName != null">
+                short_name=#{shortName}
             </if>
             <if test="description != null">
-                description=#{description}
+                `description`=#{description}
+            </if>
+            <if test="brief != null">
+                brief=#{brief}
+            </if>
+            <if test="picUrl != null">
+                pic_url=#{picUrl}
             </if>
             <if test="detail != null">
                 detail=#{detail}
             </if>
+            <if test="status != null">
+                `status`=#{status}
+            </if>
+            <if test="shareUrl != null">
+                share_url=#{shareUrl}
+            </if>
+            <if test="gallery != null">
+                gallery=#{gallery}
+            </if>
+            <if test="goodsCategoryId != null">
+                goods_category_id=#{goodsCategoryId}
+            </if>
+            <if test="brandId != null">
+                brand_id=#{brandId}
+            </if>
             <if test="beDeleted != null">
-                beDeleted=#{beDeleted}
+                is_deleted=#{beDeleted}
+            </if>
+            <if test="weight != null">
+                weight=#{weight}
+            </if>
+            <if test="volume != null">
+                volume=#{volume}
+            </if>
+            <if test="specialFreightId != null">
+                special_freight_id=#{specialFreightId}
+            </if>
+            <if test="beSpecial != null">
+                is_special=#{beSpecial}
             </if>
             gmt_modified=current_timestamp
         </set>
@@ -87,13 +121,14 @@
 
     <update id="deleteGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
         update goods
-        set is_deleted= 1
-        where id=#{id}
+        set is_deleted = 1
+        where id = #{id}
     </update>
 
     <select id="selectOnSaleGoods" resultType="Integer">
-        select count(status) from goods
-        where status=0
+        select count(status)
+        from goods
+        where status = 0
     </select>
 
 </mapper>
