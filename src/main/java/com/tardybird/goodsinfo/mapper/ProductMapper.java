@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.mapper;
 
-import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.entity.Product;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

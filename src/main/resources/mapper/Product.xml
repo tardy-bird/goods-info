@@ -41,6 +41,7 @@
                 pic_url=#{picUrl}
             </if>
         </set>
+        where id=#{id}
     </update>
 
     <update id="deleteProduct" parameterType="com.tardybird.goodsinfo.domain.Product">

@@ -1,7 +1,7 @@
 package com.tardybird.goodsinfo.service;
 
-import com.tardybird.goodsinfo.dao.GoodsDao;
-import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.entity.Product;
+import com.tardybird.goodsinfo.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +11,17 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    GoodsDao goodsDao;
+    ProductMapper productMapper;
 
     public List<Product> getProductByGoodsId(Integer id) {
-        return goodsDao.getProductByGoodsId(id);
+        return productMapper.getProductByGoodsId(id);
+    }
+
+    public void updateProduct(Product product) {
+        productMapper.updateProduct(product);
+    }
+
+    public Product getProductById(Integer id) {
+        return productMapper.getProductById(id);
     }
 }
