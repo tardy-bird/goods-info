@@ -3,9 +3,13 @@ package com.tardybird.goodsinfo.controller;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.service.GoodsService;
+import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author nick
@@ -17,11 +21,15 @@ public class GoodsController {
     GoodsService goodsService;
 
     final
+    ProductService productService;
+
+    final
     GoodsDao goodsDao;
 
-    public GoodsController(GoodsService goodsService, GoodsDao goodsDao) {
+    public GoodsController(GoodsService goodsService, GoodsDao goodsDao, ProductService productService) {
         this.goodsService = goodsService;
         this.goodsDao = goodsDao;
+        this.productService = productService;
     }
     /*
      * ========= following are wx apis ==============
@@ -94,6 +102,19 @@ public class GoodsController {
         Goods goods = goodsService.getGoodsById(id);
         return ResponseUtil.ok(goods);
     }
+
+    /**
+     * 管理员查询商品下的产品
+     *
+     * @param id x
+     * @return x
+     */
+    @GetMapping("/goods/{id}/products")
+    public Object listProductByGoodsId(@PathVariable Integer id) {
+        List<Product> products = productService.getProductByGoodsId(id);
+        return ResponseUtil.ok(products);
+    }
+
 
     /**
      * 根据id更新商品信息
