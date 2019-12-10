@@ -23,8 +23,9 @@
     </select>
 
     <insert id="createProduct" parameterType="com.tardybird.goodsinfo.domain.Product" useGeneratedKeys="true" keyProperty="id">
-        insert  into product(product_ids, pic_url, specifications, goods_id, price, safty_stock, gmt_create, gmt_modified)
-        values {#{productIds},#{picUrl},#{specifications},#{goodsId},#{price},#{safetyStock},#{gmtCreate},#{gmtModified}}
+        insert into product(product_ids, pic_url, specifications, goods_id, price, safety_stock, gmt_create,
+                            gmt_modified)
+        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, #{gmtCreate}, #{gmtModified}}
     </insert>
 
     <update id="updateProduct" parameterType="com.tardybird.goodsinfo.domain.Product">
