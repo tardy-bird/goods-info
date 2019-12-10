@@ -1,44 +1,42 @@
 package com.tardybird.goodsinfo.controller.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.tardybird.goodsinfo.entity.Product;
 
-/**
- * @author DIX
- * @version 1.0
- * @description
- * @date 2019/12/6 19:48
- */
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.List;
+
 public class ProductVo {
-    private String picUrl;
 
-    private String price;
+    /**
+     * 这个产品自己的product信息
+     */
+    private Product product;
 
-    private String safty_stock;
+    /**
+     * 团购商品的其他组合产品信息
+     */
+    private List<Product> subProducts;
 
-    public String getPicUrl() {
-        return picUrl;
+    @Override
+    public String toString() {
+        return "ProductVo{" +
+                "product=" + product +
+                ", subProducts=" + subProducts +
+                '}';
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
+    public Product getProduct() {
+        return product;
     }
 
-    public String getPrice() {
-        return price;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public List<Product> getSubProducts() {
+        return subProducts;
     }
 
-    public String getSafty_stock() {
-        return safty_stock;
-    }
-
-    public void setSafty_stock(String safty_stock) {
-        this.safty_stock = safty_stock;
+    public void setSubProducts(List<Product> subProducts) {
+        this.subProducts = subProducts;
     }
 }
