@@ -15,10 +15,6 @@ public interface BrandMapper {
 
     /**
      * 查找所有品牌
-     *
-     * @param sort  x
-     * @param order x
-     * @return x
      */
     List<Brand> getAllBrands(String sort, String order);
 

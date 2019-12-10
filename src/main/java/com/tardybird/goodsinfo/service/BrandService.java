@@ -2,7 +2,6 @@ package com.tardybird.goodsinfo.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,8 @@ public class BrandService {
     final
     BrandMapper brandMapper;
 
-    final
-    GoodsDao goodsDao;
-
-    public BrandService(BrandMapper brandMapper, GoodsDao goodsDao) {
+    public BrandService(BrandMapper brandMapper) {
         this.brandMapper = brandMapper;
-        this.goodsDao = goodsDao;
     }
 
     public Object getAllBrands(Integer page, Integer limit, String sort, String order) {

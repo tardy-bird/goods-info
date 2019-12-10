@@ -1,6 +1,5 @@
 package com.tardybird.goodsinfo.controller;
 
-import com.tardybird.goodsinfo.controller.vo.BrandVo;
 import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.service.BrandService;
 import com.tardybird.goodsinfo.util.FileUploadUtil;
@@ -85,30 +84,17 @@ public class BrandController {
         return null;
     }
 
-
-    /**
-     * transfer BrandVo object to Brand object
-     */
-    private Brand wrapBrandVo(BrandVo brandVo) {
-        Brand brand = new Brand();
-        brand.setName(brandVo.getName());
-        brand.setDescription(brandVo.getDescription());
-        String url = handleUploadPicture(brandVo.getPicture());
-        brand.setPicUrl(url);
-        return brand;
-    }
-
     /**
      * 创建一个品牌
      */
     @PostMapping("/brands")
-    public Object addBrand(@RequestBody BrandVo brandVo) {
-        if (brandVo == null) {
+    public Object addBrand(@RequestBody Brand brand) {
+        // TODO 处理图片URL
+        if (brand == null) {
             return ResponseUtil.fail();
         }
-        Brand brand = wrapBrandVo(brandVo);
-        brand = brandService.addBrand(brand);
-        return ResponseUtil.ok(brand);
+        Brand resultBrand = brandService.addBrand(brand);
+        return ResponseUtil.ok(resultBrand);
     }
 
     /**
@@ -116,14 +102,14 @@ public class BrandController {
      */
     @PutMapping("/brands/{id}")
     public Object updateBrand(@NotNull @PathVariable("id") Integer id,
-                              @RequestBody BrandVo brandVo) {
-        if (brandVo == null) {
+                              @RequestBody Brand brand) {
+        // TODO 处理图片URL
+        if (brand == null) {
             return ResponseUtil.fail();
         }
-        Brand brand = wrapBrandVo(brandVo);
         brand.setId(id);
         brandService.updateBrand(brand);
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(brand);
     }
 
     /**

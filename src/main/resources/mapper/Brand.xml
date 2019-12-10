@@ -12,9 +12,9 @@
     </resultMap>
 
     <select id="getAllBrands" parameterType="java.lang.String" resultMap="Brand">
-        SELECT * FROM brand ORDER BY
+        SELECT * FROM brand
         <if test="sort!=null">
-            ${sort}
+            ORDER BY ${sort}
             <if test="order!=null">
                 ${order}
             </if>
