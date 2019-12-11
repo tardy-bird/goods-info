@@ -129,7 +129,9 @@ public class GoodsController {
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
         //TODO
-        return null;
+        product.setGoodsId(id);
+        productService.createProduct(product);
+        return ResponseUtil.ok(product);
     }
 
 
