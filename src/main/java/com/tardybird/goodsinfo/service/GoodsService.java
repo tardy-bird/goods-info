@@ -58,8 +58,8 @@ public class GoodsService {
         return goodsCategoryMapper.getCategory(id);
     }
 
-    public void updateGoods(Goods goods) {
-        goodsMapper.updateGoods(goods);
+    public Integer updateGoods(Goods goods) {
+        return goodsMapper.updateGoods(goods);
     }
 
     public boolean deleteGood(Integer id) {
