@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
  * @author nick
  */
 @RestController
+@RequestMapping("/goodsService")
 public class BrandController {
 
     final
@@ -88,11 +89,12 @@ public class BrandController {
      * 创建一个品牌
      */
     @PostMapping("/brands")
-    public Object addBrand(@RequestBody Brand brand) {
-        // TODO 处理图片URL
+    public Object addBrand(@RequestBody MultipartFile file, @RequestBody Brand brand) {
         if (brand == null) {
             return ResponseUtil.fail();
         }
+        String path = handleUploadPicture(file);
+        brand.setPicUrl(path);
         Brand resultBrand = brandService.addBrand(brand);
         return ResponseUtil.ok(resultBrand);
     }
@@ -102,11 +104,13 @@ public class BrandController {
      */
     @PutMapping("/brands/{id}")
     public Object updateBrand(@NotNull @PathVariable("id") Integer id,
+                              @RequestBody MultipartFile file,
                               @RequestBody Brand brand) {
-        // TODO 处理图片URL
         if (brand == null) {
             return ResponseUtil.fail();
         }
+        String path = handleUploadPicture(file);
+        brand.setPicUrl(path);
         brand.setId(id);
         brandService.updateBrand(brand);
         return ResponseUtil.ok(brand);
