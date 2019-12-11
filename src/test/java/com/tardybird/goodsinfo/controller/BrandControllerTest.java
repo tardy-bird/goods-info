@@ -29,7 +29,7 @@ class BrandControllerTest {
     @Test
     void getAllBrands() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/brands"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/brands"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {

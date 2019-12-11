@@ -25,4 +25,19 @@ public class RedisConfig {
     @Value("${goods.preDeductQuantity}")
     private Integer preDeductQty;
 
+    public Integer getRedisExpireTime() {
+        return redisExpireTime;
+    }
+
+    public void setRedisExpireTime(Integer redisExpireTime) {
+        this.redisExpireTime = redisExpireTime;
+    }
+
+    public Integer getPreDeductQty() {
+        return preDeductQty;
+    }
+
+    public void setPreDeductQty(Integer preDeductQty) {
+        this.preDeductQty = preDeductQty;
+    }
 }
