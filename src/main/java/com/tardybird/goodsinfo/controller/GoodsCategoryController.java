@@ -21,7 +21,6 @@ public class GoodsCategoryController {
     /**
      * 获取分类数据
      */
-
     @Autowired
     GoodsCategoryService goodsCategoryService;
 

@@ -10,51 +10,65 @@
         <result property="beDelete" column="is_deleted"/>
     </resultMap>
     <select id="getAllCategories" resultMap="GoodsCategory">
-        select * from goods_category
+        select *
+        from goods_category
+        where is_deleted = 0
     </select>
 
     <select id="getLevelOneCategories" resultMap="GoodsCategory">
-        select * from goods_category
+        select *
+        from goods_category
         where pid is not null
+          and is_deleted = 0
     </select>
 
     <select id="getCategory" resultMap="GoodsCategory">
-        select * from goods_category
-        where id=#{id}
+        select *
+        from goods_category
+        where id = #{id}
+          and is_deleted = 0
     </select>
 
     <select id="getLevelTwoByPid" resultMap="GoodsCategory">
-        select * from goods_category
-        where pid=#{pid}
+        select *
+        from goods_category
+        where pid = #{pid}
+          and is_deleted = 0
     </select>
 
     <select id="getGoodsCategoryName" parameterType="String" resultMap="GoodsCategory">
-        select name from goods_category
-        where id=#{id}
+        select name
+        from goods_category
+        where id = #{id}
+          and is_deleted = 0
     </select>
 
     <update id="updateCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
         update goods_category
-        <set>
-            <if test="pid!=null">
-                pid=#{pid}
-            </if>
-            <if test="name!=null">
-                'name'=#{name}
-            </if>
 
-        </set>
+        <if test="pid != null">
+            <set>
+                pid=#{pid}
+            </set>
+        </if>
+        <if test="name!=null">
+            <set>
+                name=#{name}
+            </set>
+        </if>
+
+        where id=#{id} and is_deleted=0
     </update>
 
     <update id="deleteCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
-        update  goods_category
+        update goods_category
         set is_deleted=1
-        where id=#{id}
+        where id = #{id}
     </update>
 
     <insert id="createCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
         insert into goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
-        values (#{name},#{pid},current_timestamp ,current_timestamp,#{beDeleted})
+        values (#{name}, #{pid}, current_timestamp, current_timestamp, #{beDeleted})
     </insert>
 
 </mapper>

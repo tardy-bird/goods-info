@@ -39,6 +39,7 @@ public class GoodsCategoryService {
     }
 
     public void updateCategory(GoodsCategory goodsCategory) {
+        // TODO cannot set gmt_modified field
         goodsCategoryMapper.updateCategory(goodsCategory);
     }
 
