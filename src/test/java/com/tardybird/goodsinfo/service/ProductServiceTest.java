@@ -43,7 +43,7 @@ class ProductServiceTest {
     @Test
     void updateProduct() {
         Product product = new Product();
-        product.setPicUrl("this is a new PICTURE");
+//        product.setPicUrl("this is a new PICTURE");
 //        product.setPrice(BigDecimal.valueOf(10.50));
 
         product.setId(1);
@@ -61,7 +61,7 @@ class ProductServiceTest {
     @Test
     void deleteProduct() {
         Product product = new Product();
-        product.setId(3);
+        product.setId(4);
         productService.deleteProduct(product.getId());
     }
 }
