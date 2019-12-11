@@ -41,7 +41,7 @@ public class GoodsController {
      * 获取商品分类信息
      */
     @GetMapping("/categories/{id}/goods")
-    public Object getGoodsCategory(@PathVariable("id") Integer id) {
+    public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
         GoodsVo goodsVo = goodsService.getGoodsById(id);
         GoodsCategory goodsCategory = goodsVo.getGoodsCategory();
         return ResponseUtil.ok(goodsCategory);
@@ -51,9 +51,9 @@ public class GoodsController {
      * 获取商品信息列表
      */
     @GetMapping("/goods")
-    public Object getGoodsList(String goodsSn, String name,
-                               @RequestParam(defaultValue = "1") Integer page,
-                               @RequestParam(defaultValue = "10") Integer limit) {
+    public Object listGoods(String goodsSn, String name,
+                            @RequestParam(defaultValue = "1") Integer page,
+                            @RequestParam(defaultValue = "10") Integer limit) {
         if (page == null || limit == null || page < 0 || limit < 0) {
             return ResponseUtil.badArgument();
         }
@@ -62,9 +62,8 @@ public class GoodsController {
     }
 
     @GetMapping("/admins/goods")
-    @Deprecated
-    public Object getAllGoods(@RequestParam(defaultValue = "1") Integer page,
-                              @RequestParam(defaultValue = "10") Integer limit) {
+    public Object listGoods(@RequestParam(defaultValue = "1") Integer page,
+                            @RequestParam(defaultValue = "10") Integer limit) {
         if (page == null || limit == null || page < 0 || limit < 0) {
             return ResponseUtil.badArgument();
         }
@@ -78,6 +77,7 @@ public class GoodsController {
      */
     @GetMapping("/recommendedGoods")
     public Object getRecommendedGoods() {
+        //TODO
         return null;
     }
 
@@ -88,7 +88,7 @@ public class GoodsController {
     /**
      * 新建/上架一个商品
      */
-    @PostMapping("/goods")
+    @PostMapping("/admin/goods")
     public Object addGoods(@RequestBody Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();
@@ -101,7 +101,7 @@ public class GoodsController {
      * 根据id获取某个商品
      */
     @GetMapping("/goods/{id}")
-    public Object getGoods(@PathVariable("id") Integer id) {
+    public Object getGoodsById(@PathVariable("id") Integer id) {
         GoodsVo goodsVo = goodsService.getGoodsById(id);
         return ResponseUtil.ok(goodsVo);
     }
@@ -118,12 +118,25 @@ public class GoodsController {
         return ResponseUtil.ok(products);
     }
 
+    /**
+     * 管理员添加商品下的产品
+     *
+     * @param id
+     * @param product
+     * @return
+     */
+    @PostMapping("/goods/{id}/products")
+    public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
+        //TODO
+        return null;
+    }
+
 
     /**
      * 根据id更新商品信息
      */
     @PutMapping("/goods/{id}")
-    public Object updateGoods(@PathVariable("id") Integer id, @RequestBody Goods goods) {
+    public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();
         }
@@ -136,7 +149,7 @@ public class GoodsController {
      * 根据id删除商品信息
      */
     @DeleteMapping("/goods/{id}")
-    public Object deleteGoods(@PathVariable("id") Integer id) {
+    public Object deleteGoodsById(@PathVariable("id") Integer id) {
         Boolean status = goodsService.deleteGood(id);
         return ResponseUtil.ok(status);
     }
