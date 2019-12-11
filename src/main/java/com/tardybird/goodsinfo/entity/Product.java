@@ -37,7 +37,7 @@ public class Product {
     /**
      * 产品安全库存
      */
-    private Integer saftyStock;
+    private Integer safetyStock;
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
@@ -53,7 +53,7 @@ public class Product {
                 ", picUrl='" + picUrl + '\'' +
                 ", specifications='" + specifications + '\'' +
                 ", price=" + price +
-                ", saftyStock=" + saftyStock +
+                ", safetyStock=" + safetyStock +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", beDeleted=" + beDeleted +
@@ -125,12 +125,12 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getSaftyStock() {
-        return saftyStock;
+    public Integer getSafetyStock() {
+        return safetyStock;
     }
 
-    public void setSaftyStock(Integer saftyStock) {
-        this.saftyStock = saftyStock;
+    public void setSaeftyStock(Integer saftyStock) {
+        this.safetyStock = saftyStock;
     }
 
 

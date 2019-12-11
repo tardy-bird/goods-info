@@ -17,11 +17,20 @@ public class ProductService {
         return productMapper.getProductByGoodsId(id);
     }
 
+    public void createProduct(Product product) {
+        productMapper.createProduct(product);
+    }
+
+
     public void updateProduct(Product product) {
         productMapper.updateProduct(product);
     }
 
     public Product getProductById(Integer id) {
         return productMapper.getProductById(id);
+    }
+
+    public void deleteProduct(Integer id) {
+        productMapper.deleteProduct(id);
     }
 }

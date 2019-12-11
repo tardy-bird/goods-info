@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * @author nick
  */
 @RestController
+@RequestMapping("/goodsService")
 public class ProductController {
 
     final
@@ -41,5 +42,17 @@ public class ProductController {
         product.setId(id);
         productService.updateProduct(product);
         return ResponseUtil.ok(product);
+    }
+
+    /**
+     * 管理员删除商品下的某个产品信息
+     *
+     * @param id x
+     * @return x
+     */
+    @DeleteMapping("/products/{id}")
+    public Object deleteProductById(@PathVariable Integer id) {
+        productService.deleteProduct(id);
+        return ResponseUtil.ok();
     }
 }
