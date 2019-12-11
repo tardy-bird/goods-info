@@ -19,11 +19,11 @@ import java.util.List;
  */
 @Service
 public class GoodsService {
+
     @Autowired
     GoodsMapper goodsMapper;
     @Autowired
     GoodsCategoryMapper goodsCategoryMapper;
-
     @Autowired
     GoodsDao goodsDao;
 

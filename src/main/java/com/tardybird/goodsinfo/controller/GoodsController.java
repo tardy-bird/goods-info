@@ -77,7 +77,7 @@ public class GoodsController {
      */
     @GetMapping("/recommendedGoods")
     public Object getRecommendedGoods() {
-        //TODO
+        //TODO what ?
         return null;
     }
 
@@ -121,14 +121,18 @@ public class GoodsController {
     /**
      * 管理员添加商品下的产品
      *
-     * @param id
-     * @param product
-     * @return
+     * @param id      x
+     * @param product x
+     * @return x
      */
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
-        //TODO
-        return null;
+        if (product == null) {
+            return ResponseUtil.fail();
+        }
+        productService.createProduct(product);
+        product.setId(id);
+        return ResponseUtil.ok(product);
     }
 
 
