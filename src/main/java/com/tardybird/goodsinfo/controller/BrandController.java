@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.controller;
 
-import com.tardybird.goodsinfo.domain.Brand;
+import com.tardybird.goodsinfo.entity.Brand;
 import com.tardybird.goodsinfo.service.BrandService;
 import com.tardybird.goodsinfo.util.FileUploadUtil;
 import com.tardybird.goodsinfo.util.IdUtil;
@@ -38,7 +38,7 @@ public class BrandController {
                             @RequestParam(defaultValue = "10") Integer limit,
                             @Sort @RequestParam(defaultValue = "gmt_create") String sort,
                             @Order @RequestParam(defaultValue = "desc") String order) {
-        if (page < 0 || limit < 0 || sort == null || order == null) {
+        if (page == null || limit == null || page < 0 || limit < 0 || sort == null || order == null) {
             return ResponseUtil.badArgument();
         }
         Object brands = brandService.getAllBrands(page, limit, sort, order);
@@ -67,7 +67,7 @@ public class BrandController {
                                        @RequestParam(defaultValue = "10") Integer limit,
                                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (id == null || name == null || page < 0 || limit < 0) {
+        if (id == null || name == null || page == null || limit == null || page < 0 || limit < 0) {
             return ResponseUtil.badArgument();
         }
         Object brands = brandService.getBrandsByCondition(id, name, page, limit, sort, order);
@@ -80,7 +80,9 @@ public class BrandController {
                 + file.getOriginalFilename();
         String ok = "Success";
         if (ok.equals(FileUploadUtil.upload(file, path))) {
-            return path;
+            // not recommend (hard code)
+            String prefix = "http://47.96.159.71:6180";
+            return prefix + path;
         }
         return null;
     }
