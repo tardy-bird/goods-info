@@ -8,7 +8,7 @@
         <result property="specifications" column="specifications"/>
         <result property="goodsId" column="goods_id"/>
         <result property="price" column="price"/>
-        <result property="safetyStock" column="safty_stock"/>
+        <result property="safetyStock" column="safety_stock"/>
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
         <result property="beDeleted" column="id_deleted"/>
@@ -22,24 +22,39 @@
         select * from product where goods_id=#{goodsId}
     </select>
 
-    <insert id="createProduct" parameterType="com.tardybird.goodsinfo.domain.Product" useGeneratedKeys="true" keyProperty="id">
+    <insert id="createProduct" parameterType="com.tardybird.goodsinfo.entity.Product" useGeneratedKeys="true"
+            keyProperty="id">
         insert into product(product_ids, pic_url, specifications, goods_id, price, safety_stock, gmt_create,
-                            gmt_modified)
-        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, #{gmtCreate}, #{gmtModified}}
+                            gmt_modified, is_deleted)
+        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, #{gmtCreate},
+                #{gmtModified}, 0)
     </insert>
 
-    <update id="updateProduct" parameterType="com.tardybird.goodsinfo.domain.Product">
+    <update id="updateProduct" parameterType="product">
         update product
         <set>
-            <if test="price != null">
-                price=#{price}
-            </if>
-            <if test="safetyStock != null">
-                safty_stock=#{safetyStock}
+            <if test="productIds != null">
+                product_ids=#{productIds}
             </if>
             <if test="picUrl != null">
                 pic_url=#{picUrl}
             </if>
+            <if test="specifications != null">
+                specifications=#{specifications}
+            </if>
+            <if test="goodsId != null">
+                goods_id=#{goodsId}
+            </if>
+            <if test="price != null">
+                price=#{price}
+            </if>
+            <if test="safetyStock != null">
+                safety_stock=#{safetyStock}
+            </if>
+            <if test="beDeleted != null">
+                is_deleted=#{beDeleted}
+            </if>
+            gmt_modified=now()
         </set>
         where id=#{id}
     </update>
