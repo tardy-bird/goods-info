@@ -46,7 +46,7 @@ class ProductServiceTest {
 //        product.setPicUrl("this is a new PICTURE");
 //        product.setPrice(BigDecimal.valueOf(10.50));
 
-        product.setId(1);
+        product.setId(3);
 
         productService.updateProduct(product);
     }

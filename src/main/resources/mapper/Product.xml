@@ -26,8 +26,8 @@
             keyProperty="id">
         insert into product(product_ids, pic_url, specifications, goods_id, price, safety_stock, gmt_create,
                             gmt_modified, is_deleted)
-        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, #{gmtCreate},
-                #{gmtModified}, 0)
+        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, current_timestamp ,
+                current_timestamp , 0)
     </insert>
 
     <update id="updateProduct" parameterType="product">

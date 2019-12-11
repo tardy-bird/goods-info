@@ -10,6 +10,7 @@ import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -89,7 +90,7 @@ public class GoodsController {
      * 新建/上架一个商品
      */
     @PostMapping("/admin/goods")
-    public Object addGoods(@RequestBody Goods goods) {
+    public Object addGoods(Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();
         }
@@ -140,11 +141,12 @@ public class GoodsController {
      * 根据id更新商品信息
      */
     @PutMapping("/goods/{id}")
-    public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
+    public Object updateGoodsById(@PathVariable("id") Integer id, Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();
         }
         goods.setId(id);
+        goods.setGmtModified(LocalDateTime.now());
         goodsService.updateGoods(goods);
         return ResponseUtil.ok(goods);
     }

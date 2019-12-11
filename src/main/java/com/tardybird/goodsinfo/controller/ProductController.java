@@ -27,7 +27,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/products/{id}")
     public Object getProduct(@PathVariable("id") Integer id) {
         com.tardybird.goodsinfo.entity.Product product = productService.getProductById(id);
 

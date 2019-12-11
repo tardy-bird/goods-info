@@ -40,22 +40,22 @@
     <select id="getHotGoods" resultMap="goods">
         select *
         from goods
-        where status = 1
+        where status = 3 and is_deleted=0
     </select>
 
     <select id="getGoodsById" resultMap="goods">
         select *
         from goods
-        where id = #{id}
+        where id = #{id} and is_deleted=0
     </select>
 
     <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true"
             keyProperty="id">
-        insert into goods(name, gmt_create, gmt_modified, goods_sn, short_name, description, detail, brief,
+        insert into goods(name, gmt_create, gmt_modified, goods_sn, short_name,  description, detail, brief,
                           pic_url, status, share_url, gallery, goods_category_id, brand_id, is_deleted, weight, volume,
                           special_freight_id, is_special)
         values (#{name}, current_timestamp, current_timestamp, #{goodsSn}, #{shortName}, #{shareUrl}, #{description},
-                #{detail}, #{brief}, #{picUrl}, #{statusCode}, #{shareUrl}, #{gallery}, #{goodsCategoryId}, #{brandId},
+                #{detail}, #{brief}, #{picUrl}, #{statusCode}, #{gallery}, #{goodsCategoryId}, #{brandId},
                 #{beDeleted}, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial})
 
     </insert>
@@ -64,59 +64,59 @@
         update goods
         <set>
             <if test="name != null">
-                name=#{name}
+                name=#{name},
             </if>
             <if test="goodsSn != null">
-                goods_sn=#{goodsSn}
+                goods_sn=#{goodsSn},
             </if>
             <if test="shortName != null">
-                short_name=#{shortName}
+                short_name=#{shortName},
             </if>
             <if test="description != null">
-                `description`=#{description}
+                `description`=#{description},
             </if>
             <if test="brief != null">
-                brief=#{brief}
+                brief=#{brief},
             </if>
             <if test="picUrl != null">
-                pic_url=#{picUrl}
+                pic_url=#{picUrl},
             </if>
             <if test="detail != null">
-                detail=#{detail}
+                detail=#{detail},
             </if>
-            <if test="status != null">
-                `status`=#{status}
+            <if test="statusCode != null">
+                `status`=#{statusCode},
             </if>
             <if test="shareUrl != null">
-                share_url=#{shareUrl}
+                share_url=#{shareUrl},
             </if>
             <if test="gallery != null">
-                gallery=#{gallery}
+                gallery=#{gallery},
             </if>
             <if test="goodsCategoryId != null">
-                goods_category_id=#{goodsCategoryId}
+                goods_category_id=#{goodsCategoryId},
             </if>
             <if test="brandId != null">
-                brand_id=#{brandId}
+                brand_id=#{brandId},
             </if>
             <if test="beDeleted != null">
-                is_deleted=#{beDeleted}
+                is_deleted=#{beDeleted},
             </if>
             <if test="weight != null">
-                weight=#{weight}
+                weight=#{weight},
             </if>
             <if test="volume != null">
-                volume=#{volume}
+                volume=#{volume},
             </if>
             <if test="specialFreightId != null">
-                special_freight_id=#{specialFreightId}
+                special_freight_id=#{specialFreightId},
             </if>
             <if test="beSpecial != null">
-                is_special=#{beSpecial}
+                is_special=#{beSpecial},
             </if>
-            gmt_modified=current_timestamp
+             gmt_modified=now()
         </set>
-        where id=#{id}
+        where id=#{id} and is_deleted=0
     </update>
 
     <update id="deleteGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
