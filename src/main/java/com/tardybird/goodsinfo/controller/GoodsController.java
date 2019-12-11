@@ -1,9 +1,10 @@
 package com.tardybird.goodsinfo.controller;
 
+import com.tardybird.goodsinfo.controller.vo.GoodsVo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
-import com.tardybird.goodsinfo.domain.GoodsCategory;
-import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.entity.GoodsCategory;
+import com.tardybird.goodsinfo.entity.Product;
 import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author nick
  */
 @RestController
+@RequestMapping("/goodsService")
 public class GoodsController {
 
     final
@@ -40,8 +42,8 @@ public class GoodsController {
      */
     @GetMapping("/categories/{id}/goods")
     public Object getGoodsCategory(@PathVariable("id") Integer id) {
-        Goods goods = goodsService.getGoodsById(id);
-        GoodsCategory goodsCategory = goods.getGoodsCategory();
+        GoodsVo goodsVo = goodsService.getGoodsById(id);
+        GoodsCategory goodsCategory = goodsVo.getGoodsCategory();
         return ResponseUtil.ok(goodsCategory);
     }
 
@@ -60,6 +62,7 @@ public class GoodsController {
     }
 
     @GetMapping("/admins/goods")
+    @Deprecated
     public Object getAllGoods(@RequestParam(defaultValue = "1") Integer page,
                               @RequestParam(defaultValue = "10") Integer limit) {
         if (page == null || limit == null || page < 0 || limit < 0) {
@@ -99,8 +102,8 @@ public class GoodsController {
      */
     @GetMapping("/goods/{id}")
     public Object getGoods(@PathVariable("id") Integer id) {
-        Goods goods = goodsService.getGoodsById(id);
-        return ResponseUtil.ok(goods);
+        GoodsVo goodsVo = goodsService.getGoodsById(id);
+        return ResponseUtil.ok(goodsVo);
     }
 
     /**
