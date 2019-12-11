@@ -34,10 +34,10 @@ public class BrandController {
      * 查看所有品牌
      */
     @GetMapping("/brands")
-    public Object getAllBrands(@RequestParam(defaultValue = "1") Integer page,
-                               @RequestParam(defaultValue = "10") Integer limit,
-                               @Sort @RequestParam(defaultValue = "gmt_create") String sort,
-                               @Order @RequestParam(defaultValue = "desc") String order) {
+    public Object listBrand(@RequestParam(defaultValue = "1") Integer page,
+                            @RequestParam(defaultValue = "10") Integer limit,
+                            @Sort @RequestParam(defaultValue = "gmt_create") String sort,
+                            @Order @RequestParam(defaultValue = "desc") String order) {
         if (page < 0 || limit < 0 || sort == null || order == null) {
             return ResponseUtil.badArgument();
         }
@@ -103,9 +103,9 @@ public class BrandController {
      * 修改单个品牌的信息
      */
     @PutMapping("/brands/{id}")
-    public Object updateBrand(@NotNull @PathVariable("id") Integer id,
-                              @RequestBody MultipartFile file,
-                              @RequestBody Brand brand) {
+    public Object updateBrandById(@NotNull @PathVariable("id") Integer id,
+                                  @RequestBody MultipartFile file,
+                                  @RequestBody Brand brand) {
         if (brand == null) {
             return ResponseUtil.fail();
         }
@@ -120,7 +120,7 @@ public class BrandController {
      * 删除一个品牌
      */
     @DeleteMapping("/brands/{id}")
-    public Object deleteBrand(@PathVariable("id") Integer id) {
+    public Object deleteBrandById(@PathVariable("id") Integer id) {
         brandService.deleteBrand(id);
         return ResponseUtil.ok();
     }
