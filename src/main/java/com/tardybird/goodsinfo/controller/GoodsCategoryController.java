@@ -12,6 +12,7 @@ import java.util.List;
  * @author nick
  */
 @RestController
+@RequestMapping("/goodsService")
 public class GoodsCategoryController {
     /*
      * ========= following are wx apis ==============
