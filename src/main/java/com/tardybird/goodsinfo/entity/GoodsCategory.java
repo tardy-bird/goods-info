@@ -1,7 +1,5 @@
 package com.tardybird.goodsinfo.entity;
 
-import org.apache.ibatis.type.Alias;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,7 +10,6 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-@Alias("goodsCategory")
 public class GoodsCategory {
     private Integer id;
     /**
@@ -20,10 +17,13 @@ public class GoodsCategory {
      */
     private String name;
     /**
-     * |
      * 该种类的父种类ID
      */
     private Integer pid;
+    /**
+     * 二级目录的pic
+     */
+    private String picUrl;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private Boolean beDeleted;
@@ -34,6 +34,7 @@ public class GoodsCategory {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", pid=" + pid +
+                ", picUrl='" + picUrl + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", beDeleted=" + beDeleted +
@@ -103,5 +104,13 @@ public class GoodsCategory {
 
     public void setBeDeleted(Boolean beDeleted) {
         this.beDeleted = beDeleted;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }

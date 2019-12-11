@@ -9,6 +9,7 @@
         <result property="gmtModified" column="gmt_modified"/>
         <result property="beDelete" column="is_deleted"/>
     </resultMap>
+
     <select id="getAllCategories" resultMap="GoodsCategory">
         select *
         from goods_category
@@ -43,7 +44,7 @@
           and is_deleted = 0
     </select>
 
-    <update id="updateCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
+    <update id="updateCategory" parameterType="GoodsCategory">
         update goods_category
 
         <if test="pid != null">
@@ -60,13 +61,13 @@
         where id=#{id} and is_deleted=0
     </update>
 
-    <update id="deleteCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
+    <update id="deleteCategory" parameterType="GoodsCategory">
         update goods_category
         set is_deleted=1
         where id = #{id}
     </update>
 
-    <insert id="createCategory" parameterType="com.tardybird.goodsinfo.domain.GoodsCategory">
+    <insert id="createCategory" parameterType="GoodsCategory">
         insert into goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
         values (#{name}, #{pid}, current_timestamp, current_timestamp, #{beDeleted})
     </insert>
