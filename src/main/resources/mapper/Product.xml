@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.ProductMapper">
-    <resultMap id="product" type="com.tardybird.goodsinfo.domain.Product">
+    <resultMap id="product" type="com.tardybird.goodsinfo.entity.Product">
         <result property="id" column="id"/>
+        <result property="goodsId" column="goods_id"/>
         <result property="productIds" column="product_ids"/>
         <result property="picUrl" column="pic_url"/>
         <result property="specifications" column="specifications"/>
-        <result property="goodsId" column="goods_id"/>
         <result property="price" column="price"/>
         <result property="safetyStock" column="safety_stock"/>
         <result property="gmtCreate" column="gmt_create"/>

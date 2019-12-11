@@ -23,20 +23,23 @@ public interface ProductMapper {
 
     /**
      * 查看单个货品信息
-     * @param id
-     * @return
+     *
+     * @param id x
+     * @return x
      */
     Product getProductById(@Param("id") Integer id);
 
     /**
      * 新建一个货品
-     * @param product
-     * @return
+     *
+     * @param product z
+     * @return z
      */
     int createProduct(Product product);
 
     /**
      * 更新一个货品信息
+     *
      * @param product
      * @return
      */
@@ -44,6 +47,7 @@ public interface ProductMapper {
 
     /**
      * 删除一个商品
+     *
      * @param id
      * @return
      */
