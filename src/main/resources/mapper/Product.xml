@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.ProductMapper">
-    <resultMap id="product" type="com.tardybird.goodsinfo.entity.Product">
+    <resultMap id="product" type="com.tardybird.goodsinfo.domain.Product">
         <result property="id" column="id"/>
         <result property="goodsId" column="goods_id"/>
         <result property="productIds" column="product_ids"/>
@@ -22,12 +22,12 @@
         select * from product where goods_id=#{goodsId}
     </select>
 
-    <insert id="createProduct" parameterType="com.tardybird.goodsinfo.entity.Product" useGeneratedKeys="true"
+    <insert id="createProduct" parameterType="Product" useGeneratedKeys="true"
             keyProperty="id">
         insert into product(product_ids, pic_url, specifications, goods_id, price, safety_stock, gmt_create,
                             gmt_modified, is_deleted)
-        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, current_timestamp ,
-                current_timestamp , 0)
+        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, current_timestamp,
+                current_timestamp, 0)
     </insert>
 
     <update id="updateProduct" parameterType="product">
@@ -59,10 +59,10 @@
         where id=#{id}
     </update>
 
-    <update id="deleteProduct" parameterType="com.tardybird.goodsinfo.domain.Product">
+    <update id="deleteProduct" parameterType="Product">
         update product
         set is_deleted=1
-        where id=#{id}
+        where id = #{id}
     </update>
 
 </mapper>

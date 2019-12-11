@@ -27,8 +27,8 @@
     <select id="getGoodsByCondition" parameterType="java.lang.String" resultMap="goods">
         SELECT *
         FROM goods
-        WHERE goods_sn = #{goodsSn}
-           OR name = #{name}
+        WHERE (goods_sn = #{goodsSn} OR name = #{name})
+          and is_deleted = 0
     </select>
 
 
@@ -37,21 +37,30 @@
         from goods
     </select>
 
-    <select id="getHotGoods" resultMap="goods">
+    <select id="findHotGoods" resultMap="goods">
         select *
         from goods
-        where status = 3 and is_deleted=0
+        where is_deleted = 0
+          and status = 3
+    </select>
+
+    <select id="findNewGoods" resultMap="goods">
+        select *
+        from goods
+        where status = 4
+          and is_deleted = 0
     </select>
 
     <select id="getGoodsById" resultMap="goods">
         select *
         from goods
-        where id = #{id} and is_deleted=0
+        where id = #{id}
+          and is_deleted = 0
     </select>
 
     <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true"
             keyProperty="id">
-        insert into goods(name, gmt_create, gmt_modified, goods_sn, short_name,  description, detail, brief,
+        insert into goods(name, gmt_create, gmt_modified, goods_sn, short_name, description, detail, brief,
                           pic_url, status, share_url, gallery, goods_category_id, brand_id, is_deleted, weight, volume,
                           special_freight_id, is_special)
         values (#{name}, current_timestamp, current_timestamp, #{goodsSn}, #{shortName}, #{shareUrl}, #{description},
@@ -114,7 +123,7 @@
             <if test="beSpecial != null">
                 is_special=#{beSpecial},
             </if>
-             gmt_modified=now()
+            gmt_modified=now()
         </set>
         where id=#{id} and is_deleted=0
     </update>

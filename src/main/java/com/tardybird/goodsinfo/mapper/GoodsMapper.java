@@ -17,16 +17,25 @@ public interface GoodsMapper {
 
     /**
      * 获得所有商品
+     *
      * @return
      */
     List<Goods> getAllGoods();
 
     /**
      * （用户）默认获得热卖商品列表（只有id和pic）
-     * @return
+     *
+     * @return x
      */
-    List<Goods> getHotGoods();
+    List<Goods> findHotGoods();
 
+
+    /**
+     * x
+     *
+     * @return x
+     */
+    List<Goods> findNewGoods();
 
     /**
      * xx

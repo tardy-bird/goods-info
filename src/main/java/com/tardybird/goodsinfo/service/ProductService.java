@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.service;
 
-import com.tardybird.goodsinfo.entity.Product;
+import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

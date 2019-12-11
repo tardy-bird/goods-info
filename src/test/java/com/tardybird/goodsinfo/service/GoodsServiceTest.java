@@ -1,18 +1,23 @@
 package com.tardybird.goodsinfo.service;
 
-import com.tardybird.goodsinfo.controller.vo.GoodsVo;
+import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.domain.Product;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
 class GoodsServiceTest {
 
     @Autowired
     GoodsService goodsService;
+
+    @Autowired
+    GoodsDao goodsDao;
 
     @BeforeEach
     void setUp() {
@@ -32,13 +37,10 @@ class GoodsServiceTest {
 
     @Test
     void createGoods() {
-        GoodsVo goodsVo = new GoodsVo();
 
         Goods goods = new Goods();
         goods.setName("new goods");
         goods.setBeDeleted(false);
-
-        goodsVo.setGoods(goods);
 
         goodsService.createGoods(goods);
     }
@@ -70,5 +72,18 @@ class GoodsServiceTest {
         goods.setId(1);
 
         goodsService.deleteGood(goods.getId());
+    }
+
+    @Autowired
+    RedisTemplate<String, Product> redisTemplate;
+
+    @Test
+    void redisTests() {
+
+        Product product = new Product();
+        product.setGoods(new Goods());
+
+        redisTemplate.opsForValue().set("nick001", product);
+
     }
 }

@@ -2,7 +2,6 @@ package com.tardybird.goodsinfo.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.tardybird.goodsinfo.controller.vo.GoodsVo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
@@ -37,7 +36,7 @@ public class GoodsService {
 
     public Object getHotGoods(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Goods> goods = goodsMapper.getHotGoods();
+        List<Goods> goods = goodsMapper.findHotGoods();
         return new PageInfo<>(goods);
     }
 
@@ -46,7 +45,7 @@ public class GoodsService {
         goodsMapper.createGoods(goods);
     }
 
-    public GoodsVo getGoodsById(Integer id) {
+    public Goods getGoodsById(Integer id) {
         return goodsDao.getGoodsById(id);
     }
 
