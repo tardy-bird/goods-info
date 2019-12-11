@@ -13,6 +13,7 @@
 
     <select id="getAllBrands" parameterType="java.lang.String" resultMap="Brand">
         SELECT * FROM brand
+        WHERE is_deleted=0
         <if test="sort!=null">
             ORDER BY ${sort}
             <if test="order!=null">
@@ -23,7 +24,7 @@
 
     <select id="getBrandsByCondition" parameterType="java.lang.String" resultMap="Brand">
         SELECT * FROM brand
-        WHERE id=#{id} OR name=#{name}
+        WHERE (id=#{id} OR name=#{name}) and is_deleted=0
         ORDER BY
         <if test="sort != null">
             ${sort}
@@ -38,6 +39,7 @@
         select *
         from brand
         where id = #{id}
+          and is_deleted = 0
     </select>
 
     <insert id="addBrand" parameterType="com.tardybird.goodsinfo.domain.Brand" useGeneratedKeys="true" keyProperty="id">
@@ -65,7 +67,7 @@
             </if>
             gmt_modified=now()
         </set>
-        where id = #{id}
+        where id = #{id} and is_deleted=0
     </update>
 
     <update id="deleteBrand">
