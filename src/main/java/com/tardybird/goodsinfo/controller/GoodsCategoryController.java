@@ -26,7 +26,7 @@ public class GoodsCategoryController {
     GoodsCategoryService goodsCategoryService;
 
     @GetMapping("/categories")
-    public Object getAllCategories() {
+    public Object listGoodsCategory() {
         return ResponseUtil.okList(goodsCategoryService.getAllCategories());
     }
 
@@ -42,7 +42,7 @@ public class GoodsCategoryController {
      * 获取1级种类
      */
     @GetMapping("/categories/l1")
-    public Object getFirstCategories() {
+    public Object listOneLevelGoodsCategory() {
         List<GoodsCategory> goodsCategories = goodsCategoryService.getLevelOneCategories();
         return ResponseUtil.okList(goodsCategories);
     }
@@ -52,7 +52,7 @@ public class GoodsCategoryController {
      * 获取当前一级分类下的二级分类
      */
     @GetMapping("/categories/l1/{id}/l2")
-    public Object get2rdCategoryOf1st(@PathVariable("id") Integer pid) {
+    public Object listSecondLevelGoodsCategoryById(@PathVariable("id") Integer pid) {
         List<GoodsCategory> goodsCategories = goodsCategoryService.getLevelTwoByPid(pid);
         return ResponseUtil.okList(goodsCategories);
     }
@@ -65,7 +65,7 @@ public class GoodsCategoryController {
      * 新建一个分类
      */
     @PostMapping("/categories")
-    public Object addCategory(@RequestBody GoodsCategory goodsCategory) {
+    public Object addGoodsCategory(@RequestBody GoodsCategory goodsCategory) {
         goodsCategoryService.createCategory(goodsCategory);
         return ResponseUtil.ok();
     }
