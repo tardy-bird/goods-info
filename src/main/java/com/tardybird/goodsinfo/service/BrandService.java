@@ -2,7 +2,7 @@ package com.tardybird.goodsinfo.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.tardybird.goodsinfo.entity.Brand;
+import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
 import org.springframework.stereotype.Service;
 

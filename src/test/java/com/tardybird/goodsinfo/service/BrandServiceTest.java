@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.service;
 
-import com.tardybird.goodsinfo.entity.Brand;
+import com.tardybird.goodsinfo.domain.Brand;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

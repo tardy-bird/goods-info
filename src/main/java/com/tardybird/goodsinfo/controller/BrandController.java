@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.controller;
 
-import com.tardybird.goodsinfo.entity.Brand;
+import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.service.BrandService;
 import com.tardybird.goodsinfo.util.FileUploadUtil;
 import com.tardybird.goodsinfo.util.IdUtil;
