@@ -1,7 +1,5 @@
 package com.tardybird.goodsinfo.entity;
 
-import org.apache.ibatis.type.Alias;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,7 +10,7 @@ import java.util.Objects;
  * @Data:Created in 14:50 2019/11/29
  * @Modified By:
  **/
-@Alias("goods")
+
 public class Goods {
 
     private Integer id;
@@ -44,10 +42,8 @@ public class Goods {
      * 商品详情
      */
     private String detail;
-
-
     /**
-     * 0：上架 1：下架
+     * 0：上架 1：下架 2: 最新  （具体看数据字典）
      */
     private Integer statusCode;
     /**
@@ -82,6 +78,10 @@ public class Goods {
      * 0：默认模板计算邮费 1：特殊模板计算邮费
      */
     private Boolean beSpecial;
+    /**
+     * 该商品的最低产品价格
+     */
+    private BigDecimal price;
 
     private Boolean beDeleted;
     private LocalDateTime gmtCreate;
@@ -91,8 +91,6 @@ public class Goods {
     public String toString() {
         return "Goods{" +
                 "id=" + id +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
                 ", name='" + name + '\'' +
                 ", goodsSn='" + goodsSn + '\'' +
                 ", shortName='" + shortName + '\'' +
@@ -103,13 +101,16 @@ public class Goods {
                 ", statusCode=" + statusCode +
                 ", shareUrl='" + shareUrl + '\'' +
                 ", gallery='" + gallery + '\'' +
-                ", goodsCategoryId='" + goodsCategoryId + '\'' +
+                ", goodsCategoryId=" + goodsCategoryId +
                 ", brandId=" + brandId +
                 ", weight=" + weight +
                 ", volume='" + volume + '\'' +
                 ", specialFreightId=" + specialFreightId +
                 ", beSpecial=" + beSpecial +
+                ", price=" + price +
                 ", beDeleted=" + beDeleted +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
                 '}';
     }
 
@@ -210,6 +211,14 @@ public class Goods {
         this.detail = detail;
     }
 
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
     public String getShareUrl() {
         return shareUrl;
     }
@@ -282,12 +291,11 @@ public class Goods {
         this.beDeleted = beDeleted;
     }
 
-
-    public Integer getStatusCode() {
-        return statusCode;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

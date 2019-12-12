@@ -1,6 +1,5 @@
 package com.tardybird.goodsinfo.controller;
 
-import com.tardybird.goodsinfo.controller.vo.ProductVo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.service.ProductService;
@@ -29,16 +28,11 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public Object getProduct(@PathVariable("id") Integer id) {
-        com.tardybird.goodsinfo.entity.Product product = productService.getProductById(id);
-
-        // 包装ProductVo
-        ProductVo productVo = new ProductVo();
-        List<com.tardybird.goodsinfo.entity.Product> subProducts =
+        Product product = productService.getProductById(id);
+        List<Product> subProducts =
                 productService.getOtherRelatedProducts(id);
-        productVo.setProduct(product);
-        productVo.setSubProducts(subProducts);
-
-        return ResponseUtil.ok(productVo);
+        product.setProductList(subProducts);
+        return ResponseUtil.ok(product);
     }
 
     /**

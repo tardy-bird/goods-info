@@ -1,10 +1,9 @@
 package com.tardybird.goodsinfo.controller;
 
-import com.tardybird.goodsinfo.controller.vo.GoodsVo;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.entity.GoodsCategory;
-import com.tardybird.goodsinfo.entity.Product;
 import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
@@ -43,8 +42,8 @@ public class GoodsController {
      */
     @GetMapping("/categories/{id}/goods")
     public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
-        GoodsVo goodsVo = goodsService.getGoodsById(id);
-        GoodsCategory goodsCategory = goodsVo.getGoodsCategory();
+        Goods goods = goodsService.getGoodsById(id);
+        GoodsCategory goodsCategory = goods.getGoodsCategory();
         return ResponseUtil.ok(goodsCategory);
     }
 
@@ -78,7 +77,7 @@ public class GoodsController {
      */
     @GetMapping("/recommendedGoods")
     public Object getRecommendedGoods() {
-        //TODO
+        //TODO what ?
         return null;
     }
 
@@ -103,8 +102,8 @@ public class GoodsController {
      */
     @GetMapping("/goods/{id}")
     public Object getGoodsById(@PathVariable("id") Integer id) {
-        GoodsVo goodsVo = goodsService.getGoodsById(id);
-        return ResponseUtil.ok(goodsVo);
+        Goods goods = goodsService.getGoodsById(id);
+        return ResponseUtil.ok(goods);
     }
 
     /**
@@ -122,15 +121,17 @@ public class GoodsController {
     /**
      * 管理员添加商品下的产品
      *
-     * @param id
-     * @param product
-     * @return
+     * @param id      x
+     * @param product x
+     * @return x
      */
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
-        //TODO
-        product.setGoodsId(id);
+        if (product == null) {
+            return ResponseUtil.fail();
+        }
         productService.createProduct(product);
+        product.setId(id);
         return ResponseUtil.ok(product);
     }
 

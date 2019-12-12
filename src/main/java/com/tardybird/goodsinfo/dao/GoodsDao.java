@@ -1,23 +1,19 @@
 package com.tardybird.goodsinfo.dao;
 
 import com.tardybird.goodsinfo.config.RedisConfig;
-import com.tardybird.goodsinfo.controller.vo.GoodsVo;
-import com.tardybird.goodsinfo.controller.vo.ProductVo;
 import com.tardybird.goodsinfo.domain.Goods;
-import com.tardybird.goodsinfo.domain.GoodsCategory;
-import com.tardybird.goodsinfo.entity.Brand;
-import com.tardybird.goodsinfo.entity.Product;
-import com.tardybird.goodsinfo.entity.ShareRule;
+import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author DIX
@@ -28,23 +24,40 @@ import java.util.List;
 @Repository
 public class GoodsDao {
 
-    @Autowired
-    GoodsMapper goodsMapper;
+    final GoodsMapper goodsMapper;
 
-    @Autowired
-    ProductMapper productMapper;
+    final ProductMapper productMapper;
 
-    @Autowired
-    RedisTemplate redisTemplate;
+    final RedisTemplate<String, Goods> redisTemplateOfGoods;
 
-    @Autowired
-    RedisConfig redisConfig;
+    final RedisTemplate<String, Product> redisTemplateOfProducts;
 
-    @Autowired
-    GoodsCategoryMapper goodsCategoryMapper;
+    final RedisTemplate<String, List<String>> redisTemplateOfString;
 
-    @Autowired
-    BrandMapper brandMapper;
+    final RedisConfig redisConfig;
+
+    final GoodsCategoryMapper goodsCategoryMapper;
+
+    final BrandMapper brandMapper;
+
+    public GoodsDao(GoodsMapper goodsMapper, ProductMapper productMapper,
+                    RedisTemplate<String, Goods> redisTemplateOfGoods,
+                    RedisTemplate<String, Product> redisTemplateOfProducts,
+                    RedisTemplate<String, List<String>> redisTemplateOfString,
+                    RedisConfig redisConfig, GoodsCategoryMapper goodsCategoryMapper,
+                    BrandMapper brandMapper) {
+        this.goodsMapper = goodsMapper;
+        this.productMapper = productMapper;
+        this.redisTemplateOfGoods = redisTemplateOfGoods;
+        this.redisTemplateOfProducts = redisTemplateOfProducts;
+        this.redisTemplateOfString = redisTemplateOfString;
+        this.redisConfig = redisConfig;
+        this.goodsCategoryMapper = goodsCategoryMapper;
+        this.brandMapper = brandMapper;
+
+        storeHotAndNewObjects();
+    }
+
 
     /**
      * 返回一个goods的所有product
@@ -53,7 +66,29 @@ public class GoodsDao {
      * @return x
      */
     public List<Product> getProductByGoodsId(Integer id) {
-        return productMapper.getProductByGoodsId(id);
+        // goods_id=1, key = Products_1
+        String key = "Product_Ids_" + id;
+        List<String> productIds = redisTemplateOfString.opsForValue().get(key);
+        List<Product> productList = new ArrayList<>();
+
+        for (String productId : Objects.requireNonNull(productIds)) {
+            String productKey = "Product_" + productId;
+            Product product = findProductById(Integer.valueOf(productId));
+            productList.add(product);
+        }
+        return productList;
+
+    }
+
+
+    public Product findProductById(Integer id) {
+        String key = "Product_" + id;
+        Product product = redisTemplateOfProducts.opsForValue().get(key);
+        if (product == null) {
+            product = productMapper.getProductById(id);
+            redisTemplateOfProducts.opsForValue().set(key, product);
+        }
+        return product;
     }
 
     /**
@@ -62,76 +97,59 @@ public class GoodsDao {
      * @param id x
      * @return x
      */
-    public GoodsVo getGoodsById(Integer id) {
-        String key = "GV_" + id;
-//        Goods goods = (Goods) redisTemplate.opsForValue().get(key);
-        GoodsVo goodsVo = (GoodsVo) redisTemplate.opsForValue().get(key);
+    public Goods getGoodsById(Integer id) {
 
-        if (goodsVo == null) {
-            Goods goods = goodsMapper.getGoodsById(id);
-            GoodsCategory goodsCategory = goodsCategoryMapper.getCategory(goods.getGoodsCategoryId());
-            Brand brand = brandMapper.getBrandById(goods.getBrandId());
+        String key = "Goods_" + id;
+        Goods goodsObject = redisTemplateOfGoods.opsForValue().get(key);
 
-            // TODO add actual rules
-            List<ShareRule> shareRules = new ArrayList<>();
+        if (goodsObject == null) {
+            goodsObject = goodsMapper.getGoodsById(id);
+            redisTemplateOfGoods.opsForValue().set(key, goodsObject);
+        }
+        return goodsObject;
+    }
 
-            // get ALL product VO
-            List<ProductVo> products = new ArrayList<>();
+    public void storeHotAndNewObjects() {
 
-            List<Product> productList = productMapper.getProductByGoodsId(id);
+        List<Goods> hotGoodsList = goodsMapper.findHotGoods();
+        List<Goods> newGoodsList = goodsMapper.findNewGoods();
 
-            // put ProductVo to productVoList
+        List<Goods> cachedGoodsList = new ArrayList<>();
 
-            List<ProductVo> productVoList = new ArrayList<>();
+        cachedGoodsList.addAll(newGoodsList);
+        cachedGoodsList.addAll(hotGoodsList);
 
+        for (Goods goods : cachedGoodsList) {
+            String key = "Goods_" + goods.getId();
+
+            redisTemplateOfGoods.opsForValue().set(key, goods);
+
+            String idKey = "Product_Ids_" + goods.getId();
+
+
+            // store productIds
+            List<Product> productList = productMapper.getProductByGoodsId(goods.getId());
             for (Product product : productList) {
-
-                ProductVo productVo = new ProductVo();
-
-                productVo.setProduct(product);
-
-                String productIds = product.getProductIds();
+                String ids = product.getProductIds();
                 // [1,2)
-                productIds = productIds.substring(1, productIds.length() - 1);
-                String[] ids = productIds.split(",");
+                ids = ids.substring(1, ids.length() - 1);
+                String[] productIds = ids.split(",");
 
-                List<Product> productsTmp = new ArrayList<>();
-                for (String s : ids) {
-                    Product productTmp = productMapper.getProductById(Integer.valueOf(s));
-                    productsTmp.add(productTmp);
+                // store products
+                for (String productId : productIds) {
+                    Product cachedProduct = productMapper.getProductById(Integer.valueOf(productId));
+                    String productKey = "Product_" + productId;
+                    redisTemplateOfProducts.opsForValue().set(productKey, cachedProduct);
                 }
 
-                productVo.setSubProducts(productsTmp);
+                List<String> idList = new ArrayList<>();
+                Collections.addAll(idList, productIds);
 
-                productVoList.add(productVo);
-
+                redisTemplateOfString.opsForValue().set(idKey, idList);
             }
-
-
-            GoodsVo goodsVoTmp = new GoodsVo();
-
-            goodsVoTmp.setShareRules(shareRules);
-            goodsVoTmp.setProducts(products);
-            goodsVoTmp.setBrand(brand);
-            goodsVoTmp.setGoodsCategory(goodsCategory);
-
-            goodsVoTmp.setProducts(productVoList);
-
-
-            goodsVo = goodsVoTmp;
 
         }
 
-        return goodsVo;
-    }
-
-    /**
-     * 获得所有商品
-     *
-     * @return x
-     */
-    public List<Goods> getAllGoods() {
-        return goodsMapper.getAllGoods();
     }
 
 }

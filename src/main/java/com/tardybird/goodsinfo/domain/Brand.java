@@ -2,6 +2,7 @@ package com.tardybird.goodsinfo.domain;
 
 import java.io.Serializable;
 import java.util.List;
+
 /**
  * @author nick
  */
