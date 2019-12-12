@@ -91,7 +91,7 @@ public class BrandController {
      * 创建一个品牌
      */
     @PostMapping("/brands")
-    public Object addBrand(@RequestBody MultipartFile file, @RequestBody Brand brand) {
+    public Object addBrand(@RequestBody MultipartFile file, Brand brand) {
         if (brand == null) {
             return ResponseUtil.fail();
         }

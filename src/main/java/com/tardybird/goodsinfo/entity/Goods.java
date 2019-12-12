@@ -1,5 +1,6 @@
 package com.tardybird.goodsinfo.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class Goods {
+public class Goods implements Serializable {
 
     private Integer id;
     /**
