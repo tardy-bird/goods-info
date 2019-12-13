@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.mapper;
 
-import com.tardybird.goodsinfo.domain.GoodsCategory;
+import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,27 +17,30 @@ public interface GoodsCategoryMapper {
      *
      * @return x
      */
-    List<GoodsCategory> getAllCategories();
+    List<GoodsCategoryPo> getAllCategories();
 
     /**
      * 获得一级分类
+     *
      * @return x
      */
-    List<GoodsCategory> getLevelOneCategories();
+    List<GoodsCategoryPo> getLevelOneCategories();
 
     /**
      * 获得一个分类信息
+     *
      * @param id x
      * @return x
      */
-    GoodsCategory getCategory(@Param("id") Integer id);
+    GoodsCategoryPo getCategory(@Param("id") Integer id);
 
     /**
      * 获得一个一级分类的二级分类
+     *
      * @param pid x
      * @return x
      */
-    List<GoodsCategory> getLevelTwoByPid(@Param("pid") Integer pid);
+    List<GoodsCategoryPo> getLevelTwoByPid(@Param("pid") Integer pid);
 
     /**
      * 删除分类
@@ -48,15 +51,17 @@ public interface GoodsCategoryMapper {
 
     /**
      * 更新分类
+     *
      * @param goodsCategory
      * @return
      */
-    int updateCategory(GoodsCategory goodsCategory);
+    int updateCategory(GoodsCategoryPo goodsCategory);
 
     /**
      * 新建分类
+     *
      * @param goodsCategory
      * @return
      */
-    int createCategory(GoodsCategory goodsCategory);
+    int createCategory(GoodsCategoryPo goodsCategory);
 }

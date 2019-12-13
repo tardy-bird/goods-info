@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.GoodsCategoryMapper">
-    <resultMap id="GoodsCategory" type="com.tardybird.goodsinfo.domain.GoodsCategory">
+    <resultMap id="GoodsCategoryPo" type="com.tardybird.goodsinfo.po.GoodsCategoryPo">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="pid" column="pid"/>
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
         <result property="beDeleted" column="is_deleted"/>
+        <result property="picUrl" column="pic_url"/>
     </resultMap>
 
-    <select id="getAllCategories" resultMap="GoodsCategory">
+    <select id="getAllCategories" resultMap="GoodsCategoryPo">
         select *
         from goods_category
         where is_deleted = 0
     </select>
 
-    <select id="getLevelOneCategories" resultMap="GoodsCategory">
+    <select id="getLevelOneCategories" resultMap="GoodsCategoryPo">
         select *
         from goods_category
         where pid is not null
           and is_deleted = 0
     </select>
 
-    <select id="getCategory" resultMap="GoodsCategory">
+    <select id="getCategory" resultMap="GoodsCategoryPo">
         select *
         from goods_category
         where id = #{id}
           and is_deleted = 0
     </select>
 
-    <select id="getLevelTwoByPid" resultMap="GoodsCategory">
+    <select id="getLevelTwoByPid" resultMap="GoodsCategoryPo">
         select *
         from goods_category
         where pid = #{pid}
           and is_deleted = 0
     </select>
 
-    <select id="getGoodsCategoryName" parameterType="String" resultMap="GoodsCategory">
+    <select id="getGoodsCategoryName" parameterType="String" resultMap="GoodsCategoryPo">
         select name
         from goods_category
         where id = #{id}
           and is_deleted = 0
     </select>
 
-    <update id="updateCategory" parameterType="GoodsCategory">
+    <update id="updateCategory" parameterType="GoodsCategoryPo">
         update goods_category
 
         <if test="pid != null">
@@ -61,13 +62,13 @@
         where id=#{id} and is_deleted=0
     </update>
 
-    <update id="deleteCategory" parameterType="GoodsCategory">
+    <update id="deleteCategory" parameterType="GoodsCategoryPo">
         update goods_category
         set is_deleted=1
         where id = #{id}
     </update>
 
-    <insert id="createCategory" parameterType="GoodsCategory">
+    <insert id="createCategory" parameterType="GoodsCategoryPo">
         insert into goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
         values (#{name}, #{pid}, current_timestamp, current_timestamp, #{beDeleted})
     </insert>
