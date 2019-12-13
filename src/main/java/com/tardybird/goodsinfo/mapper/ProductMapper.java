@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.mapper;
 
-import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.po.ProductPo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +19,7 @@ public interface ProductMapper {
      * @param goodsId x
      * @return x
      */
-    List<Product> getProductByGoodsId(@Param("goodsId") Integer goodsId);
+    List<ProductPo> getProductByGoodsId(@Param("goodsId") Integer goodsId);
 
     /**
      * 查看单个货品信息
@@ -27,7 +27,7 @@ public interface ProductMapper {
      * @param id x
      * @return x
      */
-    Product getProductById(@Param("id") Integer id);
+    ProductPo getProductById(@Param("id") Integer id);
 
     /**
      * 新建一个货品
@@ -35,7 +35,7 @@ public interface ProductMapper {
      * @param product z
      * @return z
      */
-    int createProduct(Product product);
+    int createProduct(ProductPo product);
 
     /**
      * 更新一个货品信息
@@ -43,7 +43,7 @@ public interface ProductMapper {
      * @param product
      * @return
      */
-    int updateProduct(Product product);
+    int updateProduct(ProductPo product);
 
     /**
      * 删除一个商品

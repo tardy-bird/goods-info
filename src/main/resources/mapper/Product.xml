@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.ProductMapper">
-    <resultMap id="product" type="com.tardybird.goodsinfo.domain.Product">
+    <resultMap id="ProductPo" type="com.tardybird.goodsinfo.po.ProductPo">
         <result property="id" column="id"/>
         <result property="goodsId" column="goods_id"/>
-        <result property="productIds" column="product_ids"/>
+        <!--        由于删除组合产品需求，删除product中的product_ids属性-->
+        <!--        <result property="productIds" column="product_ids"/>-->
         <result property="picUrl" column="pic_url"/>
         <result property="specifications" column="specifications"/>
         <result property="price" column="price"/>
@@ -14,28 +15,34 @@
         <result property="beDeleted" column="id_deleted"/>
 
     </resultMap>
-    <select id="getProductById" resultMap="product">
-        select * from product where id=#{id}
+    <select id="getProductById" resultMap="ProductPo">
+        select *
+        from product
+        where id = #{id}
+          and is_deleted = 0
     </select>
-    
-    <select id="getProductByGoodsId" resultMap="product">
-        select * from product where goods_id=#{goodsId}
+
+    <select id="getProductByGoodsId" resultMap="ProductPo">
+        select *
+        from product
+        where goods_id = #{goodsId}
+          and is_deleted = 0
     </select>
 
     <insert id="createProduct" parameterType="Product" useGeneratedKeys="true"
             keyProperty="id">
-        insert into product(product_ids, pic_url, specifications, goods_id, price, safety_stock, gmt_create,
+        insert into product(pic_url, specifications, goods_id, price, safety_stock, gmt_create,
                             gmt_modified, is_deleted)
-        values (#{productIds}, #{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, current_timestamp,
+        values (#{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, current_timestamp,
                 current_timestamp, 0)
     </insert>
 
-    <update id="updateProduct" parameterType="product">
+    <update id="updateProduct" parameterType="ProductPo">
         update product
         <set>
-            <if test="productIds != null">
-                product_ids=#{productIds}
-            </if>
+            <!--            <if test="productIds != null">-->
+            <!--                product_ids=#{productIds}-->
+            <!--            </if>-->
             <if test="picUrl != null">
                 pic_url=#{picUrl}
             </if>
@@ -56,10 +63,10 @@
             </if>
             gmt_modified=now()
         </set>
-        where id=#{id}
+        where id=#{id} and is_deleted=0
     </update>
 
-    <update id="deleteProduct" parameterType="Product">
+    <update id="deleteProduct" parameterType="ProductPo">
         update product
         set is_deleted=1
         where id = #{id}

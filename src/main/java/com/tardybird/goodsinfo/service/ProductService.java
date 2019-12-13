@@ -2,6 +2,8 @@ package com.tardybird.goodsinfo.service;
 
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
+import com.tardybird.goodsinfo.po.ProductPo;
+import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,43 +17,35 @@ public class ProductService {
     ProductMapper productMapper;
 
     public List<Product> getProductByGoodsId(Integer id) {
-        return productMapper.getProductByGoodsId(id);
-    }
-
-    /**
-     * 获取组合商品的其他商品
-     *
-     * @param id x
-     * @return x
-     */
-    public List<Product> getOtherRelatedProducts(Integer id) {
-
+        List<ProductPo> productPos = productMapper.getProductByGoodsId(id);
         List<Product> productList = new ArrayList<>();
 
-        String ids = productMapper.getProductById(id).getProductIds();
-        // [1,2)
-        ids = ids.substring(1, ids.length() - 1);
-        String[] productIds = ids.split(",");
-        for (String s : productIds) {
-            Integer productId = Integer.valueOf(s);
-            Product product = productMapper.getProductById(productId);
+        for (ProductPo productPo : productPos) {
+            Product product = ObjectConversion.productPo2Product(productPo);
+
+            //TODO set actual GoodsPo
+            product.setGoodsPo(null);
+
             productList.add(product);
         }
         return productList;
     }
 
     public void createProduct(Product product) {
-        productMapper.createProduct(product);
+        ProductPo productPo = ObjectConversion.product2ProductPo(product);
+        productMapper.createProduct(productPo);
     }
 
 
     public void updateProduct(Product product) {
+        ProductPo productPo = ObjectConversion.product2ProductPo(product);
         // TODO cannot actually update
-        productMapper.updateProduct(product);
+        productMapper.updateProduct(productPo);
     }
 
     public Product getProductById(Integer id) {
-        return productMapper.getProductById(id);
+        ProductPo productPo = productMapper.getProductById(id);
+        return ObjectConversion.productPo2Product(productPo);
     }
 
     public void deleteProduct(Integer id) {

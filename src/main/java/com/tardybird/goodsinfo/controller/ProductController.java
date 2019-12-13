@@ -6,8 +6,6 @@ import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author nick
  */
@@ -29,9 +27,6 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public Object getProduct(@PathVariable("id") Integer id) {
         Product product = productService.getProductById(id);
-        List<Product> subProducts =
-                productService.getOtherRelatedProducts(id);
-        product.setProductList(subProducts);
         return ResponseUtil.ok(product);
     }
 
