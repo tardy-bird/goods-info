@@ -1,11 +1,25 @@
 package com.tardybird.goodsinfo.domain;
 
-import java.io.Serializable;
+import com.tardybird.goodsinfo.po.BrandPo;
+import com.tardybird.goodsinfo.po.GoodsPo;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.List;
 
 /**
- * @author nick
- */
-public class Brand extends com.tardybird.goodsinfo.entity.Brand implements Serializable {
-    private List<Goods> goodsList;
+ * @Author: 数据库与对象模型标准组
+ * @Description:品牌对象
+ * @Data:Created in 14:50 2019/12/11
+ **/
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class Brand extends BrandPo {
+
+    private List<GoodsPo> goodsPoList;
+
 }

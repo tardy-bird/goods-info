@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.mapper;
 
-import com.tardybird.goodsinfo.domain.Brand;
+import com.tardybird.goodsinfo.po.BrandPo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ public interface BrandMapper {
     /**
      * 查找所有品牌
      */
-    List<Brand> getAllBrands(String sort, String order);
+    List<BrandPo> getAllBrands(String sort, String order);
 
     /**
      * 通过id查品牌
@@ -24,7 +24,7 @@ public interface BrandMapper {
      * @param id xxx
      * @return xxx
      */
-    Brand getBrandById(@Param("id") Integer id);
+    BrandPo getBrandById(@Param("id") Integer id);
 
     /**
      * x
@@ -35,7 +35,7 @@ public interface BrandMapper {
      * @param order x
      * @return x
      */
-    List<Brand> getBrandsByCondition(String id, String name, String sort, String order);
+    List<BrandPo> getBrandsByCondition(String id, String name, String sort, String order);
 
     /**
      * 添加品牌
@@ -43,7 +43,7 @@ public interface BrandMapper {
      * @param brand xxx
      * @return xxx
      */
-    Integer addBrand(Brand brand);
+    Integer addBrand(BrandPo brand);
 
     /**
      * 删除品牌
@@ -59,5 +59,5 @@ public interface BrandMapper {
      * @param brand xxx
      * @return xxx
      */
-    int updateBrand(Brand brand);
+    int updateBrand(BrandPo brand);
 }

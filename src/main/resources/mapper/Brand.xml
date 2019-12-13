@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.BrandMapper">
-    <resultMap id="Brand" type="com.tardybird.goodsinfo.domain.Brand">
+    <resultMap id="BrandPo" type="com.tardybird.goodsinfo.po.BrandPo">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="description" column="description"/>
@@ -11,7 +11,7 @@
         <result property="beDeleted" column="is_deleted"/>
     </resultMap>
 
-    <select id="getAllBrands" parameterType="java.lang.String" resultMap="Brand">
+    <select id="getAllBrands" parameterType="java.lang.String" resultMap="BrandPo">
         SELECT * FROM brand
         WHERE is_deleted=0
         <if test="sort!=null">
@@ -22,7 +22,7 @@
         </if>
     </select>
 
-    <select id="getBrandsByCondition" parameterType="java.lang.String" resultMap="Brand">
+    <select id="getBrandsByCondition" parameterType="java.lang.String" resultMap="BrandPo">
         SELECT * FROM brand
         WHERE (id=#{id} OR name=#{name}) and is_deleted=0
         ORDER BY
@@ -35,14 +35,14 @@
     </select>
 
 
-    <select id="getBrandById" resultMap="Brand">
+    <select id="getBrandById" resultMap="BrandPo">
         select *
         from brand
         where id = #{id}
           and is_deleted = 0
     </select>
 
-    <insert id="addBrand" parameterType="Brand" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addBrand" parameterType="BrandPo" useGeneratedKeys="true" keyProperty="id">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -50,7 +50,7 @@
         values (#{name}, #{description}, #{picUrl}, now(), now(), #{beDeleted})
     </insert>
 
-    <update id="updateBrand" parameterType="Brand">
+    <update id="updateBrand" parameterType="BrandPo">
         update brand
         <set>
             <if test="name != null">
