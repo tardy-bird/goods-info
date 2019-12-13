@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tardybird.goodsinfo.mapper.GoodsMapper">
-    <resultMap id="goods" type="com.tardybird.goodsinfo.domain.Goods">
+    <resultMap id="GoodsPo" type="com.tardybird.goodsinfo.po.GoodsPo">
         <result property="id" column="id"/>
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
@@ -15,16 +15,17 @@
         <result property="statusCode" column="status"/>
         <result property="shareUrl" column="share_url"/>
         <result property="gallery" column="gallery"/>
-        <result property="goodsCategoryId" column="goods_category_ids"/>
+        <result property="goodsCategoryId" column="goods_category_id"/>
         <result property="brandId" column="brand_id"/>
         <result property="beDeleted" column="is_deleted"/>
         <result property="weight" column="weight"/>
         <result property="volume" column="volume"/>
         <result property="specialFreightId" column="special_freight_id"/>
         <result property="beSpecial" column="is_special"/>
+        <result property="price" column="price"/>
     </resultMap>
 
-    <select id="getGoodsByCondition" parameterType="java.lang.String" resultMap="goods">
+    <select id="getGoodsByCondition" parameterType="java.lang.String" resultMap="GoodsPo">
         SELECT *
         FROM goods
         WHERE (goods_sn = #{goodsSn} OR name = #{name})
@@ -32,44 +33,44 @@
     </select>
 
 
-    <select id="getAllGoods" resultMap="goods">
+    <select id="getAllGoods" resultMap="GoodsPo">
         select *
         from goods
     </select>
 
-    <select id="findHotGoods" resultMap="goods">
+    <select id="findHotGoods" resultMap="GoodsPo">
         select *
         from goods
         where is_deleted = 0
           and status = 3
     </select>
 
-    <select id="findNewGoods" resultMap="goods">
+    <select id="findNewGoods" resultMap="GoodsPo">
         select *
         from goods
         where status = 4
           and is_deleted = 0
     </select>
 
-    <select id="getGoodsById" resultMap="goods">
+    <select id="getGoodsById" resultMap="GoodsPo">
         select *
         from goods
         where id = #{id}
           and is_deleted = 0
     </select>
 
-    <insert id="createGoods" parameterType="com.tardybird.goodsinfo.domain.Goods" useGeneratedKeys="true"
+    <insert id="createGoods" parameterType="GoodsPo" useGeneratedKeys="true"
             keyProperty="id">
         insert into goods(name, gmt_create, gmt_modified, goods_sn, short_name, description, detail, brief,
                           pic_url, status, share_url, gallery, goods_category_id, brand_id, is_deleted, weight, volume,
-                          special_freight_id, is_special)
+                          special_freight_id, is_special, price)
         values (#{name}, current_timestamp, current_timestamp, #{goodsSn}, #{shortName}, #{shareUrl}, #{description},
                 #{detail}, #{brief}, #{picUrl}, #{statusCode}, #{gallery}, #{goodsCategoryId}, #{brandId},
-                #{beDeleted}, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial})
+                #{beDeleted}, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial}, #{price})
 
     </insert>
 
-    <update id="updateGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
+    <update id="updateGoods" parameterType="GoodsPo">
         update goods
         <set>
             <if test="name != null">
@@ -123,12 +124,15 @@
             <if test="beSpecial != null">
                 is_special=#{beSpecial},
             </if>
+            <if test="price != null">
+                price=#{price}
+            </if>
             gmt_modified=now()
         </set>
         where id=#{id} and is_deleted=0
     </update>
 
-    <update id="deleteGoods" parameterType="com.tardybird.goodsinfo.domain.Goods">
+    <update id="deleteGoods" parameterType="GoodsPo">
         update goods
         set is_deleted = 1
         where id = #{id}

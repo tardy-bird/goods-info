@@ -1,6 +1,6 @@
 package com.tardybird.goodsinfo.mapper;
 
-import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.po.GoodsPo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,14 +20,14 @@ public interface GoodsMapper {
      *
      * @return
      */
-    List<Goods> getAllGoods();
+    List<GoodsPo> getAllGoods();
 
     /**
      * （用户）默认获得热卖商品列表（只有id和pic）
      *
      * @return x
      */
-    List<Goods> findHotGoods();
+    List<GoodsPo> findHotGoods();
 
 
     /**
@@ -35,7 +35,7 @@ public interface GoodsMapper {
      *
      * @return x
      */
-    List<Goods> findNewGoods();
+    List<GoodsPo> findNewGoods();
 
     /**
      * xx
@@ -44,8 +44,7 @@ public interface GoodsMapper {
      * @param name    x
      * @return x
      */
-    List<Goods> getGoodsByCondition(String goodsSn, String name);
-
+    List<GoodsPo> getGoodsByCondition(String goodsSn, String name);
 
 
     /**
@@ -54,7 +53,7 @@ public interface GoodsMapper {
      * @param id
      * @return goods
      */
-    Goods getGoodsById(@Param("id") Integer id);
+    GoodsPo getGoodsById(@Param("id") Integer id);
 
     /**
      * 更新商品信息
@@ -62,7 +61,7 @@ public interface GoodsMapper {
      * @param goods x
      * @return x
      */
-    int updateGoods(Goods goods);
+    int updateGoods(GoodsPo goods);
 
     /**
      * 新建一个商品
@@ -70,7 +69,7 @@ public interface GoodsMapper {
      * @param goods x
      * @return x
      */
-    int createGoods(Goods goods);
+    int createGoods(GoodsPo goods);
 
     /**
      * 路基删除商品

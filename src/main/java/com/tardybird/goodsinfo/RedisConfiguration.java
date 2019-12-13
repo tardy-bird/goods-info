@@ -1,7 +1,7 @@
 package com.tardybird.goodsinfo;
 
-import com.tardybird.goodsinfo.domain.Goods;
-import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.po.GoodsPo;
+import com.tardybird.goodsinfo.po.ProductPo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -18,18 +18,9 @@ import java.util.List;
 @Configuration
 public class RedisConfiguration {
 
-//    @Bean
-//    RedisTemplate<String, Object> redisTemplate1(RedisConnectionFactory redisConnectionFactory) {
-//        RedisTemplate<String, Object> template = new RedisTemplate<>();
-//        template.setConnectionFactory(redisConnectionFactory);
-//        //打开事务支持
-//        template.setEnableTransactionSupport(true);
-//        return template;
-//    }
-
     @Bean
-    RedisTemplate<String, Goods> redisTemplate1(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Goods> template = new RedisTemplate<>();
+    RedisTemplate<String, GoodsPo> redisTemplate1(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, GoodsPo> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         //打开事务支持
         template.setEnableTransactionSupport(true);
@@ -37,8 +28,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    RedisTemplate<String, Product> redisTemplate2(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Product> template = new RedisTemplate<>();
+    RedisTemplate<String, ProductPo> redisTemplate2(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, ProductPo> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         //打开事务支持
         template.setEnableTransactionSupport(true);

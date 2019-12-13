@@ -3,7 +3,6 @@ package com.tardybird.goodsinfo.controller;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.Product;
-import com.tardybird.goodsinfo.entity.GoodsCategory;
 import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
@@ -43,8 +42,8 @@ public class GoodsController {
     @GetMapping("/categories/{id}/goods")
     public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
         Goods goods = goodsService.getGoodsById(id);
-        GoodsCategory goodsCategory = goods.getGoodsCategory();
-        return ResponseUtil.ok(goodsCategory);
+        //TODO check (NOT COMPLETE)
+        return ResponseUtil.ok(goods);
     }
 
     /**

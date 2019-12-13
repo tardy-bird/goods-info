@@ -1,17 +1,16 @@
 package com.tardybird.goodsinfo.dao;
 
 import com.tardybird.goodsinfo.config.RedisConfig;
-import com.tardybird.goodsinfo.domain.Goods;
-import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
+import com.tardybird.goodsinfo.po.GoodsPo;
+import com.tardybird.goodsinfo.po.ProductPo;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,9 +27,9 @@ public class GoodsDao {
 
     final ProductMapper productMapper;
 
-    final RedisTemplate<String, Goods> redisTemplateOfGoods;
+    final RedisTemplate<String, GoodsPo> redisTemplateOfGoods;
 
-    final RedisTemplate<String, Product> redisTemplateOfProducts;
+    final RedisTemplate<String, ProductPo> redisTemplateOfProducts;
 
     final RedisTemplate<String, List<String>> redisTemplateOfString;
 
@@ -41,8 +40,8 @@ public class GoodsDao {
     final BrandMapper brandMapper;
 
     public GoodsDao(GoodsMapper goodsMapper, ProductMapper productMapper,
-                    RedisTemplate<String, Goods> redisTemplateOfGoods,
-                    RedisTemplate<String, Product> redisTemplateOfProducts,
+                    RedisTemplate<String, GoodsPo> redisTemplateOfGoods,
+                    RedisTemplate<String, ProductPo> redisTemplateOfProducts,
                     RedisTemplate<String, List<String>> redisTemplateOfString,
                     RedisConfig redisConfig, GoodsCategoryMapper goodsCategoryMapper,
                     BrandMapper brandMapper) {
@@ -65,15 +64,15 @@ public class GoodsDao {
      * @param id x
      * @return x
      */
-    public List<Product> getProductByGoodsId(Integer id) {
+    public List<ProductPo> getProductByGoodsId(Integer id) {
         // goods_id=1, key = Products_1
         String key = "Product_Ids_" + id;
         List<String> productIds = redisTemplateOfString.opsForValue().get(key);
-        List<Product> productList = new ArrayList<>();
+        List<ProductPo> productList = new ArrayList<>();
 
         for (String productId : Objects.requireNonNull(productIds)) {
             String productKey = "Product_" + productId;
-            Product product = findProductById(Integer.valueOf(productId));
+            ProductPo product = findProductById(Integer.valueOf(productId));
             productList.add(product);
         }
         return productList;
@@ -81,9 +80,9 @@ public class GoodsDao {
     }
 
 
-    public Product findProductById(Integer id) {
+    public ProductPo findProductById(Integer id) {
         String key = "Product_" + id;
-        Product product = redisTemplateOfProducts.opsForValue().get(key);
+        ProductPo product = redisTemplateOfProducts.opsForValue().get(key);
         if (product == null) {
             product = productMapper.getProductById(id);
             redisTemplateOfProducts.opsForValue().set(key, product);
@@ -97,10 +96,10 @@ public class GoodsDao {
      * @param id x
      * @return x
      */
-    public Goods getGoodsById(Integer id) {
+    public GoodsPo getGoodsById(Integer id) {
 
         String key = "Goods_" + id;
-        Goods goodsObject = redisTemplateOfGoods.opsForValue().get(key);
+        GoodsPo goodsObject = redisTemplateOfGoods.opsForValue().get(key);
 
         if (goodsObject == null) {
             goodsObject = goodsMapper.getGoodsById(id);
@@ -111,15 +110,15 @@ public class GoodsDao {
 
     public void storeHotAndNewObjects() {
 
-        List<Goods> hotGoodsList = goodsMapper.findHotGoods();
-        List<Goods> newGoodsList = goodsMapper.findNewGoods();
+        List<GoodsPo> hotGoodsList = goodsMapper.findHotGoods();
+        List<GoodsPo> newGoodsList = goodsMapper.findNewGoods();
 
-        List<Goods> cachedGoodsList = new ArrayList<>();
+        List<GoodsPo> cachedGoodsList = new ArrayList<>();
 
         cachedGoodsList.addAll(newGoodsList);
         cachedGoodsList.addAll(hotGoodsList);
 
-        for (Goods goods : cachedGoodsList) {
+        for (GoodsPo goods : cachedGoodsList) {
             String key = "Goods_" + goods.getId();
 
             redisTemplateOfGoods.opsForValue().set(key, goods);
@@ -128,25 +127,25 @@ public class GoodsDao {
 
 
             // store productIds
-            List<Product> productList = productMapper.getProductByGoodsId(goods.getId());
-            for (Product product : productList) {
-                String ids = product.getProductIds();
-                // [1,2)
-                ids = ids.substring(1, ids.length() - 1);
-                String[] productIds = ids.split(",");
-
-                // store products
-                for (String productId : productIds) {
-                    Product cachedProduct = productMapper.getProductById(Integer.valueOf(productId));
-                    String productKey = "Product_" + productId;
-                    redisTemplateOfProducts.opsForValue().set(productKey, cachedProduct);
-                }
-
-                List<String> idList = new ArrayList<>();
-                Collections.addAll(idList, productIds);
-
-                redisTemplateOfString.opsForValue().set(idKey, idList);
-            }
+//            List<Product> productList = productMapper.getProductByGoodsId(goods.getId());
+//            for (Product product : productList) {
+//                String ids = product.getProductIds();
+//                // [1,2)
+//                ids = ids.substring(1, ids.length() - 1);
+//                String[] productIds = ids.split(",");
+//
+//                // store products
+//                for (String productId : productIds) {
+//                    Product cachedProduct = productMapper.getProductById(Integer.valueOf(productId));
+//                    String productKey = "Product_" + productId;
+//                    redisTemplateOfProducts.opsForValue().set(productKey, cachedProduct);
+//                }
+//
+//                List<String> idList = new ArrayList<>();
+//                Collections.addAll(idList, productIds);
+//
+//                redisTemplateOfString.opsForValue().set(idKey, idList);
+//            }
 
         }
 
