@@ -6,7 +6,7 @@
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
         <result property="name" column="name"/>
-        <result property="goodsSn" column="good_sn"/>
+        <result property="goodsSn" column="goods_sn"/>
         <result property="shortName" column="short_name"/>
         <result property="description" column="description"/>
         <result property="brief" column="brief"/>

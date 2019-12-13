@@ -7,7 +7,7 @@
         <result property="pid" column="pid"/>
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
-        <result property="beDelete" column="is_deleted"/>
+        <result property="beDeleted" column="is_deleted"/>
     </resultMap>
 
     <select id="getAllCategories" resultMap="GoodsCategory">
