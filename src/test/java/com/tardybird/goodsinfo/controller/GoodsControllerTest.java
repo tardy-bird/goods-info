@@ -34,7 +34,7 @@ class GoodsControllerTest {
     @Test
     void listGoods() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/goods"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/goods"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {
@@ -60,7 +60,7 @@ class GoodsControllerTest {
         goods.setId(1);
 
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/goods/" + goods.getId()))
+            mockMvc.perform(MockMvcRequestBuilders.get("/goods/" + goods.getId()))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {
@@ -75,7 +75,7 @@ class GoodsControllerTest {
         goods.setId(1);
 
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/goods/" + goods.getId() + "/products"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/goods/" + goods.getId() + "/products"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {

@@ -29,7 +29,7 @@ class GoodsCategoryControllerTest {
     @Test
     void listGoodsCategory() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/categories"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/categories"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {
@@ -44,7 +44,7 @@ class GoodsCategoryControllerTest {
     @Test
     void listOneLevelGoodsCategory() {
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/categories/l1"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/categories/l1"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {
@@ -56,7 +56,7 @@ class GoodsCategoryControllerTest {
     void listSecondLevelGoodsCategoryById() {
         int id = 1;
         try {
-            mockMvc.perform(MockMvcRequestBuilders.get("/goodsService/categories/l1/" + id + "/l2"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/categories/l1/" + id + "/l2"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print());
         } catch (Exception e) {
