@@ -23,6 +23,17 @@ class BrandServiceTest {
     }
 
     @Test
+    void addBrand() {
+        Brand brand = new Brand();
+        brand.setName("brand");
+        brand.setDescription("this is a brand(nick)");
+        brand.setPicUrl("https://www.bing.com");
+        brand.setBeDeleted(false);
+        Boolean ok = brandService.addBrand(brand);
+        Assertions.assertTrue(ok);
+    }
+
+    @Test
     void getAllBrands() {
         Integer page = 0;
         Integer limit = 10;
@@ -49,28 +60,18 @@ class BrandServiceTest {
     }
 
     @Test
-    void addBrand() {
-        Brand brand = new Brand();
-        brand.setName("brand");
-        brand.setDescription("this is a brand(nick)");
-        brand.setPicUrl("https://www.bing.com");
-        brand.setBeDeleted(false);
-        Brand result = brandService.addBrand(brand);
-        Assertions.assertNotNull(result);
-    }
-
-    @Test
-    void deleteBrand() {
-        boolean ok = brandService.deleteBrand(1);
-        Assertions.assertTrue(ok);
-    }
-
-    @Test
     void updateBrand() {
         Brand brand = new Brand();
         brand.setId(1);
         brand.setDescription("this is NEW brand, created by nick.");
-        Integer rows = brandService.updateBrand(brand);
-        System.out.println(rows);
+        Boolean ok = brandService.updateBrand(brand);
+        Assertions.assertTrue(ok);
     }
+
+    @Test
+    void deleteBrand() {
+        Boolean ok = brandService.deleteBrand(1);
+        Assertions.assertTrue(ok);
+    }
+
 }
