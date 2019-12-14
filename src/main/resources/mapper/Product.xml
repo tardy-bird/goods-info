@@ -17,35 +17,35 @@
     </resultMap>
     <select id="getProductById" resultMap="ProductPo">
         select *
-        from product
+        from oomall_product
         where id = #{id}
           and is_deleted = 0
     </select>
 
     <select id="getProductByGoodsId" resultMap="ProductPo">
         select *
-        from product
+        from oomall_product
         where goods_id = #{goodsId}
           and is_deleted = 0
     </select>
 
     <select id="findProductIdsByGoodsId" resultType="java.lang.Integer">
         select id
-        from product
+        from oomall_product
         where goods_id = #{id}
           and is_deleted = 0
     </select>
 
     <insert id="createProduct" parameterType="ProductPo" useGeneratedKeys="true"
             keyProperty="id">
-        insert into product(pic_url, specifications, goods_id, price, safety_stock, gmt_create,
-                            gmt_modified, is_deleted)
+        insert into oomall_product(pic_url, specifications, goods_id, price, safety_stock, gmt_create,
+                                   gmt_modified, is_deleted)
         values (#{picUrl}, #{specifications}, #{goodsId}, #{price}, #{safetyStock}, current_timestamp,
                 current_timestamp, 0)
     </insert>
 
     <update id="updateProduct" parameterType="ProductPo">
-        update product
+        update oomall_product
         <trim prefix="set" suffixOverrides=",">
             <if test="picUrl != null">
                 pic_url=#{picUrl}
@@ -73,7 +73,7 @@
     </update>
 
     <update id="deleteProduct" parameterType="ProductPo">
-        update product
+        update oomall_product
         set is_deleted=1
         where id = #{id}
     </update>

@@ -13,40 +13,40 @@
 
     <select id="getAllCategories" resultMap="GoodsCategoryPo">
         select *
-        from goods_category
+        from oomall_goods_category
         where is_deleted = 0
     </select>
 
     <select id="getLevelOneCategories" resultMap="GoodsCategoryPo">
         select *
-        from goods_category
+        from oomall_goods_category
         where pid is not null
           and is_deleted = 0
     </select>
 
     <select id="getCategory" resultMap="GoodsCategoryPo">
         select *
-        from goods_category
+        from oomall_goods_category
         where id = #{id}
           and is_deleted = 0
     </select>
 
     <select id="getLevelTwoByPid" resultMap="GoodsCategoryPo">
         select *
-        from goods_category
+        from oomall_goods_category
         where pid = #{pid}
           and is_deleted = 0
     </select>
 
     <select id="getGoodsCategoryName" parameterType="String" resultMap="GoodsCategoryPo">
         select name
-        from goods_category
+        from oomall_goods_category
         where id = #{id}
           and is_deleted = 0
     </select>
 
     <update id="updateCategory" parameterType="GoodsCategoryPo">
-        update goods_category
+        update oomall_goods_category
 
         <trim prefix="set" suffixOverrides=",">
             <if test="pid != null">
@@ -65,13 +65,13 @@
     </update>
 
     <update id="deleteCategory" parameterType="GoodsCategoryPo">
-        update goods_category
+        update oomall_goods_category
         set is_deleted=1
         where id = #{id}
     </update>
 
     <insert id="createCategory" parameterType="GoodsCategoryPo">
-        insert into goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
+        insert into oomall_goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
         values (#{name}, #{pid}, current_timestamp, current_timestamp, #{beDeleted})
     </insert>
 

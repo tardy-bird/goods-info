@@ -12,7 +12,7 @@
     </resultMap>
 
     <select id="getAllBrands" parameterType="java.lang.String" resultMap="BrandPo">
-        SELECT * FROM brand
+        SELECT * FROM oomall_brand
         WHERE is_deleted=0
         <if test="sort!=null">
             ORDER BY ${sort}
@@ -23,7 +23,7 @@
     </select>
 
     <select id="getBrandsByCondition" parameterType="java.lang.String" resultMap="BrandPo">
-        SELECT * FROM brand
+        SELECT * FROM oomall_brand
         WHERE (id=#{id} OR name=#{name}) and is_deleted=0
         ORDER BY
         <if test="sort != null">
@@ -37,18 +37,18 @@
 
     <select id="getBrandById" resultMap="BrandPo">
         select *
-        from brand
+        from oomall_brand
         where id = #{id}
           and is_deleted = 0
     </select>
 
     <insert id="addBrand" parameterType="BrandPo" useGeneratedKeys="true" keyProperty="id">
-        insert into brand (name, description, pic_url, gmt_create, gmt_modified, is_deleted)
+        insert into oomall_brand (name, description, pic_url, gmt_create, gmt_modified, is_deleted)
         values (#{name}, #{description}, #{picUrl}, now(), now(), #{beDeleted})
     </insert>
 
     <update id="updateBrand" parameterType="BrandPo">
-        update brand
+        update oomall_brand
         <trim prefix="set" suffixOverrides=",">
             <if test="name != null">
                 name=#{name},
@@ -70,7 +70,7 @@
     </update>
 
     <update id="deleteBrand">
-        update brand
+        update oomall_brand
         set is_deleted = 1
         where id = #{id}
     </update>
