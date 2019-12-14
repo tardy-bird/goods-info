@@ -4,7 +4,6 @@ import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +17,12 @@ import java.util.List;
 @Service
 public class GoodsCategoryService {
 
-    @Autowired
+    final
     GoodsCategoryMapper goodsCategoryMapper;
+
+    public GoodsCategoryService(GoodsCategoryMapper goodsCategoryMapper) {
+        this.goodsCategoryMapper = goodsCategoryMapper;
+    }
 
     public List<GoodsCategory> getAllCategories() {
         List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getAllCategories();
@@ -57,19 +60,21 @@ public class GoodsCategoryService {
         return goodsCategoryList;
     }
 
-    public void createCategory(GoodsCategory goodsCategory) {
+    public Boolean createCategory(GoodsCategory goodsCategory) {
         GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
-        goodsCategoryMapper.createCategory(goodsCategoryPo);
+        Integer affectedRows = goodsCategoryMapper.createCategory(goodsCategoryPo);
+        return affectedRows > 0;
     }
 
-    public void updateCategory(GoodsCategory goodsCategory) {
+    public Boolean updateCategory(GoodsCategory goodsCategory) {
         GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
-        // TODO cannot set gmt_modified field
-        goodsCategoryMapper.updateCategory(goodsCategoryPo);
+        Integer affectedRows = goodsCategoryMapper.updateCategory(goodsCategoryPo);
+        return affectedRows > 0;
     }
 
-    public void deleteCategory(Integer id) {
-        goodsCategoryMapper.deleteCategory(id);
+    public Boolean deleteCategory(Integer id) {
+        Integer affectedRows = goodsCategoryMapper.deleteCategory(id);
+        return affectedRows > 0;
     }
 
 

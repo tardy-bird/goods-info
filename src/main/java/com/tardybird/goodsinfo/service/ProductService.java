@@ -1,10 +1,10 @@
 package com.tardybird.goodsinfo.service;
 
+import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,11 +13,19 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    @Autowired
+    final
     ProductMapper productMapper;
+    final
+    GoodsDao goodsDao;
+
+    public ProductService(ProductMapper productMapper, GoodsDao goodsDao) {
+        this.productMapper = productMapper;
+        this.goodsDao = goodsDao;
+    }
 
     public List<Product> getProductByGoodsId(Integer id) {
-        List<ProductPo> productPos = productMapper.getProductByGoodsId(id);
+
+        List<ProductPo> productPos = goodsDao.getProductByGoodsId(id);
         List<Product> productList = new ArrayList<>();
 
         for (ProductPo productPo : productPos) {
@@ -31,24 +39,26 @@ public class ProductService {
         return productList;
     }
 
-    public void createProduct(Product product) {
+    public Boolean createProduct(Product product) {
         ProductPo productPo = ObjectConversion.product2ProductPo(product);
-        productMapper.createProduct(productPo);
+        Integer affectedRows = productMapper.createProduct(productPo);
+        return affectedRows > 0;
     }
 
 
-    public void updateProduct(Product product) {
+    public Boolean updateProduct(Product product) {
         ProductPo productPo = ObjectConversion.product2ProductPo(product);
-        // TODO cannot actually update
-        productMapper.updateProduct(productPo);
+        Integer affectedRows = productMapper.updateProduct(productPo);
+        return affectedRows > 0;
     }
 
     public Product getProductById(Integer id) {
-        ProductPo productPo = productMapper.getProductById(id);
+        ProductPo productPo = goodsDao.findProductById(id);
         return ObjectConversion.productPo2Product(productPo);
     }
 
-    public void deleteProduct(Integer id) {
-        productMapper.deleteProduct(id);
+    public Boolean deleteProduct(Integer id) {
+        Integer affectedRows = productMapper.deleteProduct(id);
+        return affectedRows > 0;
     }
 }

@@ -24,7 +24,8 @@ public class BrandService {
         this.brandMapper = brandMapper;
     }
 
-    public Object getAllBrands(Integer page, Integer limit, String sort, String order) {
+    public Object getAllBrands(Integer page, Integer limit,
+                               String sort, String order) {
         PageHelper.startPage(page, limit);
 
         List<BrandPo> brandPos = brandMapper.getAllBrands(sort, order);
@@ -37,7 +38,8 @@ public class BrandService {
         return ObjectConversion.brandPo2Brand(brandPo);
     }
 
-    public Object getBrandsByCondition(String id, String name, Integer page, Integer limit, String sort, String order) {
+    public Object getBrandsByCondition(String id, String name, Integer page,
+                                       Integer limit, String sort, String order) {
         PageHelper.startPage(page, limit);
 
         List<BrandPo> brandPos = brandMapper.getBrandsByCondition(id, name, sort, order);
@@ -60,20 +62,22 @@ public class BrandService {
     }
 
 
-    public Brand addBrand(Brand brand) {
+    public Boolean addBrand(Brand brand) {
         BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
-        Integer id = brandMapper.addBrand(brandPo);
-        brand.setId(id);
-        return brand;
+        Integer affectedRows = brandMapper.addBrand(brandPo);
+        brand.setId(brandPo.getId());
+        return affectedRows > 0;
     }
 
     public Boolean deleteBrand(Integer id) {
-        return brandMapper.deleteBrand(id);
+        Integer affectedRows = brandMapper.deleteBrand(id);
+        return affectedRows > 0;
     }
 
-    public Integer updateBrand(Brand brand) {
+    public Boolean updateBrand(Brand brand) {
         BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
-        return brandMapper.updateBrand(brandPo);
+        Integer affectedRows = brandMapper.updateBrand(brandPo);
+        return affectedRows > 0;
     }
 
 }
