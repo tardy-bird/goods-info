@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
  * @author nick
  */
 @RestController
-@RequestMapping("/goodsService")
 public class ProductController {
 
     final

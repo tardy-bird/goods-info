@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
  * @author nick
  */
 @RestController
-@RequestMapping("/goodsService")
 public class BrandController {
 
     final
