@@ -12,7 +12,7 @@
         <result property="safetyStock" column="safety_stock"/>
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
-        <result property="beDeleted" column="id_deleted"/>
+        <result property="beDeleted" column="is_deleted"/>
 
     </resultMap>
     <select id="getProductById" resultMap="ProductPo">
