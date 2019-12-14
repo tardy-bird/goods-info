@@ -19,9 +19,14 @@ spring:
     url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
     username: oomall
     password: oomallp@$$w0rd
+    #  datasource:
+    #    url: jdbc:mysql://148.70.28.112/wowomall?useUnicode=true&characterEncoding=utf8&useSSL=false
+    #    username: wowoto
+    #    password: zqhlovekly
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   application:
-    name: goods-info-service
+    name: goodsinfo
 
 mybatis:
   type-aliases-package: com.tardybird.goodsinfo.po
@@ -39,6 +44,7 @@ eureka:
     prefer-ip-address: true
     ip-address: 47.96.159.71
     non-secure-port: 8800
+#    ip-address: localhost
 
 goods:
   #redis缓存失效时间，单位分钟
