@@ -12,6 +12,10 @@ import com.tardybird.goodsinfo.po.ProductPo;
 public class ObjectConversion {
 
     public static BrandPo brand2BrandPo(Brand brand) {
+        if (brand == null) {
+            return null;
+        }
+
         BrandPo brandPo = new BrandPo();
 
         brandPo.setId(brand.getId());
@@ -26,6 +30,10 @@ public class ObjectConversion {
     }
 
     public static Brand brandPo2Brand(BrandPo brandPo) {
+        if (brandPo == null) {
+            return null;
+        }
+
         Brand brand = new Brand();
 
         brand.setId(brandPo.getId());
@@ -40,6 +48,10 @@ public class ObjectConversion {
     }
 
     public static Product productPo2Product(ProductPo productPo) {
+        if (productPo == null) {
+            return null;
+        }
+
         Product product = new Product();
 
         product.setId(productPo.getId());
@@ -56,6 +68,10 @@ public class ObjectConversion {
     }
 
     public static ProductPo product2ProductPo(Product product) {
+        if (product == null) {
+            return null;
+        }
+
         ProductPo productPo = new ProductPo();
 
         productPo.setId(product.getId());
@@ -72,6 +88,10 @@ public class ObjectConversion {
     }
 
     public static GoodsCategory goodsCategoryPo2GoodsCategory(GoodsCategoryPo goodsCategoryPo) {
+        if (goodsCategoryPo == null) {
+            return null;
+        }
+
         GoodsCategory goodsCategory = new GoodsCategory();
 
         goodsCategory.setId(goodsCategoryPo.getId());
@@ -85,6 +105,10 @@ public class ObjectConversion {
     }
 
     public static GoodsCategoryPo goodsCategory2GoodsCategoryPo(GoodsCategory goodsCategory) {
+        if (goodsCategory == null) {
+            return null;
+        }
+
         GoodsCategoryPo goodsCategoryPo = new GoodsCategoryPo();
 
         goodsCategoryPo.setId(goodsCategory.getId());
@@ -98,6 +122,10 @@ public class ObjectConversion {
     }
 
     public static Goods goodsPo2Goods(GoodsPo goodsPo) {
+        if (goodsPo == null) {
+            return null;
+        }
+
         Goods goods = new Goods();
 
         goods.setId(goodsPo.getId());
@@ -126,6 +154,10 @@ public class ObjectConversion {
     }
 
     public static GoodsPo goods2GoodsPo(Goods goods) {
+        if (goods == null) {
+            return null;
+        }
+
         GoodsPo goodsPo = new GoodsPo();
 
         goodsPo.setId(goods.getId());
