@@ -48,16 +48,18 @@
     <update id="updateCategory" parameterType="GoodsCategoryPo">
         update goods_category
 
-        <if test="pid != null">
-            <set>
-                pid=#{pid}
-            </set>
-        </if>
-        <if test="name!=null">
-            <set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pid != null">
+                pid=#{pid},
+            </if>
+            <if test="name!=null">
                 name=#{name}
-            </set>
-        </if>
+            </if>
+            <if test="true">
+                gmt_modified=current_timestamp
+            </if>
+        </trim>
+
 
         where id=#{id} and is_deleted=0
     </update>

@@ -38,14 +38,7 @@
         from goods
     </select>
 
-    <select id="findHotGoods" resultMap="GoodsPo">
-        select *
-        from goods
-        where is_deleted = 0
-          and status = 3
-    </select>
-
-    <select id="findNewGoods" resultMap="GoodsPo">
+    <select id="findNewAndHotGoods" resultMap="GoodsPo">
         select *
         from goods
         where status = 4
@@ -138,10 +131,10 @@
         where id = #{id}
     </update>
 
-    <select id="selectOnSaleGoods" resultType="Integer">
-        select count(status)
-        from goods
-        where status = 0
-    </select>
+    <!--    <select id="selectOnSaleGoods" resultType="Integer">-->
+    <!--        select count(status)-->
+    <!--        from goods-->
+    <!--        where status = 0-->
+    <!--    </select>-->
 
 </mapper>

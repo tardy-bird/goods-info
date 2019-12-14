@@ -43,16 +43,13 @@
     </select>
 
     <insert id="addBrand" parameterType="BrandPo" useGeneratedKeys="true" keyProperty="id">
-        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
         insert into brand (name, description, pic_url, gmt_create, gmt_modified, is_deleted)
         values (#{name}, #{description}, #{picUrl}, now(), now(), #{beDeleted})
     </insert>
 
     <update id="updateBrand" parameterType="BrandPo">
         update brand
-        <set>
+        <trim prefix="set" suffixOverrides=",">
             <if test="name != null">
                 name=#{name},
             </if>
@@ -60,13 +57,15 @@
                 description=#{description},
             </if>
             <if test="picUrl != null">
-                pic_url=#{picUrl}
+                pic_url=#{picUrl},
             </if>
             <if test="beDeleted != null">
-                is_deleted=#{beDeleted}
+                is_deleted=#{beDeleted},
             </if>
-            gmt_modified=now()
-        </set>
+            <if test="true">
+                gmt_modified=current_timestamp,
+            </if>
+        </trim>
         where id = #{id} and is_deleted=0
     </update>
 
