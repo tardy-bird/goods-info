@@ -37,10 +37,13 @@ public class ProductController {
     public Object updateProductById(@PathVariable Integer id,
                                     @RequestBody Product product) {
         if (product == null) {
-            return ResponseUtil.fail();
+            return ResponseUtil.badArgument();
         }
         product.setId(id);
-        productService.updateProduct(product);
+        Boolean ok = productService.updateProduct(product);
+        if (!ok) {
+            return ResponseUtil.updatedDataFailed();
+        }
         return ResponseUtil.ok(product);
     }
 
@@ -52,7 +55,10 @@ public class ProductController {
      */
     @DeleteMapping("/products/{id}")
     public Object deleteProductById(@PathVariable Integer id) {
-        productService.deleteProduct(id);
+        Boolean ok = productService.deleteProduct(id);
+        if (!ok) {
+            return ResponseUtil.updatedDataFailed();
+        }
         return ResponseUtil.ok();
     }
 }

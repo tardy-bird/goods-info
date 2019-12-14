@@ -31,22 +31,29 @@ public class BrandController {
      */
 
     /**
-     * 查看所有品牌
+     * 查看所有品牌 u1
      */
     @GetMapping("/brands")
     public Object listBrand(@RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit,
                             @Sort @RequestParam(defaultValue = "gmt_create") String sort,
                             @Order @RequestParam(defaultValue = "desc") String order) {
-        if (page == null || limit == null || page < 0 || limit < 0 || sort == null || order == null) {
+
+        if (page == null || limit == null || sort == null || order == null) {
             return ResponseUtil.badArgument();
         }
-        Object brands = brandService.getAllBrands(page, limit, sort, order);
-        return ResponseUtil.ok(brands);
+
+        if (page >= 0 || limit > 0 || "desc".equalsIgnoreCase(order) || "asc".equalsIgnoreCase(order)) {
+            Object brands = brandService.getAllBrands(page, limit, sort, order);
+            return ResponseUtil.ok(brands);
+        }
+
+        return ResponseUtil.badArgumentValue();
+
     }
 
     /**
-     * 查看品牌详情
+     * 查看品牌详情 3 u2
      */
     @GetMapping("/brands/{id}")
     public Object getBrandDetails(@NotNull @PathVariable("id") Integer id) {
@@ -59,7 +66,7 @@ public class BrandController {
      */
 
     /**
-     * 根据条件搜索品牌
+     * 根据条件搜索品牌 1
      */
     @GetMapping("/admins/brands")
     public Object getBrandsByCondition(@NotNull String id, String name,
@@ -67,14 +74,23 @@ public class BrandController {
                                        @RequestParam(defaultValue = "10") Integer limit,
                                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (id == null || name == null || page == null || limit == null || page < 0 || limit < 0) {
+        if (id == null || name == null || page == null || limit == null) {
             return ResponseUtil.badArgument();
         }
+
+        if (page < 0 || limit < 0) {
+            return ResponseUtil.badArgumentValue();
+        }
+
         Object brands = brandService.getBrandsByCondition(id, name, page, limit, sort, order);
         return ResponseUtil.ok(brands);
     }
 
-    private String handleUploadPicture(MultipartFile file) {
+    @PostMapping("/pictures")
+    public Object handleUploadPicture(@RequestBody MultipartFile file) {
+        if (file == null) {
+            return ResponseUtil.badArgument();
+        }
         String path = "/var/www/tardybird/upload/"
                 + IdUtil.getValue(8)
                 + file.getOriginalFilename();
@@ -82,48 +98,53 @@ public class BrandController {
         if (ok.equals(FileUploadUtil.upload(file, path))) {
             // not recommend (hard code)
             String prefix = "http://47.96.159.71:6180";
-            return prefix + path;
+            return ResponseUtil.ok(prefix + path);
         }
-        return null;
+        return ResponseUtil.fail();
     }
 
     /**
-     * 创建一个品牌
+     * 创建一个品牌 2
      */
     @PostMapping("/brands")
-    public Object addBrand(@RequestBody MultipartFile file, Brand brand) {
+    public Object addBrand(@RequestBody Brand brand) {
         if (brand == null) {
-            return ResponseUtil.fail();
+            return ResponseUtil.badArgument();
         }
-        String path = handleUploadPicture(file);
-        brand.setPicUrl(path);
-        Brand resultBrand = brandService.addBrand(brand);
-        return ResponseUtil.ok(resultBrand);
+        Boolean ok = brandService.addBrand(brand);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
+        return ResponseUtil.ok(brand);
     }
 
+
     /**
-     * 修改单个品牌的信息
+     * 修改单个品牌的信息 4
      */
     @PutMapping("/brands/{id}")
     public Object updateBrandById(@NotNull @PathVariable("id") Integer id,
-                                  @RequestBody MultipartFile file,
                                   @RequestBody Brand brand) {
         if (brand == null) {
-            return ResponseUtil.fail();
+            return ResponseUtil.badArgument();
         }
-        String path = handleUploadPicture(file);
-        brand.setPicUrl(path);
         brand.setId(id);
-        brandService.updateBrand(brand);
+        Boolean ok = brandService.updateBrand(brand);
+        if (!ok) {
+            return ResponseUtil.updatedDataFailed();
+        }
         return ResponseUtil.ok(brand);
     }
 
     /**
-     * 删除一个品牌
+     * 删除一个品牌 5
      */
     @DeleteMapping("/brands/{id}")
     public Object deleteBrandById(@PathVariable("id") Integer id) {
-        brandService.deleteBrand(id);
+        Boolean ok = brandService.deleteBrand(id);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
         return ResponseUtil.ok();
     }
 

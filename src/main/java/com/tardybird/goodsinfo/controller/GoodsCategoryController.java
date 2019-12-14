@@ -3,7 +3,6 @@ package com.tardybird.goodsinfo.controller;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.service.GoodsCategoryService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +20,25 @@ public class GoodsCategoryController {
     /**
      * 获取分类数据
      */
-    @Autowired
+    final
     GoodsCategoryService goodsCategoryService;
 
+    public GoodsCategoryController(GoodsCategoryService goodsCategoryService) {
+        this.goodsCategoryService = goodsCategoryService;
+    }
+
+    /**
+     * xxx 1 u1
+     *
+     * @return x
+     */
     @GetMapping("/categories")
     public Object listGoodsCategory() {
         return ResponseUtil.okList(goodsCategoryService.getAllCategories());
     }
 
     /**
-     * 获取分类详情
+     * 获取分类详情 3 u4
      */
     @GetMapping("/categories/{id}")
     public Object getSingleCategory(@PathVariable("id") Integer id) {
@@ -38,7 +46,7 @@ public class GoodsCategoryController {
     }
 
     /**
-     * 获取1级种类
+     * 获取1级种类 u2
      */
     @GetMapping("/categories/l1")
     public Object listOneLevelGoodsCategory() {
@@ -48,7 +56,7 @@ public class GoodsCategoryController {
 
 
     /**
-     * 获取当前一级分类下的二级分类
+     * 获取当前一级分类下的二级分类 u3
      */
     @GetMapping("/categories/l1/{id}/l2")
     public Object listSecondLevelGoodsCategoryById(@PathVariable("id") Integer pid) {
@@ -61,16 +69,22 @@ public class GoodsCategoryController {
      */
 
     /**
-     * 新建一个分类
+     * 新建一个分类 2
      */
     @PostMapping("/categories")
     public Object addGoodsCategory(@RequestBody GoodsCategory goodsCategory) {
-        goodsCategoryService.createCategory(goodsCategory);
-        return ResponseUtil.ok();
+        if (goodsCategory == null) {
+            return ResponseUtil.badArgument();
+        }
+        Boolean ok = goodsCategoryService.createCategory(goodsCategory);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
+        return ResponseUtil.ok(goodsCategory);
     }
 
     /**
-     * 修改分类信息
+     * 修改分类信息 4
      */
     @PutMapping("/categories/{id}")
     public Object updateCategory(@PathVariable("id") Integer id, @RequestBody GoodsCategory goodsCategory) {
@@ -78,16 +92,22 @@ public class GoodsCategoryController {
             return ResponseUtil.badArgument();
         }
         goodsCategory.setId(id);
-        goodsCategoryService.updateCategory(goodsCategory);
-        return ResponseUtil.ok();
+        Boolean ok = goodsCategoryService.updateCategory(goodsCategory);
+        if (!ok) {
+            return ResponseUtil.updatedDataFailed();
+        }
+        return ResponseUtil.ok(goodsCategory);
     }
 
     /**
-     * 删除单个分类
+     * 删除单个分类 5
      */
     @DeleteMapping("/categories/{id}")
     public Object deleteCategory(@PathVariable("id") Integer id) {
-        goodsCategoryService.deleteCategory(id);
+        Boolean ok = goodsCategoryService.deleteCategory(id);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
         return ResponseUtil.ok();
     }
 

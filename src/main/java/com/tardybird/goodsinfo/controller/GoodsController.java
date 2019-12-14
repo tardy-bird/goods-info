@@ -3,8 +3,10 @@ package com.tardybird.goodsinfo.controller;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.service.ProductService;
+import com.tardybird.goodsinfo.util.ObjectConversion;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,20 +20,18 @@ import java.util.List;
 @RequestMapping("/goodsService")
 public class GoodsController {
 
-    final
-    GoodsService goodsService;
+    final GoodsService goodsService;
+    final ProductService productService;
+    final GoodsDao goodsDao;
 
-    final
-    ProductService productService;
-
-    final
-    GoodsDao goodsDao;
-
-    public GoodsController(GoodsService goodsService, GoodsDao goodsDao, ProductService productService) {
+    public GoodsController(GoodsService goodsService,
+                           GoodsDao goodsDao,
+                           ProductService productService) {
         this.goodsService = goodsService;
         this.goodsDao = goodsDao;
         this.productService = productService;
     }
+
     /*
      * ========= following are wx apis ==============
      */
@@ -53,9 +53,14 @@ public class GoodsController {
     public Object listGoods(String goodsSn, String name,
                             @RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
-        if (page == null || limit == null || page < 0 || limit < 0) {
+        if (page == null || limit == null) {
             return ResponseUtil.badArgument();
         }
+
+        if (page < 0 || limit < 0) {
+            return ResponseUtil.badArgumentValue();
+        }
+
         Object goodsList = goodsService.getAllGoodsByConditions(goodsSn, name, page, limit);
         return ResponseUtil.ok(goodsList);
     }
@@ -63,9 +68,14 @@ public class GoodsController {
     @GetMapping("/admins/goods")
     public Object listGoods(@RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
-        if (page == null || limit == null || page < 0 || limit < 0) {
+        if (page == null || limit == null) {
             return ResponseUtil.badArgument();
         }
+
+        if (page < 0 || limit < 0) {
+            return ResponseUtil.badArgumentValue();
+        }
+
         Object object = goodsService.getAllGoodsByConditions(null, null, page, limit);
         return ResponseUtil.ok(object);
     }
@@ -74,11 +84,11 @@ public class GoodsController {
     /**
      * 查看推荐商品
      */
-    @GetMapping("/recommendedGoods")
-    public Object getRecommendedGoods() {
-        //TODO what ?
-        return null;
-    }
+//    @GetMapping("/recommendedGoods")
+//    public Object getRecommendedGoods() {
+//        //TODO what ?
+//        return null;
+//    }
 
     /*
      * ========= following are admin apis ==============
@@ -92,17 +102,23 @@ public class GoodsController {
         if (goods == null) {
             return ResponseUtil.badArgument();
         }
-        goodsService.createGoods(goods);
+
+        Boolean ok = goodsService.createGoods(goods);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
         return ResponseUtil.ok(goods);
     }
 
     /**
      * 根据id获取某个商品
+     * 提供一个接口给 collect、comment、footprint 调用,获取 goods 信息
      */
     @GetMapping("/goods/{id}")
     public Object getGoodsById(@PathVariable("id") Integer id) {
         Goods goods = goodsService.getGoodsById(id);
-        return ResponseUtil.ok(goods);
+        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+        return ResponseUtil.ok(goodsPo);
     }
 
     /**
@@ -127,9 +143,12 @@ public class GoodsController {
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
         if (product == null) {
-            return ResponseUtil.fail();
+            return ResponseUtil.badArgument();
         }
-        productService.createProduct(product);
+        Boolean ok = productService.createProduct(product);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
         product.setId(id);
         return ResponseUtil.ok(product);
     }
@@ -145,7 +164,10 @@ public class GoodsController {
         }
         goods.setId(id);
         goods.setGmtModified(LocalDateTime.now());
-        goodsService.updateGoods(goods);
+        Boolean ok = goodsService.updateGoods(goods);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
         return ResponseUtil.ok(goods);
     }
 
@@ -154,8 +176,11 @@ public class GoodsController {
      */
     @DeleteMapping("/goods/{id}")
     public Object deleteGoodsById(@PathVariable("id") Integer id) {
-        Boolean status = goodsService.deleteGood(id);
-        return ResponseUtil.ok(status);
+        Boolean ok = goodsService.deleteGood(id);
+        if (!ok) {
+            return ResponseUtil.serious();
+        }
+        return ResponseUtil.ok();
     }
 
 }
