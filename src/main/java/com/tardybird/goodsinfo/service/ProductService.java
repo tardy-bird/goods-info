@@ -2,7 +2,9 @@ package com.tardybird.goodsinfo.service;
 
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
+import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,12 @@ public class ProductService {
     ProductMapper productMapper;
     final
     GoodsDao goodsDao;
+    final GoodsMapper goodsMapper;
 
-    public ProductService(ProductMapper productMapper, GoodsDao goodsDao) {
+    public ProductService(ProductMapper productMapper, GoodsDao goodsDao, GoodsMapper goodsMapper) {
         this.productMapper = productMapper;
         this.goodsDao = goodsDao;
+        this.goodsMapper = goodsMapper;
     }
 
     public List<Product> getProductByGoodsId(Integer id) {
@@ -31,7 +35,7 @@ public class ProductService {
         for (ProductPo productPo : productPos) {
             Product product = ObjectConversion.productPo2Product(productPo);
 
-            //TODO set actual GoodsPo
+            //TODO
             product.setGoodsPo(null);
 
             productList.add(product);
@@ -53,8 +57,14 @@ public class ProductService {
     }
 
     public Product getProductById(Integer id) {
+
         ProductPo productPo = goodsDao.findProductById(id);
-        return ObjectConversion.productPo2Product(productPo);
+
+        Product product = ObjectConversion.productPo2Product(productPo);
+        GoodsPo goodsPo = goodsDao.getGoodsById(productPo.getGoodsId());
+        product.setGoodsPo(goodsPo);
+
+        return product;
     }
 
     public Boolean deleteProduct(Integer id) {
