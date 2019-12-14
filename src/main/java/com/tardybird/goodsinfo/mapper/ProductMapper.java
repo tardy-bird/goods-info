@@ -29,27 +29,29 @@ public interface ProductMapper {
      */
     ProductPo getProductById(@Param("id") Integer id);
 
+    List<Integer> findProductIdsByGoodsId(@Param("id") Integer id);
+
     /**
      * 新建一个货品
      *
      * @param product z
      * @return z
      */
-    int createProduct(ProductPo product);
+    Integer createProduct(ProductPo product);
 
     /**
      * 更新一个货品信息
      *
-     * @param product
-     * @return
+     * @param product x
+     * @return x
      */
-    int updateProduct(ProductPo product);
+    Integer updateProduct(ProductPo product);
 
     /**
      * 删除一个商品
      *
-     * @param id
-     * @return
+     * @param id x
+     * @return x
      */
-    int deleteProduct(@Param("id") Integer id);
+    Integer deleteProduct(@Param("id") Integer id);
 }

@@ -44,24 +44,25 @@ public interface GoodsCategoryMapper {
 
     /**
      * 删除分类
-     * @param id
-     * @return
+     *
+     * @param id x
+     * @return x
      */
-    int deleteCategory(@Param("id") Integer id);
+    Integer deleteCategory(@Param("id") Integer id);
 
     /**
      * 更新分类
      *
-     * @param goodsCategory
-     * @return
+     * @param goodsCategory x
+     * @return x
      */
-    int updateCategory(GoodsCategoryPo goodsCategory);
+    Integer updateCategory(GoodsCategoryPo goodsCategory);
 
     /**
      * 新建分类
      *
-     * @param goodsCategory
-     * @return
+     * @param goodsCategory x
+     * @return x
      */
-    int createCategory(GoodsCategoryPo goodsCategory);
+    Integer createCategory(GoodsCategoryPo goodsCategory);
 }

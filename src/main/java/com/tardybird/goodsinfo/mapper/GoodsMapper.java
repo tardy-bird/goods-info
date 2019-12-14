@@ -18,16 +18,9 @@ public interface GoodsMapper {
     /**
      * 获得所有商品
      *
-     * @return
-     */
-    List<GoodsPo> getAllGoods();
-
-    /**
-     * （用户）默认获得热卖商品列表（只有id和pic）
-     *
      * @return x
      */
-    List<GoodsPo> findHotGoods();
+    List<GoodsPo> getAllGoods();
 
 
     /**
@@ -35,7 +28,7 @@ public interface GoodsMapper {
      *
      * @return x
      */
-    List<GoodsPo> findNewGoods();
+    List<GoodsPo> findNewAndHotGoods();
 
     /**
      * xx
@@ -61,7 +54,7 @@ public interface GoodsMapper {
      * @param goods x
      * @return x
      */
-    int updateGoods(GoodsPo goods);
+    Integer updateGoods(GoodsPo goods);
 
     /**
      * 新建一个商品
@@ -69,16 +62,16 @@ public interface GoodsMapper {
      * @param goods x
      * @return x
      */
-    int createGoods(GoodsPo goods);
+    Integer createGoods(GoodsPo goods);
 
     /**
      * 路基删除商品
+     *
      * @param id x
      * @return x
      */
-    int deleteGoods(@Param("id") Integer id);
+    Integer deleteGoods(@Param("id") Integer id);
 
-    Integer selectOnSaleGoods();
 
 
 }

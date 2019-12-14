@@ -51,7 +51,7 @@ public interface BrandMapper {
      * @param id xxx
      * @return xxx
      */
-    boolean deleteBrand(@Param("id") Integer id);
+    Integer deleteBrand(@Param("id") Integer id);
 
     /**
      * 更新商品
@@ -59,5 +59,5 @@ public interface BrandMapper {
      * @param brand xxx
      * @return xxx
      */
-    int updateBrand(BrandPo brand);
+    Integer updateBrand(BrandPo brand);
 }
