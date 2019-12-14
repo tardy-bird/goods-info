@@ -69,9 +69,13 @@ public class GoodsDao {
         String key = "Product_" + id;
         ProductPo product = redisTemplateOfProducts.opsForValue().get(key);
         if (product == null) {
+
+            System.out.println("find database.");
             product = productMapper.getProductById(id);
             redisTemplateOfProducts.opsForValue().set(key, product);
+
         }
+
         return product;
     }
 
@@ -97,7 +101,10 @@ public class GoodsDao {
 
         for (GoodsPo goods : cachedGoodsList) {
             String key = "Goods_" + goods.getId();
-            redisTemplateOfGoods.opsForValue().set(key, goods);
+            GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
+            if (goodsPo == null) {
+                redisTemplateOfGoods.opsForValue().set(key, goods);
+            }
         }
 
     }
