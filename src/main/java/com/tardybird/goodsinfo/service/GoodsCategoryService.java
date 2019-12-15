@@ -97,7 +97,9 @@ public class GoodsCategoryService {
             }
 
         }
+
         Integer affectedRows = goodsCategoryMapper.deleteCategory(id);
+        goodsMapper.updateCategoryId(id);
         return affectedRows > 0;
     }
 
