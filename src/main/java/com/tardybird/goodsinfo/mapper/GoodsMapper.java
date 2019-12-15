@@ -48,6 +48,10 @@ public interface GoodsMapper {
      */
     GoodsPo getGoodsById(@Param("id") Integer id);
 
+    List<GoodsPo> findGoodsByBrandId(@Param("brandId") String brandId);
+
+    List<GoodsPo> findGoodsByGoodsCategoryId(@Param("id") String id);
+
     /**
      * 更新商品信息
      *

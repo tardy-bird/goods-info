@@ -54,4 +54,6 @@ public interface ProductMapper {
      * @return x
      */
     Integer deleteProduct(@Param("id") Integer id);
+
+    Integer updateProductByGoodsId(@Param("id") Integer id);
 }

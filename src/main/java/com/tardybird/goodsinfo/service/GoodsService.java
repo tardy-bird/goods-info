@@ -6,9 +6,11 @@ import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
+import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +25,15 @@ public class GoodsService {
     final GoodsMapper goodsMapper;
     final GoodsCategoryMapper goodsCategoryMapper;
     final GoodsDao goodsDao;
+    final ProductMapper productMapper;
 
     public GoodsService(GoodsMapper goodsMapper,
                         GoodsCategoryMapper goodsCategoryMapper,
-                        GoodsDao goodsDao) {
+                        GoodsDao goodsDao, ProductMapper productMapper) {
         this.goodsMapper = goodsMapper;
         this.goodsCategoryMapper = goodsCategoryMapper;
         this.goodsDao = goodsDao;
+        this.productMapper = productMapper;
     }
 
 
@@ -77,7 +81,10 @@ public class GoodsService {
         return affectedRows > 0;
     }
 
+    @Transactional
     public Boolean deleteGood(Integer id) {
-        return goodsMapper.deleteGoods(id) > 0;
+        Integer deleteProductRows = productMapper.updateProductByGoodsId(id);
+        Integer deleteGoodsRows = goodsMapper.deleteGoods(id);
+        return deleteProductRows > 0 && deleteGoodsRows > 0;
     }
 }

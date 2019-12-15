@@ -52,6 +52,21 @@
           and is_deleted = 0
     </select>
 
+    <select id="findGoodsByGoodsCategoryId" parameterType="java.lang.String"
+            resultMap="GoodsPo">
+        select *
+        from oomall_goods
+        where is_deleted = 0
+          and goods_category_id = #{id}
+    </select>
+
+    <select id="findGoodsByBrandId" parameterType="java.lang.String" resultMap="GoodsPo">
+        select *
+        from oomall_goods
+        where is_deleted = 0
+          and brand_id = #{brandId}
+    </select>
+
     <insert id="createGoods" parameterType="GoodsPo" useGeneratedKeys="true"
             keyProperty="id">
         insert into oomall_goods(name, gmt_create, gmt_modified, goods_sn, short_name, description, detail, brief,

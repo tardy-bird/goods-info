@@ -157,7 +157,7 @@ public class GoodsController {
      * 根据id更新商品信息
      */
     @PutMapping("/goods/{id}")
-    public Object updateGoodsById(@PathVariable("id") Integer id, Goods goods) {
+    public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();
         }

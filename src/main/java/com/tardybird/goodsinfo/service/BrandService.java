@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.mapper.BrandMapper;
+import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.po.BrandPo;
+import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,12 @@ public class BrandService {
 
     final
     BrandMapper brandMapper;
+    final
+    GoodsMapper goodsMapper;
 
-    public BrandService(BrandMapper brandMapper) {
+    public BrandService(BrandMapper brandMapper, GoodsMapper goodsMapper) {
         this.brandMapper = brandMapper;
+        this.goodsMapper = goodsMapper;
     }
 
     public Object getAllBrands(Integer page, Integer limit,
@@ -35,7 +40,16 @@ public class BrandService {
 
     public Brand getBrandById(Integer id) {
         BrandPo brandPo = brandMapper.getBrandById(id);
-        return ObjectConversion.brandPo2Brand(brandPo);
+
+        if (brandPo == null) {
+            return null;
+        }
+
+        List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
+        Brand brand = ObjectConversion.brandPo2Brand(brandPo);
+        brand.setGoodsPoList(goodsPos);
+
+        return brand;
     }
 
     public Object getBrandsByCondition(String id, String name, Integer page,
@@ -53,8 +67,8 @@ public class BrandService {
 
             Brand brand = ObjectConversion.brandPo2Brand(brandPo);
 
-            //TODO find Goods to add
-            brand.setGoodsPoList(null);
+            List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
+            brand.setGoodsPoList(goodsPos);
 
             brandList.add(brand);
         }

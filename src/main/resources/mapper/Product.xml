@@ -78,4 +78,10 @@
         where id = #{id}
     </update>
 
+    <update id="updateProductByGoodsId" parameterType="java.lang.Integer">
+        update oomall_product
+        set oomall_product.is_deleted=1
+        where oomall_product.goods_id = #{id}
+    </update>
+
 </mapper>
