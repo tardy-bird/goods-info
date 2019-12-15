@@ -72,7 +72,6 @@ public class GoodsDao {
         ProductPo product = redisTemplateOfProducts.opsForValue().get(key);
         if (product == null) {
 
-            System.out.println("find database.");
             product = productMapper.getProductById(id);
             redisTemplateOfProducts.opsForValue().set(key, product);
 

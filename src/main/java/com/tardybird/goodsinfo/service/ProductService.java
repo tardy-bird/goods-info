@@ -60,6 +60,10 @@ public class ProductService {
 
         ProductPo productPo = goodsDao.findProductById(id);
 
+        if (productPo == null) {
+            return null;
+        }
+
         Product product = ObjectConversion.productPo2Product(productPo);
         GoodsPo goodsPo = goodsDao.getGoodsById(productPo.getGoodsId());
         product.setGoodsPo(goodsPo);
