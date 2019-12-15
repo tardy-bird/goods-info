@@ -1,3 +1,105 @@
+######################################################################
+
+# ZLH
+
+#pagehelper:
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+#  helper-dialect: mysql
+#
+#spring:
+#  redis:
+#    host: 47.97.43.141
+#    port: 6379
+#    timeout: 20000
+#    password:
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        max-wait:
+#        min-idle: 0
+#  datasource:
+#    url: jdbc:mysql://47.97.43.141/ooad1?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    username: root
+#    password: 12345678
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  application:
+#    name: goodsinfo
+#
+#mybatis:
+#  type-aliases-package: com.tardybird.goodsinfo.po
+#  mapper-locations: classpath:mapper/*.xml
+#
+#server:
+#  port: 8810
+#  address: 0.0.0.0
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://47.97.43.141:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 47.96.159.71
+#    non-secure-port: 8810
+##    ip-address: localhost
+#
+#goods:
+#  #redis缓存失效时间，单位分钟
+#  redisExpireTime: 1
+#  #预提库存数量
+#  preDeductQuantity: 3
+
+#pagehelper:
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+#  helper-dialect: mysql
+#
+#spring:
+#  redis:
+#    host: 47.96.159.71
+#    port: 6379
+#    timeout: 20000
+#    password:
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        max-wait:
+#        min-idle: 0
+#  datasource:
+#    url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+#    username: oomall
+#    password: oomallp@$$w0rd
+#
+#  application:
+#    name: goodsinfo
+#
+#mybatis:
+#  type-aliases-package: com.tardybird.goodsinfo.po
+#  mapper-locations: classpath:mapper/*.xml
+#
+#server:
+#  port: 8820
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://47.96.159.71:8888/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 47.96.159.71
+#    non-secure-port: 8820
+##    ip-address: localhost
+#
+#goods:
+#  #redis缓存失效时间，单位分钟
+#  redisExpireTime: 1
+#  #预提库存数量
+#  preDeductQuantity: 3
+
 pagehelper:
   reasonable: true
   support-methods-arguments: true
@@ -6,7 +108,7 @@ pagehelper:
 
 spring:
   redis:
-    host: 47.96.159.71
+    host: 129.28.122.147
     port: 6379
     timeout: 20000
     password:
@@ -16,14 +118,9 @@ spring:
         max-wait:
         min-idle: 0
   datasource:
-    url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
-    username: oomall
-    password: oomallp@$$w0rd
-    #  datasource:
-    #    url: jdbc:mysql://148.70.28.112/wowomall?useUnicode=true&characterEncoding=utf8&useSSL=false
-    #    username: wowoto
-    #    password: zqhlovekly
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://148.70.28.112/oomall?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: wowoto
+    password: zqhlovekly
 
   application:
     name: goodsinfo
@@ -33,8 +130,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 server:
-  port: 8800
-  address: 0.0.0.0
+  port: 8822
 
 eureka:
   client:
@@ -43,7 +139,7 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: 47.96.159.71
-    non-secure-port: 8800
+    non-secure-port: 8822
 #    ip-address: localhost
 
 goods:
@@ -51,3 +147,5 @@ goods:
   redisExpireTime: 1
   #预提库存数量
   preDeductQuantity: 3
+
+
