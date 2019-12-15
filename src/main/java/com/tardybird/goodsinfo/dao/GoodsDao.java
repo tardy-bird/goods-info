@@ -6,6 +6,7 @@ import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class GoodsDao {
     }
 
 
+    @Transactional
     public List<ProductPo> getProductByGoodsId(Integer id) {
         String key = "Goods_Product_" + id;
         List<String> productIds = redisTemplateOfString.opsForValue().get(key);

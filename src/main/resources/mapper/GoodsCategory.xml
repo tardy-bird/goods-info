@@ -20,7 +20,7 @@
     <select id="getLevelOneCategories" resultMap="GoodsCategoryPo">
         select *
         from oomall_goods_category
-        where pid is not null
+        where pid is null
           and is_deleted = 0
     </select>
 

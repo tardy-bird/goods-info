@@ -60,6 +60,8 @@ public interface GoodsMapper {
      */
     Integer updateGoods(GoodsPo goods);
 
+    Integer updateCategoryId(Integer goodsCategoryId);
+
     /**
      * 新建一个商品
      *

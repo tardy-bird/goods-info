@@ -7,6 +7,7 @@ import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,26 @@ public class GoodsCategoryService {
         return affectedRows > 0;
     }
 
+    @Transactional
     public Boolean deleteCategory(Integer id) {
+        GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
+
+        // 一级分类
+        if (goodsCategoryPo.getPid() == null) {
+            List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getLevelTwoByPid(id);
+
+            for (GoodsCategoryPo categoryPo : goodsCategoryPos) {
+                Integer categoryId = categoryPo.getId();
+                goodsCategoryMapper.deleteCategory(categoryId);
+
+                // 更新相关商品的种类
+                Integer status = goodsMapper.updateCategoryId(categoryId);
+                if (status <= 0) {
+                    return false;
+                }
+            }
+
+        }
         Integer affectedRows = goodsCategoryMapper.deleteCategory(id);
         return affectedRows > 0;
     }

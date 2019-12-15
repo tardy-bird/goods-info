@@ -141,6 +141,12 @@
         where id=#{id} and is_deleted=0
     </update>
 
+    <update id="updateCategoryId" parameterType="java.lang.Integer">
+        update oomall_goods
+        set oomall_goods.goods_category_id=null
+        where oomall_goods.goods_category_id = #{goodsCategoryId}
+    </update>
+
     <update id="deleteGoods" parameterType="GoodsPo">
         update oomall_goods
         set is_deleted = 1
