@@ -56,6 +56,10 @@ public class BrandController {
      */
     @GetMapping("/brands/{id}")
     public Object getBrandDetails(@NotNull @PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         Brand brand = brandService.getBrandById(id);
         return ResponseUtil.ok(brand);
     }
@@ -124,6 +128,10 @@ public class BrandController {
     @PutMapping("/brands/{id}")
     public Object updateBrandById(@NotNull @PathVariable("id") Integer id,
                                   @RequestBody Brand brand) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         if (brand == null) {
             return ResponseUtil.badArgument();
         }
@@ -140,6 +148,10 @@ public class BrandController {
      */
     @DeleteMapping("/brands/{id}")
     public Object deleteBrandById(@PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         Boolean ok = brandService.deleteBrand(id);
         if (!ok) {
             return ResponseUtil.serious();

@@ -40,6 +40,10 @@ public class GoodsController {
      */
     @GetMapping("/categories/{id}/goods")
     public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         Goods goods = goodsService.getGoodsById(id);
         //TODO check (NOT COMPLETE)
         return ResponseUtil.ok(goods);
@@ -115,6 +119,10 @@ public class GoodsController {
      */
     @GetMapping("/goods/{id}")
     public Object getGoodsById(@PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         Goods goods = goodsService.getGoodsById(id);
         GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
         return ResponseUtil.ok(goodsPo);
@@ -128,6 +136,10 @@ public class GoodsController {
      */
     @GetMapping("/goods/{id}/products")
     public Object listProductByGoodsId(@PathVariable Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         List<Product> products = productService.getProductByGoodsId(id);
         return ResponseUtil.ok(products);
     }
@@ -141,6 +153,10 @@ public class GoodsController {
      */
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
+        if (id <= 0)
+        {
+            ResponseUtil.badArgumentValue();
+        }
         if (product == null) {
             return ResponseUtil.badArgument();
         }
@@ -158,11 +174,16 @@ public class GoodsController {
      */
     @PutMapping("/goods/{id}")
     public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         if (goods == null) {
             return ResponseUtil.badArgument();
         }
         goods.setId(id);
-        goods.setGmtModified(LocalDateTime.now());
+        //
+        // goods.setGmtModified(LocalDateTime.now());
         Boolean ok = goodsService.updateGoods(goods);
         if (!ok) {
             return ResponseUtil.serious();
@@ -175,6 +196,10 @@ public class GoodsController {
      */
     @DeleteMapping("/goods/{id}")
     public Object deleteGoodsById(@PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         Boolean ok = goodsService.deleteGood(id);
         if (!ok) {
             return ResponseUtil.serious();

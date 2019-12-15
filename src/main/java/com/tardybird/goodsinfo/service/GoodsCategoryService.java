@@ -77,7 +77,7 @@ public class GoodsCategoryService {
         return affectedRows > 0;
     }
 
-    @Transactional
+
     public Boolean deleteCategory(Integer id) {
         GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
 

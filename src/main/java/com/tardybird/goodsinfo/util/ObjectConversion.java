@@ -98,6 +98,7 @@ public class ObjectConversion {
         goodsCategory.setName(goodsCategoryPo.getName());
         goodsCategory.setPid(goodsCategoryPo.getPid());
         goodsCategory.setGmtCreate(goodsCategoryPo.getGmtCreate());
+        goodsCategory.setPicUrl(goodsCategoryPo.getPicUrl());
         goodsCategory.setGmtModified(goodsCategoryPo.getGmtModified());
         goodsCategory.setBeDeleted(goodsCategoryPo.getBeDeleted());
 
@@ -114,6 +115,7 @@ public class ObjectConversion {
         goodsCategoryPo.setId(goodsCategory.getId());
         goodsCategoryPo.setName(goodsCategory.getName());
         goodsCategoryPo.setPid(goodsCategory.getPid());
+        goodsCategoryPo.setPicUrl(goodsCategory.getPicUrl());
         goodsCategoryPo.setGmtCreate(goodsCategory.getGmtCreate());
         goodsCategoryPo.setGmtModified(goodsCategory.getGmtModified());
         goodsCategoryPo.setBeDeleted(goodsCategory.getBeDeleted());

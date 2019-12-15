@@ -41,6 +41,10 @@ public class GoodsCategoryController {
      */
     @GetMapping("/categories/{id}")
     public Object getSingleCategory(@PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         return ResponseUtil.ok(goodsCategoryService.getCategory(id));
     }
 
@@ -59,6 +63,10 @@ public class GoodsCategoryController {
      */
     @GetMapping("/categories/l1/{id}/l2")
     public Object listSecondLevelGoodsCategoryById(@PathVariable("id") Integer pid) {
+        if(pid<=0)
+        {
+            return ResponseUtil.badArgumentValue();
+        }
         List<GoodsCategory> goodsCategories = goodsCategoryService.getLevelTwoByPid(pid);
         return ResponseUtil.okList(goodsCategories);
     }
@@ -87,6 +95,9 @@ public class GoodsCategoryController {
      */
     @PutMapping("/categories/{id}")
     public Object updateCategory(@PathVariable("id") Integer id, @RequestBody GoodsCategory goodsCategory) {
+        if(id<=0)
+        {return ResponseUtil.badArgumentValue();}
+
         if (goodsCategory == null) {
             return ResponseUtil.badArgument();
         }
@@ -103,6 +114,9 @@ public class GoodsCategoryController {
      */
     @DeleteMapping("/categories/{id}")
     public Object deleteCategory(@PathVariable("id") Integer id) {
+        if(id<=0) {
+            return ResponseUtil.badArgumentValue();
+        }
         Boolean ok = goodsCategoryService.deleteCategory(id);
         if (!ok) {
             return ResponseUtil.serious();
