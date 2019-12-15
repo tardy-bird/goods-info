@@ -63,9 +63,11 @@ class BrandServiceTest {
     void updateBrand() {
         Brand brand = new Brand();
         brand.setId(1);
-        brand.setDescription("this is NEW brand, created by nick.");
-        Boolean ok = brandService.updateBrand(brand);
-        Assertions.assertTrue(ok);
+        brand.setDescription("th is NEW brand, created by nick.");
+//        Boolean ok = brandService.updateBrand(brand);
+//        Assertions.assertTrue(ok);
+
+        brandService.updateBrand(brand);
     }
 
     @Test

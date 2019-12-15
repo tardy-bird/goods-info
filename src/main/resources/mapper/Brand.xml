@@ -49,7 +49,7 @@
 
     <update id="updateBrand" parameterType="BrandPo">
         update oomall_brand
-        <trim prefix="set" suffixOverrides=",">
+        <set>
             <if test="name != null">
                 name=#{name},
             </if>
@@ -63,9 +63,9 @@
                 is_deleted=#{beDeleted},
             </if>
             <if test="true">
-                gmt_modified=current_timestamp,
+                gmt_modified=current_timestamp
             </if>
-        </trim>
+        </set>
         where id = #{id} and is_deleted=0
     </update>
 

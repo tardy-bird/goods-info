@@ -47,18 +47,17 @@
 
     <update id="updateCategory" parameterType="GoodsCategoryPo">
         update oomall_goods_category
-
-        <trim prefix="set" suffixOverrides=",">
+        <set>
             <if test="pid != null">
                 pid=#{pid},
             </if>
             <if test="name!=null">
-                name=#{name}
+                name=#{name},
             </if>
             <if test="true">
                 gmt_modified=current_timestamp
             </if>
-        </trim>
+        </set>
 
 
         where id=#{id} and is_deleted=0

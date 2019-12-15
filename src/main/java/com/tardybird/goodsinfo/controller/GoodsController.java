@@ -64,7 +64,7 @@ public class GoodsController {
         return ResponseUtil.ok(goodsList);
     }
 
-    @GetMapping("/admins/goods")
+    @GetMapping("/admin/goods")
     public Object listGoods(@RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
         if (page == null || limit == null) {
@@ -96,7 +96,7 @@ public class GoodsController {
     /**
      * 新建/上架一个商品
      */
-    @PostMapping("/admin/goods")
+    @PostMapping("/goods")
     public Object addGoods(Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();

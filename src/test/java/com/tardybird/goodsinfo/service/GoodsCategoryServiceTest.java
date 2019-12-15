@@ -49,7 +49,7 @@ class GoodsCategoryServiceTest {
     void updateCategory() {
         GoodsCategory goodsCategory = new GoodsCategory();
         goodsCategory.setId(3);
-        goodsCategory.setName("this is NEW category");
+        goodsCategory.setName("th is NEW category");
 
         goodsCategoryService.updateCategory(goodsCategory);
     }

@@ -48,22 +48,22 @@
         update oomall_product
         <trim prefix="set" suffixOverrides=",">
             <if test="picUrl != null">
-                pic_url=#{picUrl}
+                pic_url=#{picUrl},
             </if>
             <if test="specifications != null">
-                specifications=#{specifications}
+                specifications=#{specifications},
             </if>
             <if test="goodsId != null">
-                goods_id=#{goodsId}
+                goods_id=#{goodsId},
             </if>
             <if test="price != null">
-                price=#{price}
+                price=#{price},
             </if>
             <if test="safetyStock != null">
-                safety_stock=#{safetyStock}
+                safety_stock=#{safetyStock},
             </if>
             <if test="beDeleted != null">
-                is_deleted=#{beDeleted}
+                is_deleted=#{beDeleted},
             </if>
             <if test="true">
                 gmt_modified=current_timestamp

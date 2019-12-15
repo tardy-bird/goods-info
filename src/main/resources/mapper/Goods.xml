@@ -119,7 +119,7 @@
                 is_special=#{beSpecial},
             </if>
             <if test="price != null">
-                price=#{price}
+                price=#{price},
             </if>
             gmt_modified=now()
         </set>
