@@ -84,4 +84,12 @@
         where oomall_product.goods_id = #{id}
     </update>
 
+    <update id="deductQuantity" parameterType="java.lang.Integer">
+        update oomall_product
+        set safety_stock = safety_stock - #{quantity}
+        where is_deleted = 0
+          and safety_stock - #{quantity} >= 0
+          and id = #{id}
+    </update>
+
 </mapper>

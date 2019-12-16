@@ -9,7 +9,7 @@ import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
-import io.swagger.models.auth.In;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +27,16 @@ public class GoodsService {
     final GoodsCategoryMapper goodsCategoryMapper;
     final GoodsDao goodsDao;
     final ProductMapper productMapper;
+    final RedisTemplate<String, GoodsPo> redisTemplateOfGoods;
 
     public GoodsService(GoodsMapper goodsMapper,
                         GoodsCategoryMapper goodsCategoryMapper,
-                        GoodsDao goodsDao, ProductMapper productMapper) {
+                        GoodsDao goodsDao, ProductMapper productMapper, RedisTemplate<String, GoodsPo> redisTemplateOfGoods) {
         this.goodsMapper = goodsMapper;
         this.goodsCategoryMapper = goodsCategoryMapper;
         this.goodsDao = goodsDao;
         this.productMapper = productMapper;
+        this.redisTemplateOfGoods = redisTemplateOfGoods;
     }
 
 
@@ -70,28 +72,56 @@ public class GoodsService {
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 
-    public Goods getGoodsByIdUser(Integer id)
-    {
+    public Goods getGoodsByIdUser(Integer id) {
         GoodsPo goodsPo = goodsDao.getGoodsByIdUser(id);
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 
-
-//    public GoodsCategory getGoodsCategory(Integer id) {
-//        GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
-//        return ObjectConversion.goodsCategoryPo2GoodsCategory(goodsCategoryPo);
-//    }
+    public List<GoodsPo> findGoodsByCategoryId(Integer id) {
+        return goodsDao.findGoodsByCategoryId(id);
+    }
 
     public Boolean updateGoods(Goods goods) {
+
         GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
         Integer affectedRows = goodsMapper.updateGoods(goodsPo);
-        return affectedRows > 0;
+
+        Boolean status = affectedRows > 0;
+
+        String goodsKey = "Goods_" + goods.getId();
+        GoodsPo cachedGoodsPo = redisTemplateOfGoods.opsForValue().get(goodsKey);
+
+        if (cachedGoodsPo != null) {
+            redisTemplateOfGoods.delete(goodsKey);
+            redisTemplateOfGoods.opsForValue().set(goodsKey, cachedGoodsPo);
+        }
+
+        return status;
     }
 
     @Transactional
     public Boolean deleteGood(Integer id) {
+
+        String goodsKey = "Goods_" + id;
+        GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(goodsKey);
+
         Integer deleteProductRows = productMapper.updateProductByGoodsId(id);
         Integer deleteGoodsRows = goodsMapper.deleteGoods(id);
+
+        if (goodsPo != null) {
+            redisTemplateOfGoods.delete(goodsKey);
+        }
+
         return deleteProductRows > 0 && deleteGoodsRows > 0;
     }
+
+    public Boolean isGoodsOnSale(Integer id) {
+        Integer rows = goodsMapper.selectOnSaleGoods(id);
+        return rows > 0;
+    }
+
+//    public Boolean deductGoodsVolume(Integer id, Integer quantity) {
+//        Integer affectedRows = goodsMapper.deductQuantity(id, quantity);
+//        return affectedRows > 0;
+//    }
 }

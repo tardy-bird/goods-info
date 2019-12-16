@@ -10,7 +10,6 @@ import com.tardybird.goodsinfo.util.ObjectConversion;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -40,13 +39,11 @@ public class GoodsController {
      */
     @GetMapping("/categories/{id}/goods")
     public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
-        if(id<=0)
-        {
+        if (id <= 0) {
             return ResponseUtil.badArgumentValue();
         }
-        Goods goods = goodsService.getGoodsByIdAdmin(id);
-        //TODO check (NOT COMPLETE)
-        return ResponseUtil.ok(goods);
+        List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id);
+        return ResponseUtil.okList(goodsPos);
     }
 
     /**
@@ -84,15 +81,6 @@ public class GoodsController {
     }
 
 
-    /**
-     * 查看推荐商品
-     */
-//    @GetMapping("/recommendedGoods")
-//    public Object getRecommendedGoods() {
-//        //TODO what ?
-//        return null;
-//    }
-
     /*
      * ========= following are admin apis ==============
      */
@@ -101,7 +89,7 @@ public class GoodsController {
      * 新建/上架一个商品
      */
     @PostMapping("/goods")
-    public Object addGoods(Goods goods) {
+    public Object addGoods(@RequestBody Goods goods) {
         if (goods == null) {
             return ResponseUtil.badArgument();
         }
@@ -119,9 +107,7 @@ public class GoodsController {
      */
     @GetMapping("/admin/goods/{id}")
     public Object getGoodsByIdAdmin(@PathVariable("id") Integer id) {
-        if(id<=0)
-        {
-
+        if (id <= 0) {
             return ResponseUtil.badArgumentValue();
         }
         Goods goods = goodsService.getGoodsByIdAdmin(id);
@@ -130,14 +116,12 @@ public class GoodsController {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * @param id x
+     * @return x
      */
     @GetMapping("/goods/{id}")
     public Object getGoodsByIdUser(@PathVariable("id") Integer id) {
-        if(id<=0)
-        {
+        if (id <= 0) {
             return ResponseUtil.badArgumentValue();
         }
         Goods goods = goodsService.getGoodsByIdUser(id);
@@ -153,8 +137,7 @@ public class GoodsController {
      */
     @GetMapping("/goods/{id}/products")
     public Object listProductByGoodsId(@PathVariable Integer id) {
-        if(id<=0)
-        {
+        if (id <= 0) {
             return ResponseUtil.badArgumentValue();
         }
         List<Product> products = productService.getProductByGoodsId(id);
@@ -170,8 +153,7 @@ public class GoodsController {
      */
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
-        if (id <= 0)
-        {
+        if (id <= 0) {
             ResponseUtil.badArgumentValue();
         }
         if (product == null) {
@@ -191,8 +173,7 @@ public class GoodsController {
      */
     @PutMapping("/goods/{id}")
     public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
-        if(id<=0)
-        {
+        if (id <= 0) {
             return ResponseUtil.badArgumentValue();
         }
         if (goods == null) {
@@ -213,8 +194,7 @@ public class GoodsController {
      */
     @DeleteMapping("/goods/{id}")
     public Object deleteGoodsById(@PathVariable("id") Integer id) {
-        if(id<=0)
-        {
+        if (id <= 0) {
             return ResponseUtil.badArgumentValue();
         }
         Boolean ok = goodsService.deleteGood(id);
@@ -223,5 +203,14 @@ public class GoodsController {
         }
         return ResponseUtil.ok();
     }
+
+    // 内部接口
+
+    @GetMapping("/goods/{id}/isOnSale")
+    public Object isGoodsOnSale(@PathVariable Integer id) {
+//        return ResponseUtil.ok(result);
+        return goodsService.isGoodsOnSale(id);
+    }
+
 
 }

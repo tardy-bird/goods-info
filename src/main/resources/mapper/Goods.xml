@@ -28,8 +28,23 @@
     <select id="getGoodsByCondition" parameterType="java.lang.String" resultMap="GoodsPo">
         SELECT *
         FROM oomall_goods
-        WHERE (goods_sn = #{goodsSn} OR name = #{name})
-          and is_deleted = 0
+        WHERE
+
+        <if test="goodsSn != null">
+            ( goods_sn = #{goodsSn})
+        </if>
+        <if test="name != null and goodsSn != null">
+            OR
+        </if>
+        <if test="name != null">
+            (name = #{name} )
+        </if>
+
+        <if test="goodsSn != null or name != null">
+            and
+        </if>
+
+        is_deleted = 0
     </select>
 
 
@@ -53,9 +68,11 @@
     </select>
 
     <select id="getGoodsByIdUser" resultMap="GoodsPo">
-        select * from oomall_goods
-        where id=#{id}
-        and is_deleted=0 and status !=0
+        select *
+        from oomall_goods
+        where id = #{id}
+          and is_deleted = 0
+          and status != 0
     </select>
 
     <select id="findGoodsByGoodsCategoryId" parameterType="java.lang.String"
@@ -73,14 +90,25 @@
           and brand_id = #{brandId}
     </select>
 
+    <select id="findGoodsIdsByCategoryId" resultType="java.lang.Integer">
+        select id
+        from oomall_goods
+        where goods_category_id = #{id}
+          and is_deleted = 0
+          and status != 0
+        limit 20
+    </select>
+
     <insert id="createGoods" parameterType="GoodsPo" useGeneratedKeys="true"
             keyProperty="id">
         insert into oomall_goods(name, gmt_create, gmt_modified, goods_sn, short_name, description, detail, brief,
                                  pic_url, status, share_url, gallery, goods_category_id, brand_id, is_deleted, weight,
                                  volume,
                                  special_freight_id, is_special, price)
-        values (#{name}, current_timestamp, current_timestamp, #{goodsSn}, #{shortName}, #{shareUrl}, #{description},
-                #{detail}, #{brief}, #{picUrl}, #{statusCode}, #{gallery}, #{goodsCategoryId}, #{brandId},
+        values (#{name}, current_timestamp, current_timestamp, #{goodsSn}, #{shortName}, #{description}, #{detail},
+                #{brief},
+                #{picUrl}, #{statusCode}, #{shareUrl},
+                #{gallery}, #{goodsCategoryId}, #{brandId},
                 #{beDeleted}, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial}, #{price})
 
     </insert>
@@ -162,13 +190,23 @@
     <update id="deleteWithCategory">
         update oomall_goods
         set is_deleted=1
-        where goods_category_id=#{cid}
+        where goods_category_id = #{cid}
     </update>
 
-    <!--    <select id="selectOnSaleGoods" resultType="Integer">-->
-    <!--        select count(status)-->
-    <!--        from goods-->
-    <!--        where status = 0-->
-    <!--    </select>-->
+    <select id="selectOnSaleGoods" resultType="Integer">
+        select count(status)
+        from oomall_goods
+        where status != 0
+          and id = #{id}
+          and is_deleted = 0;
+    </select>
+
+    <update id="deductQuantity" parameterType="java.lang.Integer">
+        update oomall_goods
+        set volume = volume - #{quantity}
+        where is_deleted = 0
+          and volume - #{quantity} >= 0
+          and id = #{id}
+    </update>
 
 </mapper>

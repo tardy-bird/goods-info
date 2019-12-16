@@ -56,4 +56,6 @@ public interface ProductMapper {
     Integer deleteProduct(@Param("id") Integer id);
 
     Integer updateProductByGoodsId(@Param("id") Integer id);
+
+    Integer deductQuantity(@Param("id") Integer id, @Param("quantity") Integer quantity);
 }

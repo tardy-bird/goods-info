@@ -1,12 +1,14 @@
 package com.tardybird.goodsinfo.service;
 
 import com.tardybird.goodsinfo.dao.GoodsDao;
+import com.tardybird.goodsinfo.dao.ProductDao;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,11 +22,15 @@ public class ProductService {
     final
     GoodsDao goodsDao;
     final GoodsMapper goodsMapper;
+    final ProductDao productDao;
+    final RedisTemplate<String, ProductPo> redisTemplateOfProduct;
 
-    public ProductService(ProductMapper productMapper, GoodsDao goodsDao, GoodsMapper goodsMapper) {
+    public ProductService(ProductMapper productMapper, GoodsDao goodsDao, GoodsMapper goodsMapper, ProductDao productDao, RedisTemplate<String, ProductPo> redisTemplateOfProduct) {
         this.productMapper = productMapper;
         this.goodsDao = goodsDao;
         this.goodsMapper = goodsMapper;
+        this.productDao = productDao;
+        this.redisTemplateOfProduct = redisTemplateOfProduct;
     }
 
     public List<Product> getProductByGoodsId(Integer id) {
@@ -51,9 +57,23 @@ public class ProductService {
 
 
     public Boolean updateProduct(Product product) {
+        if (product == null) {
+            return false;
+        }
+
         ProductPo productPo = ObjectConversion.product2ProductPo(product);
         Integer affectedRows = productMapper.updateProduct(productPo);
-        return affectedRows > 0;
+        Boolean status = affectedRows > 0;
+
+        if (status) {
+            String productKey = "Product_" + product.getId();
+            ProductPo cachedProductPo = redisTemplateOfProduct.opsForValue().get(productKey);
+            if (cachedProductPo != null) {
+                redisTemplateOfProduct.delete(productKey);
+                redisTemplateOfProduct.opsForValue().set(productKey, productPo);
+            }
+        }
+        return status;
     }
 
     public Product getProductById(Integer id) {
@@ -73,6 +93,19 @@ public class ProductService {
 
     public Boolean deleteProduct(Integer id) {
         Integer affectedRows = productMapper.deleteProduct(id);
-        return affectedRows > 0;
+        Boolean status = affectedRows > 0;
+        if (status) {
+            String productKey = "Product_" + id;
+            ProductPo productPo = redisTemplateOfProduct.opsForValue().get(productKey);
+            if (productPo != null) {
+                redisTemplateOfProduct.delete(productKey);
+            }
+        }
+        return status;
+    }
+
+
+    public Boolean deductGoodsSafetyStock(Integer id, Integer quantity) {
+        return productDao.deductProductStock(id, quantity);
     }
 }

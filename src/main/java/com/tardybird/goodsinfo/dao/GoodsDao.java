@@ -1,5 +1,6 @@
 package com.tardybird.goodsinfo.dao;
 
+import com.tardybird.goodsinfo.config.RedisConfig;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author DIX
@@ -21,6 +23,7 @@ import java.util.List;
 @Repository
 public class GoodsDao {
 
+    final RedisConfig redisConfig;
     final ProductMapper productMapper;
     final GoodsMapper goodsMapper;
     final RedisTemplate<String, GoodsPo> redisTemplateOfGoods;
@@ -28,10 +31,11 @@ public class GoodsDao {
     final RedisTemplate<String, List<String>> redisTemplateOfString;
 
 
-    public GoodsDao(RedisTemplate<String, GoodsPo> redisTemplateOfGoods,
+    public GoodsDao(RedisConfig redisConfig, RedisTemplate<String, GoodsPo> redisTemplateOfGoods,
                     RedisTemplate<String, ProductPo> redisTemplateOfProducts,
                     RedisTemplate<String, List<String>> redisTemplateOfString,
                     ProductMapper productMapper, GoodsMapper goodsMapper) {
+        this.redisConfig = redisConfig;
         this.redisTemplateOfGoods = redisTemplateOfGoods;
         this.redisTemplateOfProducts = redisTemplateOfProducts;
         this.redisTemplateOfString = redisTemplateOfString;
@@ -52,7 +56,7 @@ public class GoodsDao {
                 productIds.add(productId.toString());
             }
 
-            redisTemplateOfString.opsForValue().set(key, productIds);
+            redisTemplateOfString.opsForValue().set(key, productIds, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
         List<ProductPo> productPoList = new ArrayList<>();
         for (String productId : productIds) {
@@ -66,6 +70,44 @@ public class GoodsDao {
         return productPoList;
     }
 
+    public List<GoodsPo> findGoodsByCategoryId(Integer id) {
+
+        String key = "Category_Goods_" + id;
+        List<String> goodsIds = redisTemplateOfString.opsForValue().get(key);
+        if (goodsIds == null) {
+            List<Integer> goodsIdsByCategoryId = goodsMapper.findGoodsIdsByCategoryId(id);
+
+            if (goodsIdsByCategoryId == null) {
+                return null;
+            }
+
+            goodsIds = new ArrayList<>();
+
+            for (Integer goodsId : goodsIdsByCategoryId) {
+                goodsIds.add(String.valueOf(goodsId));
+            }
+
+            redisTemplateOfString.opsForValue().set(key, goodsIds, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
+        }
+
+        List<GoodsPo> goodsPos = new ArrayList<>();
+        for (String goodsId : goodsIds) {
+
+            String goodsKey = "Goods_" + goodsId;
+            GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(goodsKey);
+            if (goodsPo == null) {
+                goodsPo = goodsMapper.getGoodsByIdUser(Integer.valueOf(goodsId));
+
+                redisTemplateOfGoods.opsForValue().set(goodsKey, goodsPo, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
+
+            }
+
+            goodsPos.add(goodsPo);
+        }
+
+        return goodsPos;
+    }
+
 
     public ProductPo findProductById(Integer id) {
         String key = "Product_" + id;
@@ -73,7 +115,7 @@ public class GoodsDao {
         if (product == null) {
 
             product = productMapper.getProductById(id);
-            redisTemplateOfProducts.opsForValue().set(key, product);
+            redisTemplateOfProducts.opsForValue().set(key, product, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
 
         }
 
@@ -91,22 +133,23 @@ public class GoodsDao {
         GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
         if (goodsPo == null) {
             goodsPo = goodsMapper.getGoodsByIdAdmin(id);
-            redisTemplateOfGoods.opsForValue().set(key, goodsPo);
+            redisTemplateOfGoods.opsForValue().set(key, goodsPo, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
         return goodsPo;
     }
 
     /**
      * 用户获取商品信息（不能看到未上架的）
-     * @param id
-     * @return
+     *
+     * @param id x
+     * @return x
      */
     public GoodsPo getGoodsByIdUser(Integer id) {
         String key = "Goods_" + id;
         GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
         if (goodsPo == null) {
             goodsPo = goodsMapper.getGoodsByIdUser(id);
-            redisTemplateOfGoods.opsForValue().set(key, goodsPo);
+            redisTemplateOfGoods.opsForValue().set(key, goodsPo, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
         return goodsPo;
     }
@@ -119,7 +162,7 @@ public class GoodsDao {
             String key = "Goods_" + goods.getId();
             GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
             if (goodsPo == null) {
-                redisTemplateOfGoods.opsForValue().set(key, goods);
+                redisTemplateOfGoods.opsForValue().set(key, goods, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
             }
         }
 

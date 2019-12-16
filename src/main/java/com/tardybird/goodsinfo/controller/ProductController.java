@@ -60,4 +60,22 @@ public class ProductController {
         }
         return ResponseUtil.ok();
     }
+
+    @PutMapping("/product/{id}/deduct")
+    public Object deductGoodsQuantity(@PathVariable Integer id,
+                                      @RequestParam Integer quantity) {
+
+//        if (quantity == null) {
+//            return ResponseUtil.badArgument();
+//        }
+//        if (quantity <= 0) {
+//            return ResponseUtil.badArgumentValue();
+//        }
+//        if (!ok) {
+//            return ResponseUtil.serious();
+//        }
+//      return ResponseUtil.ok();
+
+        return productService.deductGoodsSafetyStock(id, quantity);
+    }
 }

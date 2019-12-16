@@ -1,7 +1,6 @@
 package com.tardybird.goodsinfo.mapper;
 
 import com.tardybird.goodsinfo.po.GoodsPo;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -60,6 +59,8 @@ public interface GoodsMapper {
 
     List<GoodsPo> findGoodsByGoodsCategoryId(@Param("id") String id);
 
+    List<Integer> findGoodsIdsByCategoryId(@Param("id") Integer id);
+
     /**
      * 更新商品信息
      *
@@ -89,9 +90,14 @@ public interface GoodsMapper {
 
     /**
      * 级联删除种类时把商品种类设空
-     * @param cid
-     * @return
+     *
+     * @param cid x
+     * @return x
      */
     Integer deleteWithCategory(@Param("cid") Integer cid);
+
+    Integer selectOnSaleGoods(@Param("id") Integer id);
+
+    Integer deductQuantity(@Param("id") Integer id, @Param("quantity") Integer quantity);
 
 }
