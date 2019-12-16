@@ -1,6 +1,7 @@
 package com.tardybird.goodsinfo.mapper;
 
 import com.tardybird.goodsinfo.po.GoodsPo;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -46,7 +47,14 @@ public interface GoodsMapper {
      * @param id
      * @return goods
      */
-    GoodsPo getGoodsById(@Param("id") Integer id);
+    GoodsPo getGoodsByIdAdmin(@Param("id") Integer id);
+
+    /**
+     * 用户通过商品id查找商品（不可查找到未上架的）
+     * @param id
+     * @return
+     */
+    GoodsPo getGoodsByIdUser(@Param("id") Integer id);
 
     List<GoodsPo> findGoodsByBrandId(@Param("brandId") String brandId);
 

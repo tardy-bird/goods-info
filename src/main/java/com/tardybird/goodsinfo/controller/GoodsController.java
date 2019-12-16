@@ -44,7 +44,7 @@ public class GoodsController {
         {
             return ResponseUtil.badArgumentValue();
         }
-        Goods goods = goodsService.getGoodsById(id);
+        Goods goods = goodsService.getGoodsByIdAdmin(id);
         //TODO check (NOT COMPLETE)
         return ResponseUtil.ok(goods);
     }
@@ -117,13 +117,30 @@ public class GoodsController {
      * 根据id获取某个商品
      * 提供一个接口给 collect、comment、footprint 调用,获取 goods 信息
      */
+    @GetMapping("/admin/goods/{id}")
+    public Object getGoodsByIdAdmin(@PathVariable("id") Integer id) {
+        if(id<=0)
+        {
+
+            return ResponseUtil.badArgumentValue();
+        }
+        Goods goods = goodsService.getGoodsByIdAdmin(id);
+        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+        return ResponseUtil.ok(goodsPo);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/goods/{id}")
-    public Object getGoodsById(@PathVariable("id") Integer id) {
+    public Object getGoodsByIdUser(@PathVariable("id") Integer id) {
         if(id<=0)
         {
             return ResponseUtil.badArgumentValue();
         }
-        Goods goods = goodsService.getGoodsById(id);
+        Goods goods = goodsService.getGoodsByIdUser(id);
         GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
         return ResponseUtil.ok(goodsPo);
     }

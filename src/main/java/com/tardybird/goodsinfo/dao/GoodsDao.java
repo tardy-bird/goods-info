@@ -86,11 +86,26 @@ public class GoodsDao {
      * @param id x
      * @return x
      */
-    public GoodsPo getGoodsById(Integer id) {
+    public GoodsPo getGoodsByIdAdmin(Integer id) {
         String key = "Goods_" + id;
         GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
         if (goodsPo == null) {
-            goodsPo = goodsMapper.getGoodsById(id);
+            goodsPo = goodsMapper.getGoodsByIdAdmin(id);
+            redisTemplateOfGoods.opsForValue().set(key, goodsPo);
+        }
+        return goodsPo;
+    }
+
+    /**
+     * 用户获取商品信息（不能看到未上架的）
+     * @param id
+     * @return
+     */
+    public GoodsPo getGoodsByIdUser(Integer id) {
+        String key = "Goods_" + id;
+        GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
+        if (goodsPo == null) {
+            goodsPo = goodsMapper.getGoodsByIdUser(id);
             redisTemplateOfGoods.opsForValue().set(key, goodsPo);
         }
         return goodsPo;

@@ -35,7 +35,7 @@ public class ProductService {
         for (ProductPo productPo : productPos) {
             Product product = ObjectConversion.productPo2Product(productPo);
 
-            GoodsPo goodsPos = goodsDao.getGoodsById(product.getGoodsId());
+            GoodsPo goodsPos = goodsDao.getGoodsByIdAdmin(product.getGoodsId());
             product.setGoodsPo(goodsPos);
 
             productList.add(product);
@@ -65,7 +65,7 @@ public class ProductService {
         }
 
         Product product = ObjectConversion.productPo2Product(productPo);
-        GoodsPo goodsPo = goodsDao.getGoodsById(productPo.getGoodsId());
+        GoodsPo goodsPo = goodsDao.getGoodsByIdAdmin(productPo.getGoodsId());
         product.setGoodsPo(goodsPo);
 
         return product;

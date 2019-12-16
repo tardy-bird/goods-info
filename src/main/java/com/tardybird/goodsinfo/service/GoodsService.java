@@ -9,6 +9,7 @@ import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,8 +65,14 @@ public class GoodsService {
         return affectedRows > 0;
     }
 
-    public Goods getGoodsById(Integer id) {
-        GoodsPo goodsPo = goodsDao.getGoodsById(id);
+    public Goods getGoodsByIdAdmin(Integer id) {
+        GoodsPo goodsPo = goodsDao.getGoodsByIdAdmin(id);
+        return ObjectConversion.goodsPo2Goods(goodsPo);
+    }
+
+    public Goods getGoodsByIdUser(Integer id)
+    {
+        GoodsPo goodsPo = goodsDao.getGoodsByIdUser(id);
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 

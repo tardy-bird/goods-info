@@ -45,11 +45,17 @@
           and is_deleted = 0
     </select>
 
-    <select id="getGoodsById" resultMap="GoodsPo">
+    <select id="getGoodsByIdAdmin" resultMap="GoodsPo">
         select *
         from oomall_goods
         where id = #{id}
           and is_deleted = 0
+    </select>
+
+    <select id="getGoodsByIdUser" resultMap="GoodsPo">
+        select * from oomall_goods
+        where id=#{id}
+        and is_deleted=0 and status !=0
     </select>
 
     <select id="findGoodsByGoodsCategoryId" parameterType="java.lang.String"
