@@ -1,7 +1,9 @@
 package com.tardybird.goodsinfo.controller;
 
+import com.tardybird.goodsinfo.client.LogClient;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.domain.Log;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.service.GoodsService;
@@ -21,13 +23,15 @@ public class GoodsController {
     final GoodsService goodsService;
     final ProductService productService;
     final GoodsDao goodsDao;
+    final LogClient logClient;
 
     public GoodsController(GoodsService goodsService,
                            GoodsDao goodsDao,
-                           ProductService productService) {
+                           ProductService productService, LogClient logClient) {
         this.goodsService = goodsService;
         this.goodsDao = goodsDao;
         this.productService = productService;
+        this.logClient = logClient;
     }
 
     /*
@@ -39,10 +43,19 @@ public class GoodsController {
      */
     @GetMapping("/categories/{id}/goods")
     public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
+        Log log;
         if (id <= 0) {
+
+            log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgumentValue();
         }
         List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id);
+
+        log = new Log.LogBuilder().type(0).status(1).actions("获取商品分类信息").actionId(id).build();
+        logClient.addLog(log);
+
         return ResponseUtil.okList(goodsPos);
     }
 
@@ -68,15 +81,28 @@ public class GoodsController {
     @GetMapping("/admin/goods")
     public Object listGoods(@RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
+        Log log;
         if (page == null || limit == null) {
+
+            log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgument();
         }
 
         if (page < 0 || limit < 0) {
+
+            log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgumentValue();
         }
 
         Object object = goodsService.getAllGoodsByConditions(null, null, page, limit);
+
+        log = new Log.LogBuilder().type(0).status(1).actions("获取商品分类信息").build();
+        logClient.addLog(log);
+
         return ResponseUtil.ok(object);
     }
 
@@ -90,14 +116,23 @@ public class GoodsController {
      */
     @PostMapping("/goods")
     public Object addGoods(@RequestBody Goods goods) {
+        Log log;
         if (goods == null) {
+
+            log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgument();
         }
 
         Boolean ok = goodsService.createGoods(goods);
         if (!ok) {
+            log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
+            logClient.addLog(log);
             return ResponseUtil.serious();
         }
+        log = new Log.LogBuilder().type(1).status(1).actions("新建/上架一个商品").build();
+        logClient.addLog(log);
         return ResponseUtil.ok(goods);
     }
 
@@ -107,11 +142,21 @@ public class GoodsController {
      */
     @GetMapping("/admin/goods/{id}")
     public Object getGoodsByIdAdmin(@PathVariable("id") Integer id) {
+        Log log;
         if (id <= 0) {
+
+            log = new Log.LogBuilder().type(0).status(0).actions("取某个商品").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgumentValue();
         }
+
         Goods goods = goodsService.getGoodsByIdAdmin(id);
         GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+
+        log = new Log.LogBuilder().type(0).status(1).actions("取某个商品").actionId(id).build();
+        logClient.addLog(log);
+
         return ResponseUtil.ok(goodsPo);
     }
 
@@ -137,10 +182,19 @@ public class GoodsController {
      */
     @GetMapping("/goods/{id}/products")
     public Object listProductByGoodsId(@PathVariable Integer id) {
+        Log log;
         if (id <= 0) {
+
+            log = new Log.LogBuilder().type(0).status(0).actions("管理员查询商品下的产品").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgumentValue();
         }
         List<Product> products = productService.getProductByGoodsId(id);
+
+        log = new Log.LogBuilder().type(0).status(1).actions("管理员查询商品下的产品").actionId(id).build();
+        logClient.addLog(log);
+
         return ResponseUtil.ok(products);
     }
 
@@ -153,17 +207,35 @@ public class GoodsController {
      */
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
+        Log log;
         if (id <= 0) {
+
+            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
+            logClient.addLog(log);
+
             ResponseUtil.badArgumentValue();
         }
         if (product == null) {
+
+            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgument();
         }
         Boolean ok = productService.createProduct(product);
         if (!ok) {
+
+
+            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.serious();
         }
         product.setId(id);
+
+        log = new Log.LogBuilder().type(2).status(1).actions("添加商品下的产品").actionId(id).build();
+        logClient.addLog(log);
+
         return ResponseUtil.ok(product);
     }
 
@@ -173,19 +245,32 @@ public class GoodsController {
      */
     @PutMapping("/goods/{id}")
     public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
+        Log log;
         if (id <= 0) {
+
+            log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgumentValue();
         }
         if (goods == null) {
+            log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
+            logClient.addLog(log);
             return ResponseUtil.badArgument();
         }
         goods.setId(id);
-        //
-        // goods.setGmtModified(LocalDateTime.now());
         Boolean ok = goodsService.updateGoods(goods);
         if (!ok) {
+
+            log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.serious();
         }
+
+        log = new Log.LogBuilder().type(2).status(1).actions("根据id更新商品信息").actionId(id).build();
+        logClient.addLog(log);
+
         return ResponseUtil.ok(goods);
     }
 
@@ -194,13 +279,22 @@ public class GoodsController {
      */
     @DeleteMapping("/goods/{id}")
     public Object deleteGoodsById(@PathVariable("id") Integer id) {
+        Log log;
         if (id <= 0) {
+
+            log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
+            logClient.addLog(log);
+
             return ResponseUtil.badArgumentValue();
         }
         Boolean ok = goodsService.deleteGood(id);
         if (!ok) {
+            log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
+            logClient.addLog(log);
             return ResponseUtil.serious();
         }
+        log = new Log.LogBuilder().type(3).status(1).actions("根据id删除商品信息").actionId(id).build();
+        logClient.addLog(log);
         return ResponseUtil.ok();
     }
 
@@ -208,7 +302,6 @@ public class GoodsController {
 
     @GetMapping("/goods/{id}/isOnSale")
     public Object isGoodsOnSale(@PathVariable Integer id) {
-//        return ResponseUtil.ok(result);
         return goodsService.isGoodsOnSale(id);
     }
 

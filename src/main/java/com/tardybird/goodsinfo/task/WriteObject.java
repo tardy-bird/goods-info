@@ -28,13 +28,10 @@ public class WriteObject {
         List<String> changeList = redisTemplateOfString.opsForValue().get(changeListKey);
         if (changeList != null) {
 
-            System.out.println("write object(s): " + changeList.size());
-
             for (String key : changeList) {
                 String productKey = "Product_" + key;
                 ProductPo productPo = redisTemplateOfProduct.opsForValue().get(productKey);
                 if (productPo != null) {
-                    System.out.println("updating... " + productPo.getId() + "," + productPo.getSafetyStock());
                     productMapper.updateProduct(productPo);
                 }
             }
