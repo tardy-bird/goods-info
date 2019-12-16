@@ -65,4 +65,10 @@ public interface GoodsCategoryMapper {
      * @return x
      */
     Integer createCategory(GoodsCategoryPo goodsCategory);
+
+    /**
+     * 级联删除
+     * @return
+     */
+    Integer deleteL2withL1(@Param("pid") Integer pid);
 }

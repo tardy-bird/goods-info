@@ -77,29 +77,28 @@ public class GoodsCategoryService {
         return affectedRows > 0;
     }
 
-
+    @Transactional
     public Boolean deleteCategory(Integer id) {
         GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
+        if(goodsCategoryPo==null)
+        {
+            return false;
+        }
 
         // 一级分类
         if (goodsCategoryPo.getPid() == null) {
+            goodsCategoryMapper.deleteL2withL1(goodsCategoryPo.getId());
             List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getLevelTwoByPid(id);
 
             for (GoodsCategoryPo categoryPo : goodsCategoryPos) {
-                Integer categoryId = categoryPo.getId();
-                goodsCategoryMapper.deleteCategory(categoryId);
-
+                Integer goodsCategoryId = categoryPo.getId();
                 // 更新相关商品的种类
-                Integer status = goodsMapper.updateCategoryId(categoryId);
-                if (status <= 0) {
-                    return false;
-                }
+                goodsMapper.updateCategoryId(goodsCategoryId);
             }
 
         }
 
         Integer affectedRows = goodsCategoryMapper.deleteCategory(id);
-        goodsMapper.updateCategoryId(id);
         return affectedRows > 0;
     }
 

@@ -74,4 +74,10 @@
         values (#{name}, #{pid}, current_timestamp, current_timestamp, #{beDeleted})
     </insert>
 
+    <update id="deleteL2withL1">
+        update oomall_goods_category
+        set is_deleted=1
+        where pid=#{pid}
+    </update>
+
 </mapper>

@@ -60,7 +60,7 @@ public interface GoodsMapper {
      */
     Integer updateGoods(GoodsPo goods);
 
-    Integer updateCategoryId(Integer goodsCategoryId);
+    Integer updateCategoryId(@Param("goodsCategoryId") Integer goodsCategoryId);
 
     /**
      * 新建一个商品
@@ -79,5 +79,11 @@ public interface GoodsMapper {
     Integer deleteGoods(@Param("id") Integer id);
 
 
+    /**
+     * 级联删除种类时把商品种类设空
+     * @param cid
+     * @return
+     */
+    Integer deleteWithCategory(@Param("cid") Integer cid);
 
 }

@@ -143,7 +143,7 @@
 
     <update id="updateCategoryId" parameterType="java.lang.Integer">
         update oomall_goods
-        set oomall_goods.goods_category_id=null
+        set oomall_goods.goods_category_id=0
         where oomall_goods.goods_category_id = #{goodsCategoryId}
     </update>
 
@@ -151,6 +151,12 @@
         update oomall_goods
         set is_deleted = 1
         where id = #{id}
+    </update>
+
+    <update id="deleteWithCategory">
+        update oomall_goods
+        set is_deleted=1
+        where goods_category_id=#{cid}
     </update>
 
     <!--    <select id="selectOnSaleGoods" resultType="Integer">-->
