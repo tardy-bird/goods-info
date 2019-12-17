@@ -94,6 +94,9 @@ public class ProductController {
     @PutMapping("/product/{id}/deduct")
     public Object deductGoodsQuantity(@PathVariable Integer id,
                                       @RequestParam Integer quantity) {
+        if (id <= 0 || quantity <= 0) {
+            return false;
+        }
         return productService.deductGoodsSafetyStock(id, quantity);
     }
 }
