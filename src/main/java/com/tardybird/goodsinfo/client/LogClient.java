@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Component
 @FeignClient(name = "Log")
 public interface LogClient {
+    /**
+     * x
+     * @param log x
+     */
     @PostMapping("/log")
     void addLog(@RequestBody Log log);
 }

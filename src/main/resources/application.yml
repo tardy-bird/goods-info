@@ -52,54 +52,9 @@
 #  #预提库存数量
 #  preDeductQuantity: 3
 
-#pagehelper:
-#  reasonable: true
-#  support-methods-arguments: true
-#  params: count=countSql
-#  helper-dialect: mysql
-#
-#spring:
-#  redis:
-#    host: 47.96.159.71
-#    port: 6379
-#    timeout: 20000
-#    password:
-#    jedis:
-#      pool:
-#        max-idle: 8
-#        max-wait:
-#        min-idle: 0
-#  datasource:
-#    url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
-#    username: oomall
-#    password: oomallp@$$w0rd
-#
-#  application:
-#    name: goodsinfo
-#
-#mybatis:
-#  type-aliases-package: com.tardybird.goodsinfo.po
-#  mapper-locations: classpath:mapper/*.xml
-#
-#server:
-#  port: 8820
-#
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://47.96.159.71:8888/eureka/
-#  instance:
-#    prefer-ip-address: true
-#    ip-address: 47.96.159.71
-#    non-secure-port: 8820
-##    ip-address: localhost
-#
-#goods:
-#  #redis缓存失效时间，单位分钟
-#  redisExpireTime: 1
-#  #预提库存数量
-#  preDeductQuantity: 3
 
+######################################################
+## PCW
 pagehelper:
   reasonable: true
   support-methods-arguments: true
@@ -108,7 +63,7 @@ pagehelper:
 
 spring:
   redis:
-    host: 129.28.122.147
+    host: 47.98.252.133
     port: 6379
     timeout: 20000
     password:
@@ -118,9 +73,9 @@ spring:
         max-wait:
         min-idle: 0
   datasource:
-    url: jdbc:mysql://148.70.28.112/oomall?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: wowoto
-    password: zqhlovekly
+    url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+    username: oomall
+    password: oomallp@$$w0rd
 
   application:
     name: goodsinfo
@@ -130,22 +85,121 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 server:
-  port: 8822
+  port: 8820
 
 eureka:
   client:
     service-url:
-      defaultZone: http://148.70.28.112:8761/eureka/
+      defaultZone: http://47.96.159.71:8888/eureka/
   instance:
     prefer-ip-address: true
     ip-address: 47.96.159.71
-    non-secure-port: 8822
+    non-secure-port: 8820
 #    ip-address: localhost
 
 goods:
   #redis缓存失效时间，单位分钟
-  redisExpireTime: 1
+  redisExpireTime: 30
   #预提库存数量
   preDeductQuantity: 3
 
 
+###########################################################
+## KLY
+#pagehelper:
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+#  helper-dialect: mysql
+#
+#spring:
+#  redis:
+#    host: 106.15.92.198
+#    port: 6379
+#    timeout: 20000
+#    password:
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        max-wait:
+#        min-idle: 0
+#  datasource:
+#    url: jdbc:mysql://148.70.28.112/wowomall?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    username: wowoto
+#    password: zqhlovekly
+#
+#  application:
+#    name: goodsinfo
+#
+#mybatis:
+#  type-aliases-package: com.tardybird.goodsinfo.po
+#  mapper-locations: classpath:mapper/*.xml
+#
+#server:
+#  port: 8822
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://148.70.28.112:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+##    ip-address: 47.96.159.71
+#    non-secure-port: 8822
+#    ip-address: localhost
+#
+#goods:
+#  #redis缓存失效时间，单位分钟
+#  redisExpireTime: 1
+#  #预提库存数量
+#  preDeductQuantity: 3
+
+# JQS
+#pagehelper:
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+#  helper-dialect: mysql
+#
+#spring:
+#  redis:
+#    host: 47.103.218.171
+#    port: 6379
+#    timeout: 20000
+#    password:
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        max-wait:
+#        min-idle: 0
+#  datasource:
+##    url: jdbc:mysql://47.103.218.172:3306/oomall2
+#    url: jdbc:mysql://47.103.218.171/oomall2
+#    username: root
+#    password: 741120ab
+#
+#  application:
+#    name: goodsinfo
+#
+#mybatis:
+#  type-aliases-package: com.tardybird.goodsinfo.po
+#  mapper-locations: classpath:mapper/*.xml
+#
+#server:
+#  port: 8823
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://112.124.5.149:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+##    ip-address: 47.96.159.71
+#    non-secure-port: 8823
+#    ip-address: localhost
+#
+#goods:
+#  #redis缓存失效时间，单位分钟
+#  redisExpireTime: 1
+#  #预提库存数量
+#  preDeductQuantity: 3

@@ -2,12 +2,14 @@ package com.tardybird.goodsinfo.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tardybird.goodsinfo.client.CommentClient;
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
+import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -28,15 +30,21 @@ public class GoodsService {
     final GoodsDao goodsDao;
     final ProductMapper productMapper;
     final RedisTemplate<String, GoodsPo> redisTemplateOfGoods;
+    final RedisTemplate<String, List<String>> redisTemplateOfString;
+    final RedisTemplate<String, ProductPo> redisTemplateOfProduct;
+    final CommentClient commentClient;
 
     public GoodsService(GoodsMapper goodsMapper,
                         GoodsCategoryMapper goodsCategoryMapper,
-                        GoodsDao goodsDao, ProductMapper productMapper, RedisTemplate<String, GoodsPo> redisTemplateOfGoods) {
+                        GoodsDao goodsDao, ProductMapper productMapper, RedisTemplate<String, GoodsPo> redisTemplateOfGoods, RedisTemplate<String, List<String>> redisTemplateOfString, RedisTemplate<String, ProductPo> redisTemplateOfProduct, CommentClient commentClient) {
         this.goodsMapper = goodsMapper;
         this.goodsCategoryMapper = goodsCategoryMapper;
         this.goodsDao = goodsDao;
         this.productMapper = productMapper;
         this.redisTemplateOfGoods = redisTemplateOfGoods;
+        this.redisTemplateOfString = redisTemplateOfString;
+        this.redisTemplateOfProduct = redisTemplateOfProduct;
+        this.commentClient = commentClient;
     }
 
 
@@ -100,12 +108,34 @@ public class GoodsService {
     }
 
     @Transactional
-    public Boolean deleteGood(Integer id) {
+    public Boolean deleteGoods(Integer id) {
 
         String goodsKey = "Goods_" + id;
         GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(goodsKey);
 
         Integer deleteProductRows = productMapper.updateProductByGoodsId(id);
+
+        String productKeys = "Goods_Product_" + id;
+        List<String> productIds = redisTemplateOfString.opsForValue().get(productKeys);
+
+        if (productIds != null) {
+
+            for (String productId : productIds) {
+                String productKey = "Product_" + productId;
+                ProductPo productPo = redisTemplateOfProduct.opsForValue().get(productKey);
+
+                if (productPo != null) {
+                    redisTemplateOfProduct.delete(productKey);
+
+                    commentClient.deleteComments(productPo.getId());
+
+                }
+            }
+
+            redisTemplateOfString.delete(productKeys);
+
+        }
+
         Integer deleteGoodsRows = goodsMapper.deleteGoods(id);
 
         if (goodsPo != null) {
@@ -120,8 +150,4 @@ public class GoodsService {
         return rows > 0;
     }
 
-//    public Boolean deductGoodsVolume(Integer id, Integer quantity) {
-//        Integer affectedRows = goodsMapper.deductQuantity(id, quantity);
-//        return affectedRows > 0;
-//    }
 }

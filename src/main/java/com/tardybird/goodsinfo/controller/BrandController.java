@@ -31,10 +31,6 @@ public class BrandController {
         this.logClient = logClient;
     }
 
-    /*
-     * ========= following are wx apis ==============
-     */
-
     /**
      * 查看所有品牌 u1
      */
@@ -73,10 +69,6 @@ public class BrandController {
         logClient.addLog(log);
         return ResponseUtil.ok(brand);
     }
-
-    /*
-     * ========= following are admin apis ==============
-     */
 
     /**
      * 根据条件搜索品牌 1

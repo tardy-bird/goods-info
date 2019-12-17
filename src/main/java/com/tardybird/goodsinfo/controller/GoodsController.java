@@ -287,7 +287,7 @@ public class GoodsController {
 
             return ResponseUtil.badArgumentValue();
         }
-        Boolean ok = goodsService.deleteGood(id);
+        Boolean ok = goodsService.deleteGoods(id);
         if (!ok) {
             log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
             logClient.addLog(log);
