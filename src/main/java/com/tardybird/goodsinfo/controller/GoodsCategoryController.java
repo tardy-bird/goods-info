@@ -3,6 +3,7 @@ package com.tardybird.goodsinfo.controller;
 import com.tardybird.goodsinfo.client.LogClient;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.domain.Log;
+import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import com.tardybird.goodsinfo.service.GoodsCategoryService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
@@ -106,8 +107,10 @@ public class GoodsCategoryController {
 
             return ResponseUtil.badArgument();
         }
-        Boolean ok = goodsCategoryService.createCategory(goodsCategory);
-        if (!ok) {
+
+        GoodsCategoryPo goodsCategoryPo = goodsCategoryService.createCategory(goodsCategory);
+
+        if (goodsCategoryPo.getId() <= 0) {
 
             log = new Log.LogBuilder().type(1).status(0).actions("新建一个分类").build();
             logClient.addLog(log);
@@ -118,7 +121,7 @@ public class GoodsCategoryController {
         log = new Log.LogBuilder().type(1).status(1).actions("新建一个分类").build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok(goodsCategory);
+        return ResponseUtil.ok(goodsCategoryPo);
     }
 
     /**

@@ -65,10 +65,10 @@ public class GoodsCategoryService {
         return goodsCategoryList;
     }
 
-    public Boolean createCategory(GoodsCategory goodsCategory) {
+    public GoodsCategoryPo createCategory(GoodsCategory goodsCategory) {
         GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
         Integer affectedRows = goodsCategoryMapper.createCategory(goodsCategoryPo);
-        return affectedRows > 0;
+        return goodsCategoryPo;
     }
 
     public Boolean updateCategory(GoodsCategory goodsCategory) {

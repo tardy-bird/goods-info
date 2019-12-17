@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
  * @author nick
  */
 @RestController
-@RequestMapping("/goodsInfoService")
 public class BrandController {
 
     final
@@ -45,7 +44,9 @@ public class BrandController {
             return ResponseUtil.badArgument();
         }
 
-        if (page >= 0 || limit > 0 || "desc".equalsIgnoreCase(order) || "asc".equalsIgnoreCase(order)) {
+        String desc = "desc";
+        String asc = "asc";
+        if (page >= 0 || limit > 0 || desc.equalsIgnoreCase(order) || asc.equalsIgnoreCase(order)) {
             Object brands = brandService.getAllBrands(page, limit, sort, order);
             return ResponseUtil.ok(brands);
         }
