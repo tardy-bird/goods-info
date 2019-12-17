@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
  * @author nick
  */
 @RestController
-@RequestMapping("/goodsInfoService")
 public class ProductController {
 
     final GoodsDao goodsDao;
