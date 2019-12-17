@@ -64,13 +64,13 @@ class GoodsServiceTest {
         goodsService.updateGoods(goods);
     }
 
-    @Test
-    void deleteGood() {
-        Goods goods = new Goods();
-        goods.setId(1);
-
-        goodsService.deleteGood(goods.getId());
-    }
+//    @Test
+//    void deleteGood() {
+//        Goods goods = new Goods();
+//        goods.setId(1);
+//
+//        goodsService.deleteGood(goods.getId());
+//    }
 
 
 }

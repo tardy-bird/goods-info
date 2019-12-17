@@ -23,15 +23,31 @@
     </select>
 
     <select id="getBrandsByCondition" parameterType="java.lang.String" resultMap="BrandPo">
-        SELECT * FROM oomall_brand
-        WHERE (id=#{id} OR name=#{name}) and is_deleted=0
-        ORDER BY
-        <if test="sort != null">
-            ${sort}
+        SELECT *
+        FROM oomall_brand
+        WHERE
+
+        <if test="id != null">
+            ( id = #{id})
         </if>
-        <if test="order != null">
-            ${order}
+        <if test="name != null and id != null">
+            OR
         </if>
+        <if test="name != null">
+            (name = #{name} )
+        </if>
+
+        <if test="id != null or name != null">
+            and
+        </if>
+        is_deleted = 0
+        <!--ORDER BY-->
+        <!--<if test="sort != null">-->
+            <!--${sort}-->
+        <!--</if>-->
+        <!--<if test="order != null">-->
+            <!--${order}-->
+        <!--</if>-->
     </select>
 
 
@@ -44,7 +60,7 @@
 
     <insert id="addBrand" parameterType="BrandPo" useGeneratedKeys="true" keyProperty="id">
         insert into oomall_brand (name, description, pic_url, gmt_create, gmt_modified, is_deleted)
-        values (#{name}, #{description}, #{picUrl}, now(), now(), #{beDeleted})
+        values (#{name}, #{description}, #{picUrl}, now(), now(), 0)
     </insert>
 
     <update id="updateBrand" parameterType="BrandPo">

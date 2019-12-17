@@ -71,7 +71,7 @@
 
     <insert id="createCategory" parameterType="GoodsCategoryPo">
         insert into oomall_goods_category(name, pid, gmt_create, gmt_modified, is_deleted)
-        values (#{name}, #{pid}, current_timestamp, current_timestamp, #{beDeleted})
+        values (#{name}, #{pid}, current_timestamp, current_timestamp, 0)
     </insert>
 
     <update id="deleteL2withL1">

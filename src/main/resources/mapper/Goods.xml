@@ -43,7 +43,6 @@
         <if test="goodsSn != null or name != null">
             and
         </if>
-
         is_deleted = 0
     </select>
 
@@ -56,8 +55,14 @@
     <select id="findNewAndHotGoods" resultMap="GoodsPo">
         select *
         from oomall_goods
-        where status = 4
+        where (status = 2 or status =3)
           and is_deleted = 0
+    </select>
+
+    <select id="findNewAndHotGoodsByCategory" resultMap="GoodsPo">
+        select *
+        from oomall_goods
+        where (status=2 or status=3) and is_deleted=0 and goods_category_id=#{categoryId}
     </select>
 
     <select id="getGoodsByIdAdmin" resultMap="GoodsPo">

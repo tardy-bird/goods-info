@@ -80,7 +80,7 @@ public class BrandController {
                                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                                        @Order @RequestParam(defaultValue = "desc") String order) {
         Log log;
-        if (id == null || name == null || page == null || limit == null) {
+        if (id == null || page == null || limit == null) {
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌").status(0)
                     .actionId(id).build();
             logClient.addLog(log);
@@ -127,7 +127,7 @@ public class BrandController {
         Log log;
         if (brand == null) {
 
-            log = new Log.LogBuilder().type(1).actions("根据条件搜索品牌").status(0).build();
+            log = new Log.LogBuilder().type(1).actions("创建一个品牌").status(0).build();
             logClient.addLog(log);
 
             return ResponseUtil.badArgument();
