@@ -74,13 +74,13 @@ public class BrandController {
      * 根据条件搜索品牌 1
      */
     @GetMapping("/admins/brands")
-    public Object getBrandsByCondition(@NotNull Integer id, String name,
+    public Object getBrandsByCondition(Integer id, String name,
                                        @RequestParam(defaultValue = "1") Integer page,
                                        @RequestParam(defaultValue = "10") Integer limit,
                                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                                        @Order @RequestParam(defaultValue = "desc") String order) {
         Log log;
-        if (id == null || page == null || limit == null) {
+        if (page == null || limit == null) {
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌").status(0)
                     .actionId(id).build();
             logClient.addLog(log);
