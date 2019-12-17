@@ -18,6 +18,7 @@ import java.util.List;
  * @author nick
  */
 @RestController
+@RequestMapping("/goodsInfoService")
 public class GoodsController {
 
     final GoodsService goodsService;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author nick
  */
 @Component
-@FeignClient(name = "Log")
+@FeignClient(name = "logService")
 public interface LogClient {
     /**
      * x

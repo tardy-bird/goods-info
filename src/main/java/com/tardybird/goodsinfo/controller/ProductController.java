@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @author nick
  */
 @RestController
+@RequestMapping("/goodsInfoService")
 public class ProductController {
 
     final GoodsDao goodsDao;
@@ -49,6 +50,7 @@ public class ProductController {
 
             return ResponseUtil.badArgument();
         }
+
         product.setId(id);
         Boolean ok = productService.updateProduct(product);
         if (!ok) {

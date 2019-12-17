@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author nick
  */
 @Component
-@FeignClient("Comment")
+@FeignClient("commentService")
 public interface CommentClient {
 
     /**
