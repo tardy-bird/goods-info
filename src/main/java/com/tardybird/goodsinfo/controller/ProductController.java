@@ -27,6 +27,11 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public Object getProduct(@PathVariable("id") Integer id) {
+
+        if (id <= 0) {
+            return ResponseUtil.fail();
+        }
+
         Product product = productService.getProductById(id);
 
         Log log;
@@ -42,6 +47,10 @@ public class ProductController {
     @PutMapping("/products/{id}")
     public Object updateProductById(@PathVariable Integer id,
                                     @RequestBody Product product) {
+
+        if (id <= 0) {
+            return ResponseUtil.fail();
+        }
         Log log;
         if (product == null) {
 
@@ -75,6 +84,11 @@ public class ProductController {
      */
     @DeleteMapping("/products/{id}")
     public Object deleteProductById(@PathVariable Integer id) {
+
+        if (id <= 0) {
+            return ResponseUtil.fail();
+        }
+
         Log log;
         Boolean ok = productService.deleteProduct(id);
         if (!ok) {

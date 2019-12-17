@@ -110,6 +110,14 @@ public class GoodsCategoryController {
 
         GoodsCategoryPo goodsCategoryPo = goodsCategoryService.createCategory(goodsCategory);
 
+        if (goodsCategoryPo == null) {
+
+            log = new Log.LogBuilder().type(1).status(0).actions("新建一个分类").build();
+            logClient.addLog(log);
+
+            return ResponseUtil.badArgumentValue();
+        }
+
         if (goodsCategoryPo.getId() <= 0) {
 
             log = new Log.LogBuilder().type(1).status(0).actions("新建一个分类").build();
