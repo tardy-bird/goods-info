@@ -88,12 +88,12 @@
           and goods_category_id = #{id}
     </select>
 
-    <select id="findGoodsByBrandId" parameterType="java.lang.String" resultMap="GoodsPo">
-        select *
-        from oomall_goods
-        where is_deleted = 0
-          and brand_id = #{brandId}
-    </select>
+<!--    <select id="findGoodsByBrandId" parameterType="java.lang.String" resultMap="GoodsPo">-->
+<!--        select *-->
+<!--        from oomall_goods-->
+<!--        where is_deleted = 0-->
+<!--          and brand_id = #{brandId}-->
+<!--    </select>-->
 
     <select id="findGoodsIdsByCategoryId" resultType="java.lang.Integer">
         select id
@@ -204,6 +204,11 @@
         where status != 0
           and id = #{id}
           and is_deleted = 0;
+    </select>
+
+    <select id="findGoodsByBrandId" parameterType="java.lang.Integer" resultMap="GoodsPo">
+        select * from oomall_goods
+        where brand_id=#{id} and is_deleted=0
     </select>
 
     <update id="deductQuantity" parameterType="java.lang.Integer">

@@ -33,25 +33,26 @@ public class ProductService {
         this.redisTemplateOfProduct = redisTemplateOfProduct;
     }
 
-    public List<Product> getProductByGoodsId(Integer id) {
+    public List<ProductPo> getProductByGoodsId(Integer id) {
 
         List<ProductPo> productPos = goodsDao.getProductByGoodsId(id);
-        List<Product> productList = new ArrayList<>();
-
-        for (ProductPo productPo : productPos) {
-            Product product = ObjectConversion.productPo2Product(productPo);
-
-            GoodsPo goodsPos = goodsDao.getGoodsByIdAdmin(product.getGoodsId());
-            product.setGoodsPo(goodsPos);
-
-            productList.add(product);
-        }
-        return productList;
+//        List<Product> productList = new ArrayList<>();
+//
+//        for (ProductPo productPo : productPos) {
+//            Product product = ObjectConversion.productPo2Product(productPo);
+//
+//            GoodsPo goodsPos = goodsDao.getGoodsByIdAdmin(product.getGoodsId());
+//            product.setGoodsPo(goodsPos);
+//
+//            productList.add(product);
+//        }
+//        return productList;
+        return productPos;
     }
 
-    public Boolean createProduct(Product product) {
-        ProductPo productPo = ObjectConversion.product2ProductPo(product);
-        Integer affectedRows = productMapper.createProduct(productPo);
+    public Boolean createProduct(ProductPo product) {
+//        ProductPo productPo = ObjectConversion.product2ProductPo(product);
+        Integer affectedRows = productMapper.createProduct(product);
         return affectedRows > 0;
     }
 

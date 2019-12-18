@@ -17,7 +17,7 @@ public interface GoodsCategoryMapper {
      *
      * @return x
      */
-    List<GoodsCategoryPo> getAllCategories();
+    List<GoodsCategoryPo> getAllCategories(Integer page,Integer limit);
 
     /**
      * 获得一级分类

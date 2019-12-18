@@ -38,13 +38,14 @@ public class GoodsCategoryController {
      * @return x
      */
     @GetMapping("/categories")
-    public Object listGoodsCategory() {
+    public Object listGoodsCategory(@RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer limit) {
 
         Log log;
         log = new Log.LogBuilder().type(0).status(0).build();
         logClient.addLog(log);
 
-        return ResponseUtil.okList(goodsCategoryService.getAllCategories());
+        return ResponseUtil.okList(goodsCategoryService.getAllCategories(page,limit));
     }
 
     /**
@@ -97,7 +98,7 @@ public class GoodsCategoryController {
      * 新建一个分类 2
      */
     @PostMapping("/categories")
-    public Object addGoodsCategory(@RequestBody GoodsCategory goodsCategory) {
+    public Object addGoodsCategory(@RequestBody GoodsCategoryPo goodsCategory) {
         Log log;
         if (goodsCategory == null) {
 
@@ -135,7 +136,8 @@ public class GoodsCategoryController {
      * 修改分类信息 4
      */
     @PutMapping("/categories/{id}")
-    public Object updateCategory(@PathVariable("id") Integer id, @RequestBody GoodsCategory goodsCategory) {
+    public Object updateCategory(@PathVariable("id") Integer id,
+                                 @RequestBody GoodsCategoryPo goodsCategory) {
         Log log;
         if (id <= 0) {
 

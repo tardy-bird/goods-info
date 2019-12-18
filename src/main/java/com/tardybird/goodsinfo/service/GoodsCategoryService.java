@@ -29,9 +29,9 @@ public class GoodsCategoryService {
         this.goodsMapper = goodsMapper;
     }
 
-    public List<GoodsCategory> getAllCategories() {
-        List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getAllCategories();
-        return getGoodsCategories(goodsCategoryPos);
+    public List<GoodsCategoryPo> getAllCategories(Integer page,Integer limit) {
+        List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getAllCategories(page,limit);
+        return goodsCategoryPos;
     }
 
     public List<GoodsCategory> getLevelOneCategories() {
@@ -57,23 +57,23 @@ public class GoodsCategoryService {
         for (GoodsCategoryPo goodsCategoryPo : goodsCategoryPos) {
             GoodsCategory goodsCategory = ObjectConversion.goodsCategoryPo2GoodsCategory(goodsCategoryPo);
 
-            List<GoodsPo> goodsPos = goodsMapper.findGoodsByGoodsCategoryId(String.valueOf(goodsCategory.getId()));
-            goodsCategory.setGoodsPoList(goodsPos);
+//            List<GoodsPo> goodsPos = goodsMapper.findGoodsByGoodsCategoryId(String.valueOf(goodsCategory.getId()));
+            goodsCategory.setGoodsPoList(null);
 
             goodsCategoryList.add(goodsCategory);
         }
         return goodsCategoryList;
     }
 
-    public GoodsCategoryPo createCategory(GoodsCategory goodsCategory) {
-        GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
-        Integer affectedRows = goodsCategoryMapper.createCategory(goodsCategoryPo);
-        return goodsCategoryPo;
+    public GoodsCategoryPo createCategory(GoodsCategoryPo goodsCategory) {
+//        GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
+        Integer affectedRows = goodsCategoryMapper.createCategory(goodsCategory);
+        return goodsCategory;
     }
 
-    public Boolean updateCategory(GoodsCategory goodsCategory) {
-        GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
-        Integer affectedRows = goodsCategoryMapper.updateCategory(goodsCategoryPo);
+    public Boolean updateCategory(GoodsCategoryPo goodsCategory) {
+//        GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
+        Integer affectedRows = goodsCategoryMapper.updateCategory(goodsCategory);
         return affectedRows > 0;
     }
 

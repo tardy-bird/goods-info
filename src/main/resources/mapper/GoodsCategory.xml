@@ -11,10 +11,11 @@
         <result property="picUrl" column="pic_url"/>
     </resultMap>
 
-    <select id="getAllCategories" resultMap="GoodsCategoryPo">
+    <select id="getAllCategories" parameterType="java.lang.Integer" resultMap="GoodsCategoryPo">
         select *
         from oomall_goods_category
         where is_deleted = 0
+        limit #{page},#{limit}
     </select>
 
     <select id="getLevelOneCategories" resultMap="GoodsCategoryPo">

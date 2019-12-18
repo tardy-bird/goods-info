@@ -55,9 +55,11 @@ public interface GoodsMapper {
      */
     GoodsPo getGoodsByIdUser(@Param("id") Integer id);
 
-    List<GoodsPo> findGoodsByBrandId(@Param("brandId") String brandId);
+//    List<GoodsPo> findGoodsByBrandId(@Param("brandId") String brandId);
 
     List<GoodsPo> findGoodsByGoodsCategoryId(@Param("id") String id);
+
+    List<GoodsPo> findGoodsByBrandId(@Param("id") Integer id);
 
     List<Integer> findGoodsIdsByCategoryId(@Param("id") Integer id,@Param("page") Integer page,
                                            @Param("limit") Integer limit);

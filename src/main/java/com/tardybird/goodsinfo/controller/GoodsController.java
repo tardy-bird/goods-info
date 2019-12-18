@@ -6,6 +6,7 @@ import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.Log;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.po.GoodsPo;
+import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ObjectConversion;
@@ -66,7 +67,7 @@ public class GoodsController {
      * 获取商品信息列表
      */
     @GetMapping("/goods")
-    public Object listGoods(String goodsSn, String name,
+    public Object listGoods(String name,
                             @RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
         if (page == null || limit == null) {
@@ -77,12 +78,12 @@ public class GoodsController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Object goodsList = goodsService.getAllGoodsByConditions(goodsSn, name, page, limit);
+        Object goodsList = goodsService.getAllGoodsByConditions(null, name, page, limit);
         return ResponseUtil.ok(goodsList);
     }
 
     @GetMapping("/admin/goods")
-    public Object listGoods(@RequestParam(defaultValue = "1") Integer page,
+    public Object listAdminGoods(String goodsSn, String name,@RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
         Log log;
         if (page == null || limit == null) {
@@ -101,7 +102,7 @@ public class GoodsController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Object object = goodsService.getAllGoodsByConditions(null, null, page, limit);
+        Object object = goodsService.getAllGoodsByConditions(goodsSn, name, page, limit);
 
         log = new Log.LogBuilder().type(0).status(1).actions("获取商品分类信息").build();
         logClient.addLog(log);
@@ -118,7 +119,7 @@ public class GoodsController {
      * 新建/上架一个商品
      */
     @PostMapping("/goods")
-    public Object addGoods(@RequestBody Goods goods) {
+    public Object addGoods(@RequestBody GoodsPo goods) {
         Log log;
         if (goods == null) {
 
@@ -129,6 +130,7 @@ public class GoodsController {
         }
 
         Boolean ok = goodsService.createGoods(goods);
+
         if (!ok) {
             log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
             logClient.addLog(log);
@@ -193,7 +195,7 @@ public class GoodsController {
 
             return ResponseUtil.badArgumentValue();
         }
-        List<Product> products = productService.getProductByGoodsId(id);
+        List<ProductPo> products = productService.getProductByGoodsId(id);
 
         log = new Log.LogBuilder().type(0).status(1).actions("管理员查询商品下的产品").actionId(id).build();
         logClient.addLog(log);
@@ -209,7 +211,7 @@ public class GoodsController {
      * @return x
      */
     @PostMapping("/goods/{id}/products")
-    public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody Product product) {
+    public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody ProductPo product) {
         Log log;
         if (id <= 0) {
 
@@ -247,7 +249,7 @@ public class GoodsController {
      * 根据id更新商品信息
      */
     @PutMapping("/goods/{id}")
-    public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody Goods goods) {
+    public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody GoodsPo goods) {
         Log log;
         if (id <= 0) {
 

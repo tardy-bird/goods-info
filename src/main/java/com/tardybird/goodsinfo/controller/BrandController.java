@@ -1,9 +1,10 @@
 package com.tardybird.goodsinfo.controller;
 
 import com.tardybird.goodsinfo.client.LogClient;
-import com.tardybird.goodsinfo.domain.Brand;
 import com.tardybird.goodsinfo.domain.Log;
+import com.tardybird.goodsinfo.po.BrandPo;
 import com.tardybird.goodsinfo.service.BrandService;
+import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.util.FileUploadUtil;
 import com.tardybird.goodsinfo.util.IdUtil;
 import com.tardybird.goodsinfo.util.ResponseUtil;
@@ -22,12 +23,14 @@ public class BrandController {
 
     final
     BrandService brandService;
+    final GoodsService goodsService;
 
     final
     LogClient logClient;
 
-    public BrandController(BrandService brandService, LogClient logClient) {
+    public BrandController(BrandService brandService, GoodsService goodsService, LogClient logClient) {
         this.brandService = brandService;
+        this.goodsService = goodsService;
         this.logClient = logClient;
     }
 
@@ -66,7 +69,9 @@ public class BrandController {
             logClient.addLog(log);
             return ResponseUtil.badArgumentValue();
         }
-        Brand brand = brandService.getBrandById(id);
+
+        BrandPo brand = brandService.getBrandById(id);
+
         log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(1).actionId(id).build();
         logClient.addLog(log);
         return ResponseUtil.ok(brand);
@@ -75,8 +80,8 @@ public class BrandController {
     /**
      * 根据条件搜索品牌 1
      */
-    @GetMapping("/admins/brands")
-    public Object getBrandsByCondition(Integer id, String name,
+    @GetMapping("/admin/brands")
+    public Object getBrandsByCondition(@RequestParam Integer id, @RequestParam String name,
                                        @RequestParam(defaultValue = "1") Integer page,
                                        @RequestParam(defaultValue = "10") Integer limit,
                                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -125,7 +130,7 @@ public class BrandController {
      * 创建一个品牌 2
      */
     @PostMapping("/brands")
-    public Object addBrand(@RequestBody Brand brand) {
+    public Object addBrand(@RequestBody BrandPo brand) {
         Log log;
         if (brand == null) {
 
@@ -156,7 +161,7 @@ public class BrandController {
      */
     @PutMapping("/brands/{id}")
     public Object updateBrandById(@NotNull @PathVariable("id") Integer id,
-                                  @RequestBody Brand brand) {
+                                  @RequestBody BrandPo brand) {
 
         Log log;
         if (id <= 0) {
@@ -183,6 +188,14 @@ public class BrandController {
         logClient.addLog(log);
 
         return ResponseUtil.ok(brand);
+    }
+
+    @GetMapping("/brands/{id}/goods")
+    public Object findGoodsOfBrand(@PathVariable("id") Integer id) {
+        if (id <= 0) {
+            return ResponseUtil.fail();
+        }
+        return brandService.getGoodsByBrandId(id);
     }
 
     /**

@@ -38,27 +38,28 @@ public class BrandService {
         return getObject(brandPos);
     }
 
-    public Brand getBrandById(Integer id) {
-        BrandPo brandPo = brandMapper.getBrandById(id);
+    public BrandPo getBrandById(Integer id) {
 
-        if (brandPo == null) {
-            return null;
-        }
+        //
+//        List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
+//        Brand brand = ObjectConversion.brandPo2Brand(brandPo);
+//        brand.setGoodsPoList(goodsPos);
+//
+//        return brand;
 
-        List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
-        Brand brand = ObjectConversion.brandPo2Brand(brandPo);
-        brand.setGoodsPoList(goodsPos);
+        return brandMapper.getBrandById(id);
+    }
 
-        return brand;
+    public List<GoodsPo> getGoodsByBrandId(Integer id) {
+        return goodsMapper.findGoodsByBrandId(id);
     }
 
     public Object getBrandsByCondition(String id, String name, Integer page,
                                        Integer limit, String sort, String order) {
         PageHelper.startPage(page, limit);
 
-        List<BrandPo> brandPos = brandMapper.getBrandsByCondition(id, name, sort, order);
-
-        return getObject(brandPos);
+        //        return getObject(brandPos);
+        return brandMapper.getBrandsByCondition(id, name, sort, order);
     }
 
     private Object getObject(List<BrandPo> brandPos) {
@@ -67,7 +68,9 @@ public class BrandService {
 
             Brand brand = ObjectConversion.brandPo2Brand(brandPo);
 
-            List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
+//            List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
+
+            List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(brandPo.getId());
             brand.setGoodsPoList(goodsPos);
 
             brandList.add(brand);
@@ -76,10 +79,10 @@ public class BrandService {
     }
 
 
-    public Boolean addBrand(Brand brand) {
-        BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
-        Integer affectedRows = brandMapper.addBrand(brandPo);
-        brand.setId(brandPo.getId());
+    public Boolean addBrand(BrandPo brand) {
+//        BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
+        Integer affectedRows = brandMapper.addBrand(brand);
+        brand.setId(brand.getId());
         return affectedRows > 0;
     }
 
@@ -88,9 +91,9 @@ public class BrandService {
         return affectedRows > 0;
     }
 
-    public Boolean updateBrand(Brand brand) {
-        BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
-        Integer affectedRows = brandMapper.updateBrand(brandPo);
+    public Boolean updateBrand(BrandPo brand) {
+//        BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
+        Integer affectedRows = brandMapper.updateBrand(brand);
         return affectedRows > 0;
     }
 
