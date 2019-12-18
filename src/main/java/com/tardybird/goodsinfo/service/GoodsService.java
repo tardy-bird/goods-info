@@ -85,7 +85,8 @@ public class GoodsService {
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 
-    public List<GoodsPo> findGoodsByCategoryId(Integer id) {
+    public List<GoodsPo> findGoodsByCategoryId(Integer id,Integer page,Integer limit) {
+
         return goodsDao.findGoodsByCategoryId(id);
     }
 

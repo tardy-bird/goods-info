@@ -101,7 +101,7 @@
         where goods_category_id = #{id}
           and is_deleted = 0
           and status != 0
-        limit 20
+        limit #{page},#{limit}
     </select>
 
     <insert id="createGoods" parameterType="GoodsPo" useGeneratedKeys="true"

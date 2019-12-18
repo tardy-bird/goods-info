@@ -42,7 +42,9 @@ public class GoodsController {
      * 获取商品分类信息
      */
     @GetMapping("/categories/{id}/goods")
-    public Object getCategoriesInfoById(@PathVariable("id") Integer id) {
+    public Object getCategoriesInfoById(@PathVariable("id") Integer id,
+                                        @RequestParam(defaultValue = "1") Integer page,
+                                        @RequestParam(defaultValue = "10") Integer limit) {
         Log log;
         if (id <= 0) {
 
@@ -51,7 +53,8 @@ public class GoodsController {
 
             return ResponseUtil.badArgumentValue();
         }
-        List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id);
+
+        List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id,page,limit);
 
         log = new Log.LogBuilder().type(0).status(1).actions("获取商品分类信息").actionId(id).build();
         logClient.addLog(log);

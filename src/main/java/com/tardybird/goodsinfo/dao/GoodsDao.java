@@ -70,12 +70,12 @@ public class GoodsDao {
         return productPoList;
     }
 
-    public List<GoodsPo> findGoodsByCategoryId(Integer id) {
+    public List<GoodsPo> findGoodsByCategoryId(Integer id,Integer page,Integer limit) {
 
         String key = "Category_Goods_" + id;
         List<String> goodsIds = redisTemplateOfString.opsForValue().get(key);
         if (goodsIds == null) {
-            List<Integer> goodsIdsByCategoryId = goodsMapper.findGoodsIdsByCategoryId(id);
+            List<Integer> goodsIdsByCategoryId = goodsMapper.findGoodsIdsByCategoryId(id,page,limit);
 
             if (goodsIdsByCategoryId == null) {
                 return null;

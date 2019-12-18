@@ -43,15 +43,15 @@ public interface GoodsMapper {
     /**
      * 通过商品id查找商品
      *
-     * @param id
+     * @param id x
      * @return goods
      */
     GoodsPo getGoodsByIdAdmin(@Param("id") Integer id);
 
     /**
      * 用户通过商品id查找商品（不可查找到未上架的）
-     * @param id
-     * @return
+     * @param id x
+     * @return x
      */
     GoodsPo getGoodsByIdUser(@Param("id") Integer id);
 
@@ -59,7 +59,8 @@ public interface GoodsMapper {
 
     List<GoodsPo> findGoodsByGoodsCategoryId(@Param("id") String id);
 
-    List<Integer> findGoodsIdsByCategoryId(@Param("id") Integer id);
+    List<Integer> findGoodsIdsByCategoryId(@Param("id") Integer id,@Param("page") Integer page,
+                                           @Param("limit") Integer limit);
 
     /**
      * 更新商品信息
