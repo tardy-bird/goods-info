@@ -1,17 +1,13 @@
 package com.tardybird.goodsinfo.util;
 
-import com.github.pagehelper.Page;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-
 
 /**
  * @author DIX
  */
 public class ResponseUtil {
+
     public static Object ok(Object data) {
         Map<String, Object> objectMap = new HashMap<>(16);
         objectMap.put("errno", 200);
@@ -28,6 +24,9 @@ public class ResponseUtil {
         return objectMap;
     }
 
+    /**
+     * goods
+     */
     public static Object failAdd() {
         return fail(771, "商品新增失败");
     }
@@ -56,7 +55,7 @@ public class ResponseUtil {
     /**
      * product
      */
-    public static Object failAddProcuct() {
+    public static Object failAddProduct() {
         return fail(781, "产品新增失败");
     }
 

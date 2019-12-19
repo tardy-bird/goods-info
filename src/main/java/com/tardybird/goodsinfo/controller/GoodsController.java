@@ -122,9 +122,9 @@ public class GoodsController {
             log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
             logClient.addLog(log);
 
-            Boolean ok = goodsService.createGoods(goods);
+            GoodsPo goodsPo = goodsService.createGoods(goods);
 
-            if (!ok) {
+            if (goodsPo == null) {
                 log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
                 logClient.addLog(log);
                 return ResponseUtil.failAdd();
@@ -133,7 +133,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(1).status(1).actions("新建/上架一个商品").build();
             logClient.addLog(log);
 
-            return ResponseUtil.ok(goods);
+            return ResponseUtil.ok(goodsPo);
         }
         return ResponseUtil.failAdd();
 

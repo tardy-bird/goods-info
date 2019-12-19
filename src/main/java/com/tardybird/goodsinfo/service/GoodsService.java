@@ -15,12 +15,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * @author LENOVO
+ * @author nick
  */
 @Service
 public class GoodsService {
@@ -51,29 +50,17 @@ public class GoodsService {
     public Object getAllGoodsByConditions(String goodsSn, String name, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         List<GoodsPo> goodsPos = goodsMapper.getGoodsByCondition(goodsSn, name);
-//        List<Goods> goodsList = new ArrayList<>();
-//        for (GoodsPo goodsPo : goodsPos) {
-//            Goods goods = ObjectConversion.goodsPo2Goods(goodsPo);
-//
-//            //TODO set actual POs
-//            goods.setBrandPo(null);
-//            goods.setGoodsCategoryPo(null);
-//            goods.setProductPoList(null);
-//            goods.setGrouponRule(null);
-//            goods.setShareRule(null);
-//            goods.setPresaleRule(null);
-//
-//            goodsList.add(goods);
-//        }
-//        return new PageInfo<>(goodsList);
         return new PageInfo<>(goodsPos);
     }
 
 
-    public Boolean createGoods(GoodsPo goods) {
-//        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+    public GoodsPo createGoods(GoodsPo goods) {
         Integer affectedRows = goodsMapper.createGoods(goods);
-        return affectedRows > 0;
+
+        Integer id = goods.getId();
+        goods = goodsMapper.getGoodsByIdAdmin(id);
+
+        return goods;
     }
 
     public Goods getGoodsByIdAdmin(Integer id) {
@@ -86,15 +73,14 @@ public class GoodsService {
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 
-    public List<GoodsPo> findGoodsByCategoryId(Integer id,Integer page,Integer limit) {
+    public List<GoodsPo> findGoodsByCategoryId(Integer id, Integer page, Integer limit) {
 
-        return goodsDao.findGoodsByCategoryId(id,page,limit);
+        return goodsDao.findGoodsByCategoryId(id, page, limit);
     }
 
 
     public Boolean updateGoods(GoodsPo goods) {
 
-//        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
         Integer affectedRows = goodsMapper.updateGoods(goods);
 
         Boolean status = affectedRows > 0;
