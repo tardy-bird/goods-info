@@ -44,7 +44,7 @@ public class BrandController {
                             @Order @RequestParam(defaultValue = "desc") String order) {
 
         if (page == null || limit == null || sort == null || order == null) {
-            return ResponseUtil.badArgument();
+            return ResponseUtil.cantFindListBrand();
         }
 
         String desc = "desc";
@@ -54,7 +54,7 @@ public class BrandController {
             return ResponseUtil.ok(brands);
         }
 
-        return ResponseUtil.badArgumentValue();
+        return ResponseUtil.cantFindListBrand();
 
     }
 
@@ -67,7 +67,7 @@ public class BrandController {
         if (id <= 0) {
             log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(0).actionId(id).build();
             logClient.addLog(log);
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindBrand();
         }
 
         BrandPo brand = brandService.getBrandById(id);
@@ -91,14 +91,14 @@ public class BrandController {
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌").status(0)
                     .actionId(id).build();
             logClient.addLog(log);
-            return ResponseUtil.badArgument();
+            return ResponseUtil.cantFindListBrand();
         }
 
         if (page < 0 || limit < 0) {
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌")
                     .status(0).actionId(id).build();
             logClient.addLog(log);
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindListBrand();
         }
 
         Object brands = brandService.getBrandsByCondition(String.valueOf(id), name, page, limit, sort, order);
@@ -112,7 +112,7 @@ public class BrandController {
     @PostMapping("/pics")
     public Object handleUploadPicture(@RequestBody MultipartFile file) {
         if (file == null) {
-            return ResponseUtil.badArgument();
+            return ResponseUtil.failAddBrand();
         }
         String path = "/var/www/tardybird/upload/"
                 + IdUtil.getValue(8)
@@ -123,7 +123,7 @@ public class BrandController {
             String prefix = "http://47.96.159.71:6180";
             return ResponseUtil.ok(prefix + path);
         }
-        return ResponseUtil.fail();
+        return ResponseUtil.failAddBrand();
     }
 
     /**
@@ -132,24 +132,24 @@ public class BrandController {
     @PostMapping("/brands")
     public Object addBrand(@RequestBody BrandPo brand) {
         Log log;
-        if (brand == null) {
+        if (brand.getDescription() == null && brand.getPicUrl()==null && brand.getName()==null){
 
             log = new Log.LogBuilder().type(1).actions("创建一个品牌").status(0).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgument();
+            return ResponseUtil.failAddBrand();
         }
 
         Boolean ok = brandService.addBrand(brand);
         if (!ok) {
 
-            log = new Log.LogBuilder().type(1).actions("根据条件搜索品牌").status(0).build();
+            log = new Log.LogBuilder().type(1).actions("创建一个品牌").status(0).build();
             logClient.addLog(log);
 
-            return ResponseUtil.serious();
+            return ResponseUtil.failAddBrand();
         }
 
-        log = new Log.LogBuilder().type(1).actions("根据条件搜索品牌").status(1).build();
+        log = new Log.LogBuilder().type(1).actions("创建一个品牌").status(1).build();
         logClient.addLog(log);
 
         return ResponseUtil.ok(brand);
@@ -169,19 +169,19 @@ public class BrandController {
             log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.failUpdateBrand();
         }
-        if (brand == null) {
+        if (brand.getName() == null && brand.getPicUrl()==null && brand.getDescription()==null) {
             log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
             logClient.addLog(log);
-            return ResponseUtil.badArgument();
+            return ResponseUtil.failUpdateBrand();
         }
         brand.setId(id);
         Boolean ok = brandService.updateBrand(brand);
         if (!ok) {
             log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
             logClient.addLog(log);
-            return ResponseUtil.updatedDataFailed();
+            return ResponseUtil.failUpdateBrand();
         }
 
         log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(1).build();
@@ -192,10 +192,16 @@ public class BrandController {
 
     @GetMapping("/brands/{id}/goods")
     public Object findGoodsOfBrand(@PathVariable("id") Integer id) {
+        Log log;
         if (id <= 0) {
-            return ResponseUtil.fail();
+            return ResponseUtil.cantFindList();
         }
-        return brandService.getGoodsByBrandId(id);
+
+        Object goods=brandService.getGoodsByBrandId(id);
+        log = new Log.LogBuilder().type(0).actions("查找品牌对应的商品").actionId(id).status(1).build();
+        logClient.addLog(log);
+
+        return ResponseUtil.ok(goods);
     }
 
     /**
@@ -209,7 +215,7 @@ public class BrandController {
             log = new Log.LogBuilder().type(3).actions("删除一个品牌").status(0).actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.failDeleteBrand();
         }
         Boolean ok = brandService.deleteBrand(id);
         if (!ok) {
@@ -217,13 +223,13 @@ public class BrandController {
             log = new Log.LogBuilder().type(3).actions("删除一个品牌").status(0).actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.serious();
+            return ResponseUtil.failDeleteBrand();
         }
 
         log = new Log.LogBuilder().type(3).actions("删除一个品牌").status(1).actionId(id).build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(null);
     }
 
 }
