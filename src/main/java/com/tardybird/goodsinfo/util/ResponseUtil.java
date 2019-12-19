@@ -16,6 +16,13 @@ public class ResponseUtil {
         return objectMap;
     }
 
+    public static Object okNoData(Object data) {
+        Map<String, Object> objectMap = new HashMap<>(16);
+        objectMap.put("errno", 200);
+        objectMap.put("errmsg", "成功");
+        return objectMap;
+    }
+
 
     public static Object fail(int errno, String errmsg) {
         Map<String, Object> objectMap = new HashMap<>(16);
