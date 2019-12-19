@@ -27,6 +27,8 @@
         FROM oomall_brand
         WHERE
 
+        <if test="id != null or name != null">(
+        </if>
         <if test="id != null">
             ( id = #{id})
         </if>
@@ -38,16 +40,21 @@
         </if>
 
         <if test="id != null or name != null">
+            )
+        </if>
+
+        <if test="id != null or name != null">
             and
         </if>
+
         is_deleted = 0
-        <!--ORDER BY-->
-        <!--<if test="sort != null">-->
-            <!--${sort}-->
-        <!--</if>-->
-        <!--<if test="order != null">-->
-            <!--${order}-->
-        <!--</if>-->
+        ORDER BY
+        <if test="sort != null">
+            ${sort}
+        </if>
+        <if test="order != null">
+            ${order}
+        </if>
     </select>
 
 
