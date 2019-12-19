@@ -1,6 +1,5 @@
 package com.tardybird.goodsinfo.domain;
 
-import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,5 +16,5 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class Product extends ProductPo {
-    private GoodsPo goodsPo;
+    private Goods goods;
 }

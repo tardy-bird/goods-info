@@ -2,6 +2,7 @@ package com.tardybird.goodsinfo.service;
 
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.dao.ProductDao;
+import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.Product;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.mapper.ProductMapper;
@@ -87,7 +88,11 @@ public class ProductService {
 
         Product product = ObjectConversion.productPo2Product(productPo);
         GoodsPo goodsPo = goodsDao.getGoodsByIdAdmin(productPo.getGoodsId());
-        product.setGoodsPo(goodsPo);
+
+        Goods goods = ObjectConversion.goodsPo2Goods(goodsPo);
+
+//        product.setGoodsPo(goods);
+        product.setGoods(goods);
 
         return product;
     }
