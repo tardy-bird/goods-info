@@ -106,52 +106,54 @@
 
 ###########################################################
 # KLY
-#pagehelper:
-#  reasonable: true
-#  support-methods-arguments: true
-#  params: count=countSql
-#  helper-dialect: mysql
-#
-#spring:
-#  redis:
-#    host: 106.15.92.198
-#    port: 6379
-#    timeout: 20000
-#    password:
-#    jedis:
-#      pool:
-#        max-idle: 8
-#        max-wait:
-#        min-idle: 0
-#  datasource:
-#    url: jdbc:mysql://148.70.28.112/wowomall?useUnicode=true&characterEncoding=utf8&useSSL=false
-#    username: wowoto
-#    password: zqhlovekly
-#
-#  application:
-#    name: goodsinfoService
-#
-#mybatis:
-#  type-aliases-package: com.tardybird.goodsinfo.po
-#  mapper-locations: classpath:mapper/*.xml
-#
-#server:
-#  port: 8822
-#
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://148.70.28.112:8761/eureka/
-#  instance:
-#    prefer-ip-address: true
-#    ip-address: 121.199.2.219
-#    non-secure-port: 8822
-#
-#goods:
-#  #redis缓存失效时间，单位分钟
-#  redisExpireTime: 30
-#  #预提库存数量
-#  preDeductQuantity: 3
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  helper-dialect: mysql
+
+spring:
+  redis:
+    host: 106.15.92.198
+    port: 6379
+    timeout: 20000
+    password:
+    jedis:
+      pool:
+        max-idle: 8
+        max-wait:
+        min-idle: 0
+  datasource:
+    hikari:
+      maximum-pool-size: 10
+    url: jdbc:mysql://148.70.28.112/wowomall?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: wowoto
+    password: zqhlovekly
+
+  application:
+    name: goodsinfoService
+
+mybatis:
+  type-aliases-package: com.tardybird.goodsinfo.po
+  mapper-locations: classpath:mapper/*.xml
+
+server:
+  port: 8822
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://148.70.28.112:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 121.199.2.219
+    non-secure-port: 8822
+
+goods:
+  #redis缓存失效时间，单位分钟
+  redisExpireTime: 30
+  #预提库存数量
+  preDeductQuantity: 3
 
 
 
