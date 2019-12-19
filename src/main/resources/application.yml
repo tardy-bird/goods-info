@@ -1,7 +1,5 @@
-######################################################################
-
-# ZLH
-
+######################################################
+# PCW
 #pagehelper:
 #  reasonable: true
 #  support-methods-arguments: true
@@ -10,7 +8,7 @@
 #
 #spring:
 #  redis:
-#    host: 47.97.43.141
+#    host: 47.98.252.133
 #    port: 6379
 #    timeout: 20000
 #    password:
@@ -20,21 +18,74 @@
 #        max-wait:
 #        min-idle: 0
 #  datasource:
-#    url: jdbc:mysql://47.97.43.141/ooad1?useUnicode=true&characterEncoding=utf8&useSSL=false
-#    username: root
-#    password: 12345678
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    hikari:
+#      maximum-pool-size: 10
+#    url: jdbc:mysql://47.52.88.176/DB3_8?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+#    username: user3_8
+#    password: ooad8
 #
 #  application:
-#    name: goodsinfo
+#    name: goodsInfoService
 #
 #mybatis:
 #  type-aliases-package: com.tardybird.goodsinfo.po
 #  mapper-locations: classpath:mapper/*.xml
 #
 #server:
-#  port: 8810
-#  address: 0.0.0.0
+#  port: 8820
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://47.96.159.71:8888/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 47.98.252.133
+#    non-secure-port: 8820
+#
+#goods:
+#  #redis缓存失效时间，单位分钟
+#  redisExpireTime: 30
+#  #预提库存数量
+#  preDeductQuantity: 3
+
+
+
+######################################################################
+# ZLH
+#pagehelper:
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+#  helper-dialect: mysql
+#
+#spring:
+#  redis:
+#    host: 47.96.159.71
+#    port: 6379
+#    timeout: 20000
+#    password:
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        max-wait:
+#        min-idle: 0
+#  datasource:
+#    hikari:
+#      maximum-pool-size: 10
+#    url: jdbc:mysql://47.52.88.176/DB3_8?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+#    username: user3_8
+#    password: ooad8
+#
+#  application:
+#    name: goodsinfoService
+#
+#mybatis:
+#  type-aliases-package: com.tardybird.goodsinfo.po
+#  mapper-locations: classpath:mapper/*.xml
+#
+#server:
+#  port: 8821
 #
 #eureka:
 #  client:
@@ -42,70 +93,19 @@
 #      defaultZone: http://47.97.43.141:8761/eureka/
 #  instance:
 #    prefer-ip-address: true
-#    ip-address: 47.96.159.71
-#    non-secure-port: 8810
-##    ip-address: localhost
+#    ip-address: 121.199.2.219
+#    non-secure-port: 8821
+#
 #
 #goods:
 #  #redis缓存失效时间，单位分钟
-#  redisExpireTime: 1
+#  redisExpireTime: 30
 #  #预提库存数量
 #  preDeductQuantity: 3
 
 
-######################################################
-## PCW
-pagehelper:
-  reasonable: true
-  support-methods-arguments: true
-  params: count=countSql
-  helper-dialect: mysql
-
-spring:
-  redis:
-    host: 47.98.252.133
-    port: 6379
-    timeout: 20000
-    password:
-    jedis:
-      pool:
-        max-idle: 8
-        max-wait:
-        min-idle: 0
-  datasource:
-    url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
-    username: oomall
-    password: oomallp@$$w0rd
-
-  application:
-    name: goodsinfo
-
-mybatis:
-  type-aliases-package: com.tardybird.goodsinfo.po
-  mapper-locations: classpath:mapper/*.xml
-
-server:
-  port: 8820
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://47.96.159.71:8888/eureka/
-  instance:
-    prefer-ip-address: true
-    ip-address: 47.96.159.71
-    non-secure-port: 8820
-#    ip-address: localhost
-
-goods:
-  #redis缓存失效时间，单位分钟
-  redisExpireTime: 30
-  #预提库存数量
-  preDeductQuantity: 3
-
-
 ###########################################################
-## KLY
+# KLY
 #pagehelper:
 #  reasonable: true
 #  support-methods-arguments: true
@@ -129,7 +129,7 @@ goods:
 #    password: zqhlovekly
 #
 #  application:
-#    name: goodsinfo
+#    name: goodsinfoService
 #
 #mybatis:
 #  type-aliases-package: com.tardybird.goodsinfo.po
@@ -144,16 +144,18 @@ goods:
 #      defaultZone: http://148.70.28.112:8761/eureka/
 #  instance:
 #    prefer-ip-address: true
-##    ip-address: 47.96.159.71
+#    ip-address: 121.199.2.219
 #    non-secure-port: 8822
-#    ip-address: localhost
 #
 #goods:
 #  #redis缓存失效时间，单位分钟
-#  redisExpireTime: 1
+#  redisExpireTime: 30
 #  #预提库存数量
 #  preDeductQuantity: 3
 
+
+
+#######################################################################
 # JQS
 #pagehelper:
 #  reasonable: true
@@ -163,23 +165,23 @@ goods:
 #
 #spring:
 #  redis:
-#    host: 47.103.218.171
+#    host: 47.96.159.71
 #    port: 6379
 #    timeout: 20000
 #    password:
 #    jedis:
 #      pool:
 #        max-idle: 8
-#        max-wait:
 #        min-idle: 0
 #  datasource:
-##    url: jdbc:mysql://47.103.218.172:3306/oomall2
-#    url: jdbc:mysql://47.103.218.171/oomall2
-#    username: root
-#    password: 741120ab
+#    hikari:
+#      maximum-pool-size: 10
+#    url: jdbc:mysql://47.52.88.176/DB3_8?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+#    username: user3_8
+#    password: ooad8
 #
 #  application:
-#    name: goodsinfo
+#    name: goodsinfoService
 #
 #mybatis:
 #  type-aliases-package: com.tardybird.goodsinfo.po
@@ -194,12 +196,11 @@ goods:
 #      defaultZone: http://112.124.5.149:8761/eureka/
 #  instance:
 #    prefer-ip-address: true
-##    ip-address: 47.96.159.71
+#    ip-address: 47.96.159.71
 #    non-secure-port: 8823
-#    ip-address: localhost
 #
 #goods:
 #  #redis缓存失效时间，单位分钟
-#  redisExpireTime: 1
+#  redisExpireTime: 30
 #  #预提库存数量
 #  preDeductQuantity: 3
