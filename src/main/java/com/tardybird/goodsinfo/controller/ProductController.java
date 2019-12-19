@@ -28,7 +28,7 @@ public class ProductController {
     public Object getProduct(@PathVariable("id") Integer id) {
 
         if (id <= 0) {
-            return ResponseUtil.fail();
+            return ResponseUtil.cantFindListProduct();
         }
 
         Product product = productService.getProductById(id);
@@ -48,31 +48,35 @@ public class ProductController {
                                     @RequestBody Product product) {
 
         if (id <= 0) {
-            return ResponseUtil.fail();
+            return ResponseUtil.cantFindProduct();
         }
+
         Log log;
-        if (product == null) {
+
+        if (product.getPicUrl() != null || product.getSpecifications() != null
+                || product.getPrice() != null || product.getSafetyStock() != null) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("管理员修改商品下的某个产品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgument();
-        }
+            product.setId(id);
+            Boolean ok = productService.updateProduct(product);
 
-        product.setId(id);
-        Boolean ok = productService.updateProduct(product);
-        if (!ok) {
+            if (!ok) {
 
-            log = new Log.LogBuilder().type(2).status(0).actions("管理员修改商品下的某个产品信息").actionId(id).build();
+                log = new Log.LogBuilder().type(2).status(0).actions("管理员修改商品下的某个产品信息").actionId(id).build();
+                logClient.addLog(log);
+
+                return ResponseUtil.failUpdateProduct();
+            }
+
+            log = new Log.LogBuilder().type(2).status(1).actions("管理员修改商品下的某个产品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.updatedDataFailed();
+            return ResponseUtil.ok(product);
         }
 
-        log = new Log.LogBuilder().type(2).status(1).actions("管理员修改商品下的某个产品信息").actionId(id).build();
-        logClient.addLog(log);
-
-        return ResponseUtil.ok(product);
+        return ResponseUtil.failUpdateProduct();
     }
 
     /**
@@ -85,23 +89,24 @@ public class ProductController {
     public Object deleteProductById(@PathVariable Integer id) {
 
         if (id <= 0) {
-            return ResponseUtil.fail();
+            return ResponseUtil.cantFindProduct();
         }
 
         Log log;
         Boolean ok = productService.deleteProduct(id);
+
         if (!ok) {
 
             log = new Log.LogBuilder().type(3).status(0).actions("管理员删除商品下的某个产品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.updatedDataFailed();
+            return ResponseUtil.failDeleteProduct();
         }
 
         log = new Log.LogBuilder().type(3).status(1).actions("管理员删除商品下的某个产品信息").actionId(id).build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(id);
     }
 
     @PutMapping("/product/{id}/deduct")

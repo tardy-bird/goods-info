@@ -52,15 +52,19 @@ public class GoodsController {
             log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindCategory();
         }
 
-        List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id,page,limit);
+        if (page < 0 || limit < 0) {
+            return ResponseUtil.cantFindList();
+        }
+
+        List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id, page, limit);
 
         log = new Log.LogBuilder().type(0).status(1).actions("获取商品分类信息").actionId(id).build();
         logClient.addLog(log);
 
-        return ResponseUtil.okList(goodsPos);
+        return ResponseUtil.ok(goodsPos);
     }
 
     /**
@@ -70,36 +74,28 @@ public class GoodsController {
     public Object listGoods(String name,
                             @RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
-        if (page == null || limit == null) {
-            return ResponseUtil.badArgument();
-        }
+
 
         if (page < 0 || limit < 0) {
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFind();
         }
 
         Object goodsList = goodsService.getAllGoodsByConditions(null, name, page, limit);
+
         return ResponseUtil.ok(goodsList);
     }
 
     @GetMapping("/admin/goods")
-    public Object listAdminGoods(String goodsSn, String name,@RequestParam(defaultValue = "1") Integer page,
-                            @RequestParam(defaultValue = "10") Integer limit) {
+    public Object listAdminGoods(String goodsSn, String name, @RequestParam(defaultValue = "1") Integer page,
+                                 @RequestParam(defaultValue = "10") Integer limit) {
         Log log;
-        if (page == null || limit == null) {
-
-            log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").build();
-            logClient.addLog(log);
-
-            return ResponseUtil.badArgument();
-        }
 
         if (page < 0 || limit < 0) {
 
             log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindList();
         }
 
         Object object = goodsService.getAllGoodsByConditions(goodsSn, name, page, limit);
@@ -111,34 +107,36 @@ public class GoodsController {
     }
 
 
-    /*
-     * ========= following are admin apis ==============
-     */
-
     /**
      * 新建/上架一个商品
      */
     @PostMapping("/goods")
     public Object addGoods(@RequestBody GoodsPo goods) {
         Log log;
-        if (goods == null) {
+        if (goods.getName() != null || goods.getGoodsSn() != null || goods.getShortName() != null ||
+                goods.getDescription() != null || goods.getBrief() != null || goods.getPicUrl() != null ||
+                goods.getDetail() != null || goods.getStatusCode() != null || goods.getGallery() != null ||
+                goods.getGoodsCategoryId() != null || goods.getBrandId() != null || goods.getWeight() != null
+                || goods.getVolume() != null || goods.getSpecialFreightId() != null) {
 
             log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgument();
-        }
+            Boolean ok = goodsService.createGoods(goods);
 
-        Boolean ok = goodsService.createGoods(goods);
+            if (!ok) {
+                log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
+                logClient.addLog(log);
+                return ResponseUtil.failAdd();
+            }
 
-        if (!ok) {
-            log = new Log.LogBuilder().type(1).status(0).actions("新建/上架一个商品").build();
+            log = new Log.LogBuilder().type(1).status(1).actions("新建/上架一个商品").build();
             logClient.addLog(log);
-            return ResponseUtil.serious();
+
+            return ResponseUtil.ok(goods);
         }
-        log = new Log.LogBuilder().type(1).status(1).actions("新建/上架一个商品").build();
-        logClient.addLog(log);
-        return ResponseUtil.ok(goods);
+        return ResponseUtil.failAdd();
+
     }
 
     /**
@@ -153,7 +151,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(0).status(0).actions("取某个商品").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindList();
         }
 
         Goods goods = goodsService.getGoodsByIdAdmin(id);
@@ -172,7 +170,7 @@ public class GoodsController {
     @GetMapping("/goods/{id}")
     public Object getGoodsByIdUser(@PathVariable("id") Integer id) {
         if (id <= 0) {
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindList();
         }
         Goods goods = goodsService.getGoodsByIdUser(id);
         GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
@@ -193,7 +191,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(0).status(0).actions("管理员查询商品下的产品").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFindProduct();
         }
         List<ProductPo> products = productService.getProductByGoodsId(id);
 
@@ -218,23 +216,25 @@ public class GoodsController {
             log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
             logClient.addLog(log);
 
-            ResponseUtil.badArgumentValue();
+            ResponseUtil.cantFind();
         }
-        if (product == null) {
 
-            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
-            logClient.addLog(log);
+//        if (product == null) {
+//
+//            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
+//            logClient.addLog(log);
+//
+//            return ResponseUtil.badArgument();
+//        }
 
-            return ResponseUtil.badArgument();
-        }
         Boolean ok = productService.createProduct(product);
+
         if (!ok) {
 
-
             log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.serious();
+            return ResponseUtil.failAddProduct();
         }
         product.setId(id);
 
@@ -256,13 +256,9 @@ public class GoodsController {
             log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFind();
         }
-        if (goods == null) {
-            log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
-            logClient.addLog(log);
-            return ResponseUtil.badArgument();
-        }
+
         goods.setId(id);
         Boolean ok = goodsService.updateGoods(goods);
         if (!ok) {
@@ -270,7 +266,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.serious();
+            return ResponseUtil.failUpdate();
         }
 
         log = new Log.LogBuilder().type(2).status(1).actions("根据id更新商品信息").actionId(id).build();
@@ -290,17 +286,17 @@ public class GoodsController {
             log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.cantFind();
         }
         Boolean ok = goodsService.deleteGoods(id);
         if (!ok) {
             log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
             logClient.addLog(log);
-            return ResponseUtil.serious();
+            return ResponseUtil.failDelete();
         }
         log = new Log.LogBuilder().type(3).status(1).actions("根据id删除商品信息").actionId(id).build();
         logClient.addLog(log);
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(id);
     }
 
     // 内部接口
