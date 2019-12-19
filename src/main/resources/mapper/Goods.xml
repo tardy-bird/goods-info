@@ -114,7 +114,7 @@
                 #{brief},
                 #{picUrl}, #{statusCode}, #{shareUrl},
                 #{gallery}, #{goodsCategoryId}, #{brandId},
-                0, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial}, #{price})
+                0, #{weight}, #{volume}, #{specialFreightId}, #{beSpecial}, 0)
 
     </insert>
 

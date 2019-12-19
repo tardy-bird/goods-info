@@ -71,4 +71,11 @@ public interface GoodsCategoryMapper {
      * @return
      */
     Integer deleteL2withL1(@Param("pid") Integer pid);
+
+    /**
+     * 单独修改子分类在父分类中的位置
+     * @param goodsCategoryPo
+     * @return
+     */
+    Integer updateParentCategory(GoodsCategoryPo goodsCategoryPo);
 }

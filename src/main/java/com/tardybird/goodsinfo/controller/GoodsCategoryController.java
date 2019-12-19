@@ -6,8 +6,10 @@ import com.tardybird.goodsinfo.domain.Log;
 import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import com.tardybird.goodsinfo.service.GoodsCategoryService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -168,6 +170,41 @@ public class GoodsCategoryController {
         logClient.addLog(log);
 
         return ResponseUtil.ok(goodsCategory);
+    }
+
+    @PutMapping("/categories/l2/{id}")
+    public Object updateParentCategory(@PathVariable("id") Integer id,@RequestBody GoodsCategoryPo goodsCategoryPo)
+    {
+        Log log;
+        if(id<=0)
+        {
+            log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
+            logClient.addLog(log);
+            return ResponseUtil.badArgumentValue();
+        }
+
+        if (goodsCategoryPo.getPid() == null) {
+
+            log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
+            logClient.addLog(log);
+
+            return ResponseUtil.badArgument();
+        }
+
+        goodsCategoryPo.setId(id);
+        boolean ok=goodsCategoryService.updateParentCategory(goodsCategoryPo);
+        if(!ok)
+        {
+            log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
+            logClient.addLog(log);
+
+            return ResponseUtil.updatedDataFailed();
+        }
+
+        log = new Log.LogBuilder().type(2).status(1).actions("修改分类信息").actionId(id).build();
+        logClient.addLog(log);
+
+        return ResponseUtil.ok(goodsCategoryPo);
     }
 
     /**

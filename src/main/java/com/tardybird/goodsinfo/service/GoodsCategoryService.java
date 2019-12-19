@@ -102,5 +102,11 @@ public class GoodsCategoryService {
         return affectedRows > 0;
     }
 
+    public boolean updateParentCategory(GoodsCategoryPo goodsCategoryPo)
+    {
+        Integer affectedRows = goodsCategoryMapper.updateParentCategory(goodsCategoryPo);
+        return affectedRows > 0;
+    }
+
 
 }
