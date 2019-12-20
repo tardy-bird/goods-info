@@ -70,6 +70,8 @@ public class GoodsService {
 
     public Goods getGoodsByIdUser(Integer id) {
         GoodsPo goodsPo = goodsDao.getGoodsByIdUser(id);
+//        Goods goods=ObjectConversion.goodsPo2Goods(goodsPo);
+//        goods.setProductPoList();
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 

@@ -57,7 +57,7 @@ public interface GoodsMapper {
 
 //    List<GoodsPo> findGoodsByBrandId(@Param("brandId") String brandId);
 
-    List<GoodsPo> findGoodsByGoodsCategoryId(@Param("id") String id);
+//    List<GoodsPo> findGoodsByGoodsCategoryId(@Param("id") String id);
 
     List<GoodsPo> findGoodsByBrandId(@Param("id") Integer id);
 
@@ -90,17 +90,6 @@ public interface GoodsMapper {
      */
     Integer deleteGoods(@Param("id") Integer id);
 
-
-    /**
-     * 级联删除种类时把商品种类设空
-     *
-     * @param cid x
-     * @return x
-     */
-    Integer deleteWithCategory(@Param("cid") Integer cid);
-
     Integer selectOnSaleGoods(@Param("id") Integer id);
-
-    Integer deductQuantity(@Param("id") Integer id, @Param("quantity") Integer quantity);
 
 }

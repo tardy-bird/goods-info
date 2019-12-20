@@ -14,14 +14,6 @@ import java.util.List;
 public interface ProductMapper {
 
     /**
-     * 获得一个商品的所有对应货品
-     *
-     * @param goodsId x
-     * @return x
-     */
-    List<ProductPo> getProductByGoodsId(@Param("goodsId") Integer goodsId);
-
-    /**
      * 查看单个货品信息
      *
      * @param id x
@@ -56,6 +48,4 @@ public interface ProductMapper {
     Integer deleteProduct(@Param("id") Integer id);
 
     Integer updateProductByGoodsId(@Param("id") Integer id);
-
-    Integer deductQuantity(@Param("id") Integer id, @Param("quantity") Integer quantity);
 }

@@ -1,53 +1,56 @@
 ######################################################
 # PCW
-#pagehelper:
-#  reasonable: true
-#  support-methods-arguments: true
-#  params: count=countSql
-#  helper-dialect: mysql
-#
-#spring:
-#  redis:
-#    host: 47.98.252.133
-#    port: 6379
-#    timeout: 20000
-#    password:
-#    jedis:
-#      pool:
-#        max-idle: 8
-#        max-wait:
-#        min-idle: 0
-#  datasource:
-#    hikari:
-#      maximum-pool-size: 10
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  helper-dialect: mysql
+
+spring:
+  redis:
+    host: 47.98.252.133
+    port: 6379
+    timeout: 20000
+    password:
+    jedis:
+      pool:
+        max-idle: 8
+        max-wait:
+        min-idle: 0
+  datasource:
+    hikari:
+      maximum-pool-size: 10
 #    url: jdbc:mysql://47.52.88.176/DB3_8?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
 #    username: user3_8
 #    password: ooad8
-#
-#  application:
-#    name: goodsInfoService
-#
-#mybatis:
-#  type-aliases-package: com.tardybird.goodsinfo.po
-#  mapper-locations: classpath:mapper/*.xml
-#
-#server:
-#  port: 8820
-#
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://47.96.159.71:8888/eureka/
-#  instance:
-#    prefer-ip-address: true
-#    ip-address: 47.98.252.133
-#    non-secure-port: 8820
-#
-#goods:
-#  #redis缓存失效时间，单位分钟
-#  redisExpireTime: 30
-#  #预提库存数量
-#  preDeductQuantity: 3
+  url: jdbc:mysql://47.96.159.71/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+  username: oomall
+  password: oomallp@$$w0rd
+
+  application:
+    name: goodsInfoService
+
+mybatis:
+  type-aliases-package: com.tardybird.goodsinfo.po
+  mapper-locations: classpath:mapper/*.xml
+
+server:
+  port: 8820
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://47.96.159.71:8888/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 47.98.252.133
+    non-secure-port: 8820
+
+goods:
+  #redis缓存失效时间，单位分钟
+  redisExpireTime: 30
+  #预提库存数量
+  preDeductQuantity: 3
 
 
 
@@ -106,54 +109,53 @@
 
 ###########################################################
 # KLY
-pagehelper:
-  reasonable: true
-  support-methods-arguments: true
-  params: count=countSql
-  helper-dialect: mysql
-
-spring:
-  redis:
-    host: 106.15.92.198
-    port: 6379
-    timeout: 20000
-    password:
-    jedis:
-      pool:
-        max-idle: 8
-        max-wait:
-        min-idle: 0
-  datasource:
-    hikari:
-      maximum-pool-size: 10
-    url: jdbc:mysql://148.70.28.112/wowomall?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: wowoto
-    password: zqhlovekly
-
-  application:
-    name: goodsinfoService
-
-mybatis:
-  type-aliases-package: com.tardybird.goodsinfo.po
-  mapper-locations: classpath:mapper/*.xml
-
-server:
-  port: 8822
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://148.70.28.112:8761/eureka/
-  instance:
-    prefer-ip-address: true
-    ip-address: 121.199.2.219
-    non-secure-port: 8822
-
-goods:
-  #redis缓存失效时间，单位分钟
-  redisExpireTime: 30
-  #预提库存数量
-  preDeductQuantity: 3
+#pagehelper:
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
+#  helper-dialect: mysql
+#
+#spring:
+#  redis:
+#    host: 47.96.159.71
+#    port: 6379
+#    timeout: 20000
+#    password:
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        min-idle: 0
+#  datasource:
+#    hikari:
+#      maximum-pool-size: 10
+#    url: jdbc:mysql://47.52.88.176/DB3_8?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+#    username: user3_8
+#    password: ooad8
+#
+#  application:
+#    name: goodsinfoService
+#
+#mybatis:
+#  type-aliases-package: com.tardybird.goodsinfo.po
+#  mapper-locations: classpath:mapper/*.xml
+#
+#server:
+#  port: 8822
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://148.70.28.112:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 121.199.2.219
+#    non-secure-port: 8822
+#
+#goods:
+#  #redis缓存失效时间，单位分钟
+#  redisExpireTime: 30
+#  #预提库存数量
+#  preDeductQuantity: 3
 
 
 

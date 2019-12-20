@@ -23,14 +23,11 @@ public class GoodsController {
 
     final GoodsService goodsService;
     final ProductService productService;
-    final GoodsDao goodsDao;
     final LogClient logClient;
 
     public GoodsController(GoodsService goodsService,
-                           GoodsDao goodsDao,
                            ProductService productService, LogClient logClient) {
         this.goodsService = goodsService;
-        this.goodsDao = goodsDao;
         this.productService = productService;
         this.logClient = logClient;
     }
@@ -155,12 +152,12 @@ public class GoodsController {
         }
 
         Goods goods = goodsService.getGoodsByIdAdmin(id);
-        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+//        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
 
         log = new Log.LogBuilder().type(0).status(1).actions("取某个商品").actionId(id).build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok(goodsPo);
+        return ResponseUtil.ok(goods);
     }
 
     /**
@@ -173,8 +170,9 @@ public class GoodsController {
             return ResponseUtil.cantFindList();
         }
         Goods goods = goodsService.getGoodsByIdUser(id);
-        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
-        return ResponseUtil.ok(goodsPo);
+        goods.setProductPoList(productService.getProductByGoodsId(id));
+//        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+        return ResponseUtil.ok(goods);
     }
 
     /**
@@ -307,4 +305,14 @@ public class GoodsController {
     }
 
 
+    @GetMapping("/inner/goods/{id}")
+    public Object getGoodsByIdUserInner(@PathVariable("id") Integer id) {
+        if (id <= 0) {
+            return ResponseUtil.cantFindList();
+        }
+        Goods goods = goodsService.getGoodsByIdUser(id);
+//        goods.setProductPoList(productService.getProductByGoodsId(id));
+        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+        return ResponseUtil.ok(goodsPo);
+    }
 }
