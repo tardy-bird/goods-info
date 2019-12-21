@@ -28,7 +28,7 @@ public class ProductController {
     public Object getProduct(@PathVariable("id") Integer id) {
 
         if (id <= 0) {
-            return ResponseUtil.cantFindListProduct();
+            return ResponseUtil.badArgument();
         }
 
         Product product = productService.getProductById(id);
@@ -40,6 +40,7 @@ public class ProductController {
         return ResponseUtil.ok(product);
     }
 
+
     /**
      * 管理员修改商品下的某个产品信息
      */
@@ -48,7 +49,7 @@ public class ProductController {
                                     @RequestBody Product product) {
 
         if (id <= 0) {
-            return ResponseUtil.cantFindProduct();
+            return ResponseUtil.badArgument();
         }
 
         Log log;
@@ -89,7 +90,7 @@ public class ProductController {
     public Object deleteProductById(@PathVariable Integer id) {
 
         if (id <= 0) {
-            return ResponseUtil.cantFindProduct();
+            return ResponseUtil.badArgument();
         }
 
         Log log;
@@ -117,4 +118,21 @@ public class ProductController {
         }
         return productService.deductGoodsSafetyStock(id, quantity);
     }
+
+    @GetMapping("/user/product/{id}")
+    public Object getProductInner(@PathVariable("id") Integer id) {
+
+        if (id <= 0) {
+            return ResponseUtil.badArgument();
+        }
+
+        Product product = productService.getProductById(id);
+
+        Log log;
+        log = new Log.LogBuilder().type(3).status(0).actionId(id).build();
+        logClient.addLog(log);
+
+        return ResponseUtil.ok(product);
+    }
+
 }

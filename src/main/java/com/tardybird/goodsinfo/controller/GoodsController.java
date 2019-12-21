@@ -44,16 +44,12 @@ public class GoodsController {
                                         @RequestParam(defaultValue = "1") Integer page,
                                         @RequestParam(defaultValue = "10") Integer limit) {
         Log log;
-        if (id <= 0) {
+        if (id <= 0 || page < 0 || limit < 0) {
 
             log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFindCategory();
-        }
-
-        if (page < 0 || limit < 0) {
-            return ResponseUtil.cantFindList();
+            return ResponseUtil.badArgument();
         }
 
         List<GoodsPo> goodsPos = goodsService.findGoodsByCategoryId(id, page, limit);
@@ -74,7 +70,7 @@ public class GoodsController {
 
 
         if (page < 0 || limit < 0) {
-            return ResponseUtil.cantFind();
+            return ResponseUtil.badArgument();
         }
 
         Object goodsList = goodsService.getAllGoodsByConditions(null, name, page, limit);
@@ -92,7 +88,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFindList();
+            return ResponseUtil.badArgument();
         }
 
         Object object = goodsService.getAllGoodsByConditions(goodsSn, name, page, limit);
@@ -148,11 +144,10 @@ public class GoodsController {
             log = new Log.LogBuilder().type(0).status(0).actions("取某个商品").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFindList();
+            return ResponseUtil.badArgument();
         }
 
         Goods goods = goodsService.getGoodsByIdAdmin(id);
-//        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
 
         log = new Log.LogBuilder().type(0).status(1).actions("取某个商品").actionId(id).build();
         logClient.addLog(log);
@@ -167,14 +162,16 @@ public class GoodsController {
     @GetMapping("/goods/{id}")
     public Object getGoodsByIdUser(@PathVariable("id") Integer id) {
         if (id <= 0) {
-            return ResponseUtil.cantFindList();
+            return ResponseUtil.badArgument();
         }
+
         Goods goods = goodsService.getGoodsByIdUser(id);
-        if(goods==null) {
+
+        if (goods == null) {
             return ResponseUtil.cantFind();
         }
+
         goods.setProductPoList(productService.getProductByGoodsId(id));
-//        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
         return ResponseUtil.ok(goods);
     }
 
@@ -192,7 +189,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(0).status(0).actions("管理员查询商品下的产品").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFindProduct();
+            return ResponseUtil.badArgument();
         }
         List<ProductPo> products = productService.getProductByGoodsId(id);
 
@@ -217,16 +214,16 @@ public class GoodsController {
             log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
             logClient.addLog(log);
 
-            ResponseUtil.cantFind();
+            ResponseUtil.badArgument();
         }
 
-//        if (product == null) {
-//
-//            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
-//            logClient.addLog(log);
-//
-//            return ResponseUtil.badArgument();
-//        }
+        if (product == null) {
+
+            log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
+            logClient.addLog(log);
+
+            return ResponseUtil.badArgument();
+        }
 
         Boolean ok = productService.createProduct(product);
 
@@ -257,7 +254,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFind();
+            return ResponseUtil.badArgument();
         }
 
         goods.setId(id);
@@ -287,7 +284,7 @@ public class GoodsController {
             log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFind();
+            return ResponseUtil.badArgument();
         }
         Boolean ok = goodsService.deleteGoods(id);
         if (!ok) {
@@ -310,12 +307,14 @@ public class GoodsController {
 
     @GetMapping("/inner/goods/{id}")
     public Object getGoodsByIdUserInner(@PathVariable("id") Integer id) {
+
         if (id <= 0) {
-            return ResponseUtil.cantFindList();
+            return ResponseUtil.badArgument();
         }
+
         Goods goods = goodsService.getGoodsByIdUser(id);
-//        goods.setProductPoList(productService.getProductByGoodsId(id));
         GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+
         return ResponseUtil.ok(goodsPo);
     }
 }

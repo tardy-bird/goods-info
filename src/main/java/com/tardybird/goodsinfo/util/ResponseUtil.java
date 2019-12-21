@@ -16,9 +16,9 @@ public class ResponseUtil {
         return objectMap;
     }
 
-    public static Object okNoData(Object data) {
+    public static Object okNoData() {
         Map<String, Object> objectMap = new HashMap<>(16);
-        objectMap.put("errno", 200);
+        objectMap.put("errno", 0);
         objectMap.put("errmsg", "成功");
         return objectMap;
     }
@@ -29,6 +29,10 @@ public class ResponseUtil {
         objectMap.put("errno", errno);
         objectMap.put("errmsg", errmsg);
         return objectMap;
+    }
+
+    public static Object badArgument() {
+        return fail(580, "参数不合法");
     }
 
     /**

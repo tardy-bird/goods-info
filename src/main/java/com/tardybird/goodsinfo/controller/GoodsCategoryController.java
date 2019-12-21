@@ -45,11 +45,13 @@ public class GoodsCategoryController {
 
         Log log;
         if (page <= 0 || limit <= 0) {
+
             log = new Log.LogBuilder().type(0).actions("查看分类").status(0).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFindListCategory();
+            return ResponseUtil.badArgument();
         }
+
         log = new Log.LogBuilder().type(0).actions("查看分类").status(1).build();
         logClient.addLog(log);
 
@@ -69,7 +71,7 @@ public class GoodsCategoryController {
             log = new Log.LogBuilder().type(0).status(0).actions("获取分类详情").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.cantFindCategory();
+            return ResponseUtil.badArgument();
         }
 
         log = new Log.LogBuilder().type(0).status(1).actions("获取分类详情").actionId(id).build();
@@ -98,16 +100,14 @@ public class GoodsCategoryController {
     @GetMapping("/categories/l1/{id}/l2")
     public Object listSecondLevelGoodsCategoryById(@PathVariable("id") Integer pid) {
         Log log;
-        if (pid == null) {
-            log = new Log.LogBuilder().type(0).status(0).actions("获取分类详情").actionId(pid).build();
-            logClient.addLog(log);
-            return ResponseUtil.cantFindListCategory();
-        }
+
 
         if (pid <= 0) {
+
             log = new Log.LogBuilder().type(0).status(0).actions("获取分类详情").actionId(pid).build();
             logClient.addLog(log);
-            return ResponseUtil.cantFindListCategory();
+
+            return ResponseUtil.badArgument();
         }
 
         log = new Log.LogBuilder().type(0).status(1).actions("获取分类详情").actionId(pid).build();
@@ -160,7 +160,7 @@ public class GoodsCategoryController {
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.failUpdateCategory();
+            return ResponseUtil.badArgument();
         }
 
         if (goodsCategory.getPicUrl() == null && goodsCategory.getName() == null) {
@@ -170,8 +170,10 @@ public class GoodsCategoryController {
 
             return ResponseUtil.failUpdateCategory();
         }
+
         goodsCategory.setId(id);
         Boolean ok = goodsCategoryService.updateCategory(goodsCategory);
+
         if (!ok) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
@@ -190,12 +192,14 @@ public class GoodsCategoryController {
     public Object updateParentCategory(@PathVariable("id") Integer id, @RequestBody GoodsCategoryPo goodsCategoryPo) {
         Log log;
         if (id <= 0) {
+
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
-            return ResponseUtil.failUpdateCategory();
+
+            return ResponseUtil.badArgument();
         }
 
-        if (goodsCategoryPo.getPid() == null) {
+        if (goodsCategoryPo.getPid() == 0) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
@@ -205,7 +209,9 @@ public class GoodsCategoryController {
 
         goodsCategoryPo.setId(id);
         boolean ok = goodsCategoryService.updateParentCategory(goodsCategoryPo);
+
         if (!ok) {
+
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
 
@@ -231,7 +237,7 @@ public class GoodsCategoryController {
             log = new Log.LogBuilder().type(3).status(0).actions("删除单个分类").actionId(id).build();
             logClient.addLog(log);
 
-            return ResponseUtil.failDeleteCategory();
+            return ResponseUtil.badArgument();
         }
         Boolean ok = goodsCategoryService.deleteCategory(id);
         if (!ok) {
@@ -245,7 +251,7 @@ public class GoodsCategoryController {
         log = new Log.LogBuilder().type(3).status(1).actions("删除单个分类").actionId(id).build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok(null);
+        return ResponseUtil.okNoData();
     }
 
 }
