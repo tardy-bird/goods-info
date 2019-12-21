@@ -29,9 +29,8 @@ public class GoodsCategoryService {
         this.goodsMapper = goodsMapper;
     }
 
-    public List<GoodsCategoryPo> getAllCategories(Integer page,Integer limit) {
-        List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getAllCategories(page,limit);
-        return goodsCategoryPos;
+    public List<GoodsCategoryPo> getAllCategories(Integer page, Integer limit) {
+        return goodsCategoryMapper.getAllCategories(page, limit);
     }
 
     public List<GoodsCategory> getLevelOneCategories() {
@@ -39,16 +38,13 @@ public class GoodsCategoryService {
         return getGoodsCategories(goodsCategoryPos);
     }
 
-    public GoodsCategory getCategory(Integer id) {
-        GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
-        return ObjectConversion.goodsCategoryPo2GoodsCategory(goodsCategoryPo);
+    public GoodsCategoryPo getCategory(Integer id) {
+        return goodsCategoryMapper.getCategory(id);
     }
 
-    public List<GoodsCategory> getLevelTwoByPid(Integer pid) {
+    public List<GoodsCategoryPo> getLevelTwoByPid(Integer pid) {
 
-        List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getLevelTwoByPid(pid);
-
-        return getGoodsCategories(goodsCategoryPos);
+        return goodsCategoryMapper.getLevelTwoByPid(pid);
     }
 
     private List<GoodsCategory> getGoodsCategories(List<GoodsCategoryPo> goodsCategoryPos) {
@@ -80,8 +76,7 @@ public class GoodsCategoryService {
     @Transactional
     public Boolean deleteCategory(Integer id) {
         GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
-        if(goodsCategoryPo==null)
-        {
+        if (goodsCategoryPo == null) {
             return false;
         }
 
@@ -102,8 +97,7 @@ public class GoodsCategoryService {
         return affectedRows > 0;
     }
 
-    public boolean updateParentCategory(GoodsCategoryPo goodsCategoryPo)
-    {
+    public boolean updateParentCategory(GoodsCategoryPo goodsCategoryPo) {
         Integer affectedRows = goodsCategoryMapper.updateParentCategory(goodsCategoryPo);
         return affectedRows > 0;
     }

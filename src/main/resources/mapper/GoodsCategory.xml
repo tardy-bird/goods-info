@@ -84,7 +84,7 @@
     <update id="updateParentCategory" parameterType="GoodsCategoryPo">
         update oomall_goods_category
         set
-        <if test="pid!=null">
+        <if test="pid != 0">
             pid=#{pid}
         </if>
         where id=#{id} and is_deleted=0 and pid >0

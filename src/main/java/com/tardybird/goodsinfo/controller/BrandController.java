@@ -77,53 +77,52 @@ public class BrandController {
         return ResponseUtil.ok(brand);
     }
 
+    @GetMapping("/admin/brands/{id}")
+    public Object getBrandDetailsOfAdmin(@NotNull @PathVariable("id") Integer id) {
+        Log log;
+        if (id <= 0) {
+            log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(0).actionId(id).build();
+            logClient.addLog(log);
+            return ResponseUtil.cantFindBrand();
+        }
+
+        BrandPo brand = brandService.getBrandById(id);
+
+        log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(1).actionId(id).build();
+        logClient.addLog(log);
+        return ResponseUtil.ok(brand);
+    }
+
     /**
      * 根据条件搜索品牌 1
      */
     @GetMapping("/admin/brands")
-    public Object getBrandsByCondition(@RequestParam Integer id, @RequestParam String name,
+    public Object getBrandsByCondition(@RequestParam Integer BrandId, @RequestParam String BrandName,
                                        @RequestParam(defaultValue = "1") Integer page,
                                        @RequestParam(defaultValue = "10") Integer limit,
-                                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                                       @Sort @RequestParam(defaultValue = "gmt_create") String sort,
                                        @Order @RequestParam(defaultValue = "desc") String order) {
         Log log;
         if (page == null || limit == null) {
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌").status(0)
-                    .actionId(id).build();
+                    .actionId(BrandId).build();
             logClient.addLog(log);
             return ResponseUtil.cantFindListBrand();
         }
 
         if (page < 0 || limit < 0) {
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌")
-                    .status(0).actionId(id).build();
+                    .status(0).actionId(BrandId).build();
             logClient.addLog(log);
             return ResponseUtil.cantFindListBrand();
         }
 
-        Object brands = brandService.getBrandsByCondition(String.valueOf(id), name, page, limit, sort, order);
+        Object brands = brandService.getBrandsByCondition(String.valueOf(BrandId), BrandName, page, limit, sort, order);
 
         log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌").status(1).build();
         logClient.addLog(log);
 
         return ResponseUtil.ok(brands);
-    }
-
-    @PostMapping("/pics")
-    public Object handleUploadPicture(@RequestBody MultipartFile file) {
-        if (file == null) {
-            return ResponseUtil.failAddBrand();
-        }
-        String path = "/var/www/tardybird/upload/"
-                + IdUtil.getValue(8)
-                + file.getOriginalFilename();
-        String ok = "Success";
-        if (ok.equals(FileUploadUtil.upload(file, path))) {
-            // not recommend (hard code)
-            String prefix = "http://47.96.159.71:6180";
-            return ResponseUtil.ok(prefix + path);
-        }
-        return ResponseUtil.failAddBrand();
     }
 
     /**
@@ -132,7 +131,7 @@ public class BrandController {
     @PostMapping("/brands")
     public Object addBrand(@RequestBody BrandPo brand) {
         Log log;
-        if (brand.getDescription() == null && brand.getPicUrl()==null && brand.getName()==null){
+        if (brand.getDescription() != null || brand.getPicUrl() != null || brand.getName() != null) {
 
             log = new Log.LogBuilder().type(1).actions("创建一个品牌").status(0).build();
             logClient.addLog(log);
@@ -171,23 +170,28 @@ public class BrandController {
 
             return ResponseUtil.failUpdateBrand();
         }
-        if (brand.getName() == null && brand.getPicUrl()==null && brand.getDescription()==null) {
-            log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
+        if (brand.getName() != null || brand.getPicUrl() != null || brand.getDescription() != null) {
+            brand.setId(id);
+            Boolean ok = brandService.updateBrand(brand);
+            if (!ok) {
+                log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
+                logClient.addLog(log);
+                return ResponseUtil.failUpdateBrand();
+            }
+
+            log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(1).build();
             logClient.addLog(log);
-            return ResponseUtil.failUpdateBrand();
-        }
-        brand.setId(id);
-        Boolean ok = brandService.updateBrand(brand);
-        if (!ok) {
-            log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
-            logClient.addLog(log);
-            return ResponseUtil.failUpdateBrand();
+
+            brand = brandService.getBrandById(id);
+
+            return ResponseUtil.ok(brand);
         }
 
-        log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(1).build();
+
+        log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
         logClient.addLog(log);
+        return ResponseUtil.failUpdateBrand();
 
-        return ResponseUtil.ok(brand);
     }
 
     @GetMapping("/brands/{id}/goods")
@@ -197,7 +201,7 @@ public class BrandController {
             return ResponseUtil.cantFindList();
         }
 
-        Object goods=brandService.getGoodsByBrandId(id);
+        Object goods = brandService.getGoodsByBrandId(id);
         log = new Log.LogBuilder().type(0).actions("查找品牌对应的商品").actionId(id).status(1).build();
         logClient.addLog(log);
 

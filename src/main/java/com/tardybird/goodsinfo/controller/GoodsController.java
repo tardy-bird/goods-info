@@ -170,6 +170,9 @@ public class GoodsController {
             return ResponseUtil.cantFindList();
         }
         Goods goods = goodsService.getGoodsByIdUser(id);
+        if(goods==null) {
+            return ResponseUtil.cantFind();
+        }
         goods.setProductPoList(productService.getProductByGoodsId(id));
 //        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
         return ResponseUtil.ok(goods);

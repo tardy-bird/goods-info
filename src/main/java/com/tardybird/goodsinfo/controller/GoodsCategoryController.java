@@ -44,8 +44,7 @@ public class GoodsCategoryController {
                                     @RequestParam(defaultValue = "10") Integer limit) {
 
         Log log;
-        if(page<=0||limit<=0)
-        {
+        if (page <= 0 || limit <= 0) {
             log = new Log.LogBuilder().type(0).actions("查看分类").status(0).build();
             logClient.addLog(log);
 
@@ -54,7 +53,7 @@ public class GoodsCategoryController {
         log = new Log.LogBuilder().type(0).actions("查看分类").status(1).build();
         logClient.addLog(log);
 
-        Object object=goodsCategoryService.getAllCategories(page,limit);
+        Object object = goodsCategoryService.getAllCategories(page, limit);
 
         return ResponseUtil.ok(object);
     }
@@ -99,6 +98,11 @@ public class GoodsCategoryController {
     @GetMapping("/categories/l1/{id}/l2")
     public Object listSecondLevelGoodsCategoryById(@PathVariable("id") Integer pid) {
         Log log;
+        if (pid == null) {
+            log = new Log.LogBuilder().type(0).status(0).actions("获取分类详情").actionId(pid).build();
+            logClient.addLog(log);
+            return ResponseUtil.cantFindListCategory();
+        }
 
         if (pid <= 0) {
             log = new Log.LogBuilder().type(0).status(0).actions("获取分类详情").actionId(pid).build();
@@ -109,7 +113,7 @@ public class GoodsCategoryController {
         log = new Log.LogBuilder().type(0).status(1).actions("获取分类详情").actionId(pid).build();
         logClient.addLog(log);
 
-        List<GoodsCategory> goodsCategories = goodsCategoryService.getLevelTwoByPid(pid);
+        List<GoodsCategoryPo> goodsCategories = goodsCategoryService.getLevelTwoByPid(pid);
         return ResponseUtil.ok(goodsCategories);
     }
 
@@ -123,28 +127,25 @@ public class GoodsCategoryController {
     @PostMapping("/categories")
     public Object addGoodsCategory(@RequestBody GoodsCategoryPo goodsCategory) {
         Log log;
-        if (goodsCategory.getName() == null ||goodsCategory.getPicUrl()==null) {
+        if (goodsCategory.getName() != null
+                || goodsCategory.getPicUrl() != null
+                || goodsCategory.getPid() != null) {
 
-            log = new Log.LogBuilder().type(1).status(0).actions("新建一个分类").build();
+            goodsCategoryService.createCategory(goodsCategory);
+
+            log = new Log.LogBuilder().type(1).status(1).actions("新建一个分类").build();
             logClient.addLog(log);
 
-            return ResponseUtil.failAddCategory();
+            Integer id = goodsCategory.getId();
+            GoodsCategoryPo goodsCategoryPo = goodsCategoryService.getCategory(id);
+
+            return ResponseUtil.ok(goodsCategoryPo);
         }
 
-        GoodsCategoryPo goodsCategoryPo = goodsCategoryService.createCategory(goodsCategory);
-
-        if (goodsCategoryPo == null) {
-
-            log = new Log.LogBuilder().type(1).status(0).actions("新建一个分类").build();
-            logClient.addLog(log);
-
-            return ResponseUtil.failAddCategory();
-        }
-
-        log = new Log.LogBuilder().type(1).status(1).actions("新建一个分类").build();
+        log = new Log.LogBuilder().type(1).status(0).actions("新建一个分类").build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok(goodsCategoryPo);
+        return ResponseUtil.failAddCategory();
     }
 
     /**
@@ -162,7 +163,7 @@ public class GoodsCategoryController {
             return ResponseUtil.failUpdateCategory();
         }
 
-        if (goodsCategory.getPicUrl() == null && goodsCategory.getName()==null) {
+        if (goodsCategory.getPicUrl() == null && goodsCategory.getName() == null) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
@@ -186,11 +187,9 @@ public class GoodsCategoryController {
     }
 
     @PutMapping("/categories/l2/{id}")
-    public Object updateParentCategory(@PathVariable("id") Integer id,@RequestBody GoodsCategoryPo goodsCategoryPo)
-    {
+    public Object updateParentCategory(@PathVariable("id") Integer id, @RequestBody GoodsCategoryPo goodsCategoryPo) {
         Log log;
-        if(id<=0)
-        {
+        if (id <= 0) {
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
             return ResponseUtil.failUpdateCategory();
@@ -205,9 +204,8 @@ public class GoodsCategoryController {
         }
 
         goodsCategoryPo.setId(id);
-        boolean ok=goodsCategoryService.updateParentCategory(goodsCategoryPo);
-        if(!ok)
-        {
+        boolean ok = goodsCategoryService.updateParentCategory(goodsCategoryPo);
+        if (!ok) {
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
             logClient.addLog(log);
 
@@ -216,6 +214,8 @@ public class GoodsCategoryController {
 
         log = new Log.LogBuilder().type(2).status(1).actions("修改分类信息").actionId(id).build();
         logClient.addLog(log);
+
+        goodsCategoryPo = goodsCategoryService.getCategory(goodsCategoryPo.getId());
 
         return ResponseUtil.ok(goodsCategoryPo);
     }
