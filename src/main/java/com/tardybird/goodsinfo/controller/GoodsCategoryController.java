@@ -243,7 +243,15 @@ public class GoodsCategoryController {
 
             return ResponseUtil.badArgument();
         }
+
+        GoodsCategoryPo goodsCategoryPo = goodsCategoryService.getCategory(id);
+
+        if (goodsCategoryPo == null) {
+            return ResponseUtil.cantFindCategory();
+        }
+
         Boolean ok = goodsCategoryService.deleteCategory(id);
+
         if (!ok) {
 
             log = new Log.LogBuilder().type(3).status(0).actions("删除单个分类").actionId(id).build();

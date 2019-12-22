@@ -230,17 +230,16 @@ public class BrandController {
             return ResponseUtil.badArgument();
         }
 
-        Boolean ok = brandService.deleteBrand(id);
-
-//        BrandPo brandPo = brandService.getBrandById(id);
-//        if (brandPo == null) {
-//            return ResponseUtil.cantFindBrand();
-//        }
-
         BrandPo brandPo = brandService.getBrandById(id);
         if (brandPo == null) {
             return ResponseUtil.cantFindBrand();
         }
+
+        Boolean ok = brandService.deleteBrand(id);
+//        BrandPo brandPo = brandService.getBrandById(id);
+//        if (brandPo == null) {
+//            return ResponseUtil.cantFindBrand();
+//        }
 
         if (!ok) {
 
