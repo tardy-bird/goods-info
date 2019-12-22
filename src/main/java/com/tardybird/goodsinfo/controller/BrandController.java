@@ -237,6 +237,11 @@ public class BrandController {
 //            return ResponseUtil.cantFindBrand();
 //        }
 
+        BrandPo brandPo = brandService.getBrandById(id);
+        if (brandPo == null) {
+            return ResponseUtil.cantFindBrand();
+        }
+
         if (!ok) {
 
             log = new Log.LogBuilder().type(3).actions("删除一个品牌").status(0).actionId(id).build();
