@@ -71,6 +71,10 @@ public class BrandController {
 
         BrandPo brand = brandService.getBrandById(id);
 
+        if (brand == null) {
+            return ResponseUtil.cantFindBrand();
+        }
+
         log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(1).actionId(id).build();
         logClient.addLog(log);
 
@@ -227,6 +231,11 @@ public class BrandController {
         }
 
         Boolean ok = brandService.deleteBrand(id);
+
+//        BrandPo brandPo = brandService.getBrandById(id);
+//        if (brandPo == null) {
+//            return ResponseUtil.cantFindBrand();
+//        }
 
         if (!ok) {
 

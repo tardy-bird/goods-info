@@ -77,7 +77,11 @@ public class GoodsCategoryController {
         log = new Log.LogBuilder().type(0).status(1).actions("获取分类详情").actionId(id).build();
         logClient.addLog(log);
 
-        return ResponseUtil.ok(goodsCategoryService.getCategory(id));
+        GoodsCategoryPo goodsCategoryPo = goodsCategoryService.getCategory(id);
+        if (goodsCategoryPo == null) {
+            return ResponseUtil.cantFindCategory();
+        }
+        return ResponseUtil.ok(goodsCategoryPo);
     }
 
     /**
