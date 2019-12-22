@@ -81,7 +81,7 @@ public class GoodsCategoryService {
         }
 
         // 一级分类
-        if (goodsCategoryPo.getPid() == null) {
+        if (goodsCategoryPo.getPid() == 0) {
             goodsCategoryMapper.deleteL2withL1(goodsCategoryPo.getId());
             List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getLevelTwoByPid(id);
 
