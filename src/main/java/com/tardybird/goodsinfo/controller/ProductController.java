@@ -18,22 +18,28 @@ public class ProductController {
     final ProductService productService;
     final LogClient logClient;
 
+    private Log log;
+
     public ProductController(GoodsDao goodsDao, ProductService productService, LogClient logClient) {
         this.goodsDao = goodsDao;
         this.productService = productService;
         this.logClient = logClient;
     }
 
+    /**
+     * 根据ID获取产品信息
+     *
+     * @param id 产品
+     * @return 产品信息
+     */
     @GetMapping("/products/{id}")
     public Object getProduct(@PathVariable("id") Integer id) {
-
         if (id <= 0) {
             return ResponseUtil.badArgument();
         }
 
         Product product = productService.getProductById(id);
 
-        Log log;
         log = new Log.LogBuilder().type(3).status(0).actionId(id).build();
         logClient.addLog(log);
 
@@ -43,17 +49,19 @@ public class ProductController {
 
     /**
      * 管理员修改商品下的某个产品信息
+     *
+     * @param id      产品ID
+     * @param product 新的产品信息
+     * @return Response
      */
     @PutMapping("/products/{id}")
     public Object updateProductById(@PathVariable Integer id,
                                     @RequestBody Product product) {
-
         if (id <= 0) {
             return ResponseUtil.badArgument();
         }
 
-        Log log;
-
+        // product的这些字段不能同时为空
         if (product.getPicUrl() != null || product.getSpecifications() != null
                 || product.getPrice() != null || product.getSafetyStock() != null) {
 
@@ -83,8 +91,8 @@ public class ProductController {
     /**
      * 管理员删除商品下的某个产品信息
      *
-     * @param id x
-     * @return x
+     * @param id 产品
+     * @return Response
      */
     @DeleteMapping("/products/{id}")
     public Object deleteProductById(@PathVariable Integer id) {
@@ -110,6 +118,15 @@ public class ProductController {
         return ResponseUtil.ok(id);
     }
 
+    // 以下是内部接口
+
+    /**
+     * 扣库存
+     *
+     * @param id       产品ID
+     * @param quantity 预扣数量
+     * @return true 扣成功
+     */
     @PutMapping("/product/{id}/deduct")
     public Object deductGoodsQuantity(@PathVariable Integer id,
                                       @RequestParam Integer quantity) {
@@ -119,16 +136,20 @@ public class ProductController {
         return productService.deductGoodsSafetyStock(id, quantity);
     }
 
+    /**
+     * 根据ID获取产品信息
+     *
+     * @param id 产品
+     * @return 产品信息
+     */
     @GetMapping("/user/product/{id}")
     public Object getProductInner(@PathVariable("id") Integer id) {
-
         if (id <= 0) {
             return ResponseUtil.badArgument();
         }
 
         Product product = productService.getProductById(id);
 
-        Log log;
         log = new Log.LogBuilder().type(3).status(0).actionId(id).build();
         logClient.addLog(log);
 

@@ -25,25 +25,28 @@ public class GoodsController {
     final ProductService productService;
     final LogClient logClient;
 
+    private Log log;
+
     public GoodsController(GoodsService goodsService,
-                           ProductService productService, LogClient logClient) {
+                           ProductService productService,
+                           LogClient logClient) {
         this.goodsService = goodsService;
         this.productService = productService;
         this.logClient = logClient;
     }
 
-    /*
-     * ========= following are wx apis ==============
-     */
-
     /**
-     * 获取商品分类信息
+     * 获取分类商品
+     *
+     * @param id    分类
+     * @param page  页数
+     * @param limit 每页大小
+     * @return 商品列表
      */
     @GetMapping("/categories/{id}/goods")
     public Object getCategoriesInfoById(@PathVariable("id") Integer id,
                                         @RequestParam(defaultValue = "1") Integer page,
                                         @RequestParam(defaultValue = "10") Integer limit) {
-        Log log;
         if (id <= 0 || page < 0 || limit < 0) {
 
             log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").actionId(id).build();
@@ -62,27 +65,38 @@ public class GoodsController {
 
     /**
      * 获取商品信息列表
+     *
+     * @param name  商品名称
+     * @param page  页数
+     * @param limit 每页大小
+     * @return 商品信息
      */
     @GetMapping("/goods")
     public Object listGoods(String name,
                             @RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer limit) {
-
-
         if (page < 0 || limit < 0) {
             return ResponseUtil.badArgument();
         }
 
+        // 按照指定条件搜索商品
         Object goodsList = goodsService.getAllGoodsByConditions(null, name, page, limit);
-
         return ResponseUtil.ok(goodsList);
     }
 
+    /**
+     * 管理员获取商品信息列表
+     *
+     * @param goodsSn 商品条形码
+     * @param name    商品名称
+     * @param page    页数
+     * @param limit   每页大小
+     * @return 商品信息
+     */
     @GetMapping("/admin/goods")
-    public Object listAdminGoods(String goodsSn, String name, @RequestParam(defaultValue = "1") Integer page,
+    public Object listAdminGoods(String goodsSn, String name,
+                                 @RequestParam(defaultValue = "1") Integer page,
                                  @RequestParam(defaultValue = "10") Integer limit) {
-        Log log;
-
         if (page < 0 || limit < 0) {
 
             log = new Log.LogBuilder().type(0).status(0).actions("获取商品分类信息").build();
@@ -105,7 +119,8 @@ public class GoodsController {
      */
     @PostMapping("/goods")
     public Object addGoods(@RequestBody GoodsPo goods) {
-        Log log;
+
+        // 这些字段不能全部为空，不然就是无效商品
         if (goods.getName() != null || goods.getGoodsSn() != null || goods.getShortName() != null ||
                 goods.getDescription() != null || goods.getBrief() != null || goods.getPicUrl() != null ||
                 goods.getDetail() != null || goods.getStatusCode() != null || goods.getGallery() != null ||
@@ -129,12 +144,12 @@ public class GoodsController {
             return ResponseUtil.ok(goodsPo);
         }
         return ResponseUtil.failAdd();
-
     }
 
     /**
-     * 根据id获取某个商品
-     * 提供一个接口给 collect、comment、footprint 调用,获取 goods 信息
+     * 根据id获取某个商品,提供一个接口给collect、comment、footprint调用,获取goods信息
+     * @param id 商品ID
+     * @return goods信息
      */
     @GetMapping("/admin/goods/{id}")
     public Object getGoodsByIdAdmin(@PathVariable("id") Integer id) {
@@ -156,8 +171,9 @@ public class GoodsController {
     }
 
     /**
-     * @param id x
-     * @return x
+     * 用户获取商品信息
+     * @param id 商品ID
+     * @return 商品信息
      */
     @GetMapping("/goods/{id}")
     public Object getGoodsByIdUser(@PathVariable("id") Integer id) {
@@ -166,11 +182,10 @@ public class GoodsController {
         }
 
         Goods goods = goodsService.getGoodsByIdUser(id);
-
         if (goods == null) {
             return ResponseUtil.cantFind();
         }
-
+        // 将与商品相关联的product装进goods
         goods.setProductPoList(productService.getProductByGoodsId(id));
         return ResponseUtil.ok(goods);
     }
@@ -178,8 +193,8 @@ public class GoodsController {
     /**
      * 管理员查询商品下的产品
      *
-     * @param id x
-     * @return x
+     * @param id 商品ID
+     * @return 产品
      */
     @GetMapping("/goods/{id}/products")
     public Object listProductByGoodsId(@PathVariable Integer id) {
@@ -202,13 +217,12 @@ public class GoodsController {
     /**
      * 管理员添加商品下的产品
      *
-     * @param id      x
-     * @param product x
-     * @return x
+     * @param id   商品ID
+     * @param product 新的产品
+     * @return 产品
      */
     @PostMapping("/goods/{id}/products")
     public Object addProductByGoodsId(@PathVariable Integer id, @RequestBody ProductPo product) {
-        Log log;
         if (id <= 0) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("添加商品下的产品").actionId(id).build();
@@ -234,6 +248,7 @@ public class GoodsController {
 
             return ResponseUtil.failAddProduct();
         }
+
         product.setId(id);
 
         log = new Log.LogBuilder().type(2).status(1).actions("添加商品下的产品").actionId(id).build();
@@ -245,6 +260,9 @@ public class GoodsController {
 
     /**
      * 根据id更新商品信息
+     * @param id 商品
+     * @param goods 商品信息
+     * @return Response
      */
     @PutMapping("/goods/{id}")
     public Object updateGoodsById(@PathVariable("id") Integer id, @RequestBody GoodsPo goods) {
@@ -259,6 +277,8 @@ public class GoodsController {
 
         goods.setId(id);
         Boolean ok = goodsService.updateGoods(goods);
+
+        // 检查更新是否成功
         if (!ok) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("根据id更新商品信息").actionId(id).build();
@@ -275,6 +295,8 @@ public class GoodsController {
 
     /**
      * 根据id删除商品信息
+     * @param id 商品ID
+     * @return 商品信息
      */
     @DeleteMapping("/goods/{id}")
     public Object deleteGoodsById(@PathVariable("id") Integer id) {
@@ -286,25 +308,41 @@ public class GoodsController {
 
             return ResponseUtil.badArgument();
         }
+
         Boolean ok = goodsService.deleteGoods(id);
+
         if (!ok) {
+
             log = new Log.LogBuilder().type(3).status(0).actions("根据id删除商品信息").actionId(id).build();
             logClient.addLog(log);
+
             return ResponseUtil.failDelete();
         }
+
         log = new Log.LogBuilder().type(3).status(1).actions("根据id删除商品信息").actionId(id).build();
         logClient.addLog(log);
+
         return ResponseUtil.ok(id);
     }
 
-    // 内部接口
+    // 以下是内部接口
 
+    /**
+     * 判断商品是否在售
+     * @param id 商品
+     * @return true 在售
+     */
     @GetMapping("/goods/{id}/isOnSale")
     public Object isGoodsOnSale(@PathVariable Integer id) {
         return goodsService.isGoodsOnSale(id);
     }
 
 
+    /**
+     * 获取商品信息
+     * @param id 商品ID
+     * @return 商品信息
+     */
     @GetMapping("/inner/goods/{id}")
     public Object getGoodsByIdUserInner(@PathVariable("id") Integer id) {
 

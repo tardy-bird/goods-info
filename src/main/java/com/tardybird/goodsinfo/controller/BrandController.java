@@ -18,12 +18,11 @@ import javax.validation.constraints.NotNull;
 @RestController
 public class BrandController {
 
-    final
-    BrandService brandService;
+    final BrandService brandService;
     final GoodsService goodsService;
+    final LogClient logClient;
 
-    final
-    LogClient logClient;
+    private Log log;
 
     public BrandController(BrandService brandService, GoodsService goodsService, LogClient logClient) {
         this.brandService = brandService;
@@ -32,7 +31,12 @@ public class BrandController {
     }
 
     /**
-     * 查看所有品牌 u1
+     * 查看所有品牌
+     * @param page 页数
+     * @param limit 每页大小
+     * @param sort 排序字段
+     * @param order 排序规则
+     * @return 品牌列表
      */
     @GetMapping("/brands")
     public Object listBrand(@RequestParam(defaultValue = "1") Integer page,
@@ -46,6 +50,8 @@ public class BrandController {
 
         String desc = "desc";
         String asc = "asc";
+
+        // 检查排序参数
         if (desc.equalsIgnoreCase(order) || asc.equalsIgnoreCase(order)) {
             Object brands = brandService.getAllBrands(page, limit, sort, order);
             return ResponseUtil.ok(brands);
@@ -56,11 +62,12 @@ public class BrandController {
     }
 
     /**
-     * 查看品牌详情 3 u2
+     * 查看品牌详情
+     * @param id 品牌ID
+     * @return 品牌详情
      */
     @GetMapping("/brands/{id}")
     public Object getBrandDetails(@NotNull @PathVariable("id") Integer id) {
-        Log log;
         if (id <= 0) {
 
             log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(0).actionId(id).build();
@@ -81,9 +88,13 @@ public class BrandController {
         return ResponseUtil.ok(brand);
     }
 
+    /**
+     * 查看品牌详情
+     * @param id 品牌ID
+     * @return 品牌列表
+     */
     @GetMapping("/admin/brands/{id}")
     public Object getBrandDetailsOfAdmin(@NotNull @PathVariable("id") Integer id) {
-        Log log;
         if (id <= 0) {
 
             log = new Log.LogBuilder().type(0).actions("查看品牌详情").status(0).actionId(id).build();
@@ -101,10 +112,17 @@ public class BrandController {
     }
 
     /**
-     * 根据条件搜索品牌 1
+     * 根据条件搜索品牌
+     * @param brandId 品牌ID
+     * @param brandName 品牌名称
+     * @param page 页数
+     * @param limit 每页大小
+     * @param sort 排序字段
+     * @param order 排序规则
+     * @return 品牌列表
      */
     @GetMapping("/admin/brands")
-    public Object getBrandsByCondition(@RequestParam Integer BrandId, @RequestParam String BrandName,
+    public Object getBrandsByCondition(@RequestParam Integer brandId, @RequestParam String brandName,
                                        @RequestParam(defaultValue = "1") Integer page,
                                        @RequestParam(defaultValue = "10") Integer limit,
                                        @Sort @RequestParam(defaultValue = "gmt_create") String sort,
@@ -114,13 +132,13 @@ public class BrandController {
         if (page < 0 || limit < 0) {
 
             log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌")
-                    .status(0).actionId(BrandId).build();
+                    .status(0).actionId(brandId).build();
             logClient.addLog(log);
 
             return ResponseUtil.badArgument();
         }
 
-        Object brands = brandService.getBrandsByCondition(String.valueOf(BrandId), BrandName, page, limit, sort, order);
+        Object brands = brandService.getBrandsByCondition(String.valueOf(brandId), brandName, page, limit, sort, order);
 
         log = new Log.LogBuilder().type(0).actions("根据条件搜索品牌").status(1).build();
         logClient.addLog(log);
@@ -129,7 +147,9 @@ public class BrandController {
     }
 
     /**
-     * 创建一个品牌 2
+     * 创建一个品牌
+     * @param brand 品牌对象
+     * @return Response
      */
     @PostMapping("/brands")
     public Object addBrand(@RequestBody BrandPo brand) {
@@ -159,7 +179,10 @@ public class BrandController {
 
 
     /**
-     * 修改单个品牌的信息 4
+     * 修改单个品牌的信息
+     * @param id 品牌ID
+     * @param brand 新的品牌对象
+     * @return Response
      */
     @PutMapping("/brands/{id}")
     public Object updateBrandById(@NotNull @PathVariable("id") Integer id,
@@ -173,6 +196,8 @@ public class BrandController {
 
             return ResponseUtil.badArgument();
         }
+
+        // 品牌的这三个字段不能同时为空
         if (brand.getName() != null || brand.getPicUrl() != null || brand.getDescription() != null) {
 
             brand.setId(id);
@@ -197,10 +222,16 @@ public class BrandController {
 
         log = new Log.LogBuilder().type(2).actions("修改单个品牌的信息").status(0).build();
         logClient.addLog(log);
+
         return ResponseUtil.failUpdateBrand();
 
     }
 
+    /**
+     * 获取品牌下的所有商品
+     * @param id 品牌ID
+     * @return 商品列表
+     */
     @GetMapping("/brands/{id}/goods")
     public Object findGoodsOfBrand(@PathVariable("id") Integer id) {
         Log log;
@@ -217,7 +248,9 @@ public class BrandController {
     }
 
     /**
-     * 删除一个品牌 5
+     * 删除一个品牌
+     * @param id 品牌
+     * @return Response
      */
     @DeleteMapping("/brands/{id}")
     public Object deleteBrandById(@PathVariable("id") Integer id) {
@@ -236,10 +269,6 @@ public class BrandController {
         }
 
         Boolean ok = brandService.deleteBrand(id);
-//        BrandPo brandPo = brandService.getBrandById(id);
-//        if (brandPo == null) {
-//            return ResponseUtil.cantFindBrand();
-//        }
 
         if (!ok) {
 

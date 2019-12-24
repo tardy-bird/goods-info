@@ -6,10 +6,8 @@ import com.tardybird.goodsinfo.domain.Log;
 import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import com.tardybird.goodsinfo.service.GoodsCategoryService;
 import com.tardybird.goodsinfo.util.ResponseUtil;
-import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,17 +15,11 @@ import java.util.List;
  */
 @RestController
 public class GoodsCategoryController {
-    /*
-     * ========= following are wx apis ==============
-     */
 
-    /**
-     * 获取分类数据
-     */
-    final
-    GoodsCategoryService goodsCategoryService;
-    final
-    LogClient logClient;
+    final GoodsCategoryService goodsCategoryService;
+    final LogClient logClient;
+
+    private Log log;
 
     public GoodsCategoryController(GoodsCategoryService goodsCategoryService, LogClient logClient) {
         this.goodsCategoryService = goodsCategoryService;
@@ -35,15 +27,16 @@ public class GoodsCategoryController {
     }
 
     /**
-     * xxx 1 u1
+     * 获取分类数据
      *
-     * @return x
+     * @param page  页数
+     * @param limit 每页大小
+     * @return 分类列表
      */
     @GetMapping("/categories")
     public Object listGoodsCategory(@RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "10") Integer limit) {
 
-        Log log;
         if (page <= 0 || limit <= 0) {
 
             log = new Log.LogBuilder().type(0).actions("查看分类").status(0).build();
@@ -61,11 +54,13 @@ public class GoodsCategoryController {
     }
 
     /**
-     * 获取分类详情 3 u4
+     * 获取分类详情
+     *
+     * @param id 分类ID
+     * @return 分类详情
      */
     @GetMapping("/categories/{id}")
     public Object getSingleCategory(@PathVariable("id") Integer id) {
-        Log log;
         if (id <= 0) {
 
             log = new Log.LogBuilder().type(0).status(0).actions("获取分类详情").actionId(id).build();
@@ -78,6 +73,7 @@ public class GoodsCategoryController {
         logClient.addLog(log);
 
         GoodsCategoryPo goodsCategoryPo = goodsCategoryService.getCategory(id);
+
         if (goodsCategoryPo == null) {
             return ResponseUtil.cantFindCategory();
         }
@@ -85,7 +81,9 @@ public class GoodsCategoryController {
     }
 
     /**
-     * 获取1级种类 u2
+     * 获取1级种类
+     *
+     * @return 分类信息
      */
     @GetMapping("/categories/l1")
     public Object listOneLevelGoodsCategory() {
@@ -99,12 +97,13 @@ public class GoodsCategoryController {
 
 
     /**
-     * 获取当前一级分类下的二级分类 u3
+     * 获取当前一级分类下的二级分类
+     *
+     * @param pid 一级分类ID
+     * @return 分类信息
      */
     @GetMapping("/categories/l1/{id}/l2")
     public Object listSecondLevelGoodsCategoryById(@PathVariable("id") Integer pid) {
-        Log log;
-
 
         if (pid <= 0) {
 
@@ -121,16 +120,16 @@ public class GoodsCategoryController {
         return ResponseUtil.ok(goodsCategories);
     }
 
-    /*
-     * ========= following are admin apis ==============
-     */
-
     /**
-     * 新建一个分类 2
+     * 新建一个分类
+     *
+     * @param goodsCategory 新的分类信息
+     * @return 分类信息
      */
     @PostMapping("/categories")
     public Object addGoodsCategory(@RequestBody GoodsCategoryPo goodsCategory) {
-        Log log;
+
+        // 分类的这三个字段不能同时为空
         if (goodsCategory.getName() != null
                 || goodsCategory.getPicUrl() != null
                 || goodsCategory.getPid() != null) {
@@ -153,7 +152,10 @@ public class GoodsCategoryController {
     }
 
     /**
-     * 修改分类信息 4
+     * 修改分类信息
+     * @param id 分类ID
+     * @param goodsCategory 新的分类信息
+     * @return 分类信息
      */
     @PutMapping("/categories/{id}")
     public Object updateCategory(@PathVariable("id") Integer id,
@@ -178,6 +180,7 @@ public class GoodsCategoryController {
         goodsCategory.setId(id);
         Boolean ok = goodsCategoryService.updateCategory(goodsCategory);
 
+        // 检查更新是否成功
         if (!ok) {
 
             log = new Log.LogBuilder().type(2).status(0).actions("修改分类信息").actionId(id).build();
@@ -192,6 +195,12 @@ public class GoodsCategoryController {
         return ResponseUtil.ok(goodsCategory);
     }
 
+    /**
+     * 修改二级分类信息
+     * @param id 分类ID
+     * @param goodsCategoryPo 新的分类信息
+     * @return 分类信息
+     */
     @PutMapping("/categories/l2/{id}")
     public Object updateParentCategory(@PathVariable("id") Integer id, @RequestBody GoodsCategoryPo goodsCategoryPo) {
         Log log;
@@ -212,6 +221,8 @@ public class GoodsCategoryController {
         }
 
         goodsCategoryPo.setId(id);
+
+        // 更新分类信息
         boolean ok = goodsCategoryService.updateParentCategory(goodsCategoryPo);
 
         if (!ok) {
@@ -225,13 +236,16 @@ public class GoodsCategoryController {
         log = new Log.LogBuilder().type(2).status(1).actions("修改分类信息").actionId(id).build();
         logClient.addLog(log);
 
+        // 用给定的ID从数据库中查找分类
         goodsCategoryPo = goodsCategoryService.getCategory(goodsCategoryPo.getId());
 
         return ResponseUtil.ok(goodsCategoryPo);
     }
 
     /**
-     * 删除单个分类 5
+     * 删除单个分类
+     * @param id 分类
+     * @return Response
      */
     @DeleteMapping("/categories/{id}")
     public Object deleteCategory(@PathVariable("id") Integer id) {
