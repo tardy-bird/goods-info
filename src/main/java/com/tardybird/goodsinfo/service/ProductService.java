@@ -9,6 +9,9 @@ import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
+import com.tardybird.goodsinfo.util.converter.Converter;
+import com.tardybird.goodsinfo.util.converter.GoodsConverter;
+import com.tardybird.goodsinfo.util.converter.ProductConverter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,9 @@ public class ProductService {
     final GoodsMapper goodsMapper;
     final ProductDao productDao;
     final RedisTemplate<String, ProductPo> redisTemplateOfProduct;
+
+    private Converter<ProductPo, Product> converter = new ProductConverter();
+    private Converter<GoodsPo,Goods> goodsConverter = new GoodsConverter();
 
     public ProductService(ProductMapper productMapper,
                           GoodsDao goodsDao, GoodsMapper goodsMapper,
@@ -53,7 +59,8 @@ public class ProductService {
             return false;
         }
 
-        ProductPo productPo = ObjectConversion.product2ProductPo(product);
+        ProductPo productPo = converter.converterFromDomain(product);
+
         Integer affectedRows = productMapper.updateProduct(productPo);
 
         Boolean status = affectedRows > 0;
@@ -79,10 +86,11 @@ public class ProductService {
             return null;
         }
 
-        Product product = ObjectConversion.productPo2Product(productPo);
+        Product product = converter.converterFromPo(productPo);
+
         GoodsPo goodsPo = goodsDao.getGoodsByIdAdmin(productPo.getGoodsId());
 
-        Goods goods = ObjectConversion.goodsPo2Goods(goodsPo);
+        Goods goods = goodsConverter.converterFromPo(goodsPo);
 
         product.setGoods(goods);
 

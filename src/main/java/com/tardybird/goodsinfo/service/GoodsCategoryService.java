@@ -1,10 +1,14 @@
 package com.tardybird.goodsinfo.service;
 
+import com.tardybird.goodsinfo.domain.Goods;
 import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.po.GoodsCategoryPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
+import com.tardybird.goodsinfo.util.converter.Converter;
+import com.tardybird.goodsinfo.util.converter.GoodsCategoryConverter;
+import com.tardybird.goodsinfo.util.converter.GoodsConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +24,8 @@ public class GoodsCategoryService {
 
     final GoodsCategoryMapper goodsCategoryMapper;
     final GoodsMapper goodsMapper;
+
+    private Converter<GoodsCategoryPo, GoodsCategory> converter = new GoodsCategoryConverter();
 
     public GoodsCategoryService(GoodsCategoryMapper goodsCategoryMapper, GoodsMapper goodsMapper) {
         this.goodsCategoryMapper = goodsCategoryMapper;
@@ -48,7 +54,7 @@ public class GoodsCategoryService {
         List<GoodsCategory> goodsCategoryList = new ArrayList<>();
 
         for (GoodsCategoryPo goodsCategoryPo : goodsCategoryPos) {
-            GoodsCategory goodsCategory = ObjectConversion.goodsCategoryPo2GoodsCategory(goodsCategoryPo);
+            GoodsCategory goodsCategory = converter.converterFromPo(goodsCategoryPo);
 
             goodsCategory.setGoodsPoList(null);
 

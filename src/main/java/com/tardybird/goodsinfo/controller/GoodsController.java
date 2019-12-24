@@ -11,6 +11,8 @@ import com.tardybird.goodsinfo.service.GoodsService;
 import com.tardybird.goodsinfo.service.ProductService;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import com.tardybird.goodsinfo.util.ResponseUtil;
+import com.tardybird.goodsinfo.util.converter.Converter;
+import com.tardybird.goodsinfo.util.converter.GoodsConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class GoodsController {
     final LogClient logClient;
 
     private Log log;
+    private Converter<GoodsPo, Goods> converter = new GoodsConverter();
 
     public GoodsController(GoodsService goodsService,
                            ProductService productService,
@@ -148,6 +151,7 @@ public class GoodsController {
 
     /**
      * 根据id获取某个商品,提供一个接口给collect、comment、footprint调用,获取goods信息
+     *
      * @param id 商品ID
      * @return goods信息
      */
@@ -172,6 +176,7 @@ public class GoodsController {
 
     /**
      * 用户获取商品信息
+     *
      * @param id 商品ID
      * @return 商品信息
      */
@@ -217,7 +222,7 @@ public class GoodsController {
     /**
      * 管理员添加商品下的产品
      *
-     * @param id   商品ID
+     * @param id      商品ID
      * @param product 新的产品
      * @return 产品
      */
@@ -260,7 +265,8 @@ public class GoodsController {
 
     /**
      * 根据id更新商品信息
-     * @param id 商品
+     *
+     * @param id    商品
      * @param goods 商品信息
      * @return Response
      */
@@ -295,6 +301,7 @@ public class GoodsController {
 
     /**
      * 根据id删除商品信息
+     *
      * @param id 商品ID
      * @return 商品信息
      */
@@ -329,6 +336,7 @@ public class GoodsController {
 
     /**
      * 判断商品是否在售
+     *
      * @param id 商品
      * @return true 在售
      */
@@ -340,6 +348,7 @@ public class GoodsController {
 
     /**
      * 获取商品信息
+     *
      * @param id 商品ID
      * @return 商品信息
      */
@@ -351,7 +360,8 @@ public class GoodsController {
         }
 
         Goods goods = goodsService.getGoodsByIdUser(id);
-        GoodsPo goodsPo = ObjectConversion.goods2GoodsPo(goods);
+
+        GoodsPo goodsPo = converter.converterFromDomain(goods);
 
         return ResponseUtil.ok(goodsPo);
     }

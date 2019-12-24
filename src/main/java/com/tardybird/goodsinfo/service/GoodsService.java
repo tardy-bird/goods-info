@@ -11,6 +11,8 @@ import com.tardybird.goodsinfo.mapper.ProductMapper;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
+import com.tardybird.goodsinfo.util.converter.Converter;
+import com.tardybird.goodsinfo.util.converter.GoodsConverter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,8 @@ public class GoodsService {
     final RedisTemplate<String, List<String>> redisTemplateOfString;
     final RedisTemplate<String, ProductPo> redisTemplateOfProduct;
     final CommentClient commentClient;
+
+    private Converter<GoodsPo,Goods> converter = new GoodsConverter();
 
     public GoodsService(GoodsMapper goodsMapper,
                         GoodsCategoryMapper goodsCategoryMapper,
@@ -73,12 +77,12 @@ public class GoodsService {
 
     public Goods getGoodsByIdAdmin(Integer id) {
         GoodsPo goodsPo = goodsDao.getGoodsByIdAdmin(id);
-        return ObjectConversion.goodsPo2Goods(goodsPo);
+        return converter.converterFromPo(goodsPo);
     }
 
     public Goods getGoodsByIdUser(Integer id) {
         GoodsPo goodsPo = goodsDao.getGoodsByIdUser(id);
-        return ObjectConversion.goodsPo2Goods(goodsPo);
+        return converter.converterFromPo(goodsPo);
     }
 
     public List<GoodsPo> findGoodsByCategoryId(Integer id, Integer page, Integer limit) {

@@ -8,6 +8,8 @@ import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.po.BrandPo;
 import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
+import com.tardybird.goodsinfo.util.converter.BrandConverter;
+import com.tardybird.goodsinfo.util.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class BrandService {
 
     final BrandMapper brandMapper;
     final GoodsMapper goodsMapper;
+
+    private Converter<BrandPo,Brand> converter = new BrandConverter();
 
     public BrandService(BrandMapper brandMapper, GoodsMapper goodsMapper) {
         this.brandMapper = brandMapper;
@@ -54,7 +58,7 @@ public class BrandService {
         List<Brand> brandList = new ArrayList<>();
         for (BrandPo brandPo : brandPos) {
 
-            Brand brand = ObjectConversion.brandPo2Brand(brandPo);
+            Brand brand = converter.converterFromPo(brandPo);
 
             List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(brandPo.getId());
             brand.setGoodsPoList(goodsPos);

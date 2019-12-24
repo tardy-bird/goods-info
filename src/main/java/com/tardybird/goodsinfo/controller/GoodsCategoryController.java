@@ -134,7 +134,10 @@ public class GoodsCategoryController {
                 || goodsCategory.getPicUrl() != null
                 || goodsCategory.getPid() != null) {
 
-            goodsCategoryService.createCategory(goodsCategory);
+            GoodsCategoryPo goodsCategoryPoTmp = goodsCategoryService.createCategory(goodsCategory);
+            if (goodsCategoryPoTmp == null) {
+                return ResponseUtil.failAddCategory();
+            }
 
             log = new Log.LogBuilder().type(1).status(1).actions("新建一个分类").build();
             logClient.addLog(log);
@@ -153,7 +156,8 @@ public class GoodsCategoryController {
 
     /**
      * 修改分类信息
-     * @param id 分类ID
+     *
+     * @param id            分类ID
      * @param goodsCategory 新的分类信息
      * @return 分类信息
      */
@@ -197,7 +201,8 @@ public class GoodsCategoryController {
 
     /**
      * 修改二级分类信息
-     * @param id 分类ID
+     *
+     * @param id              分类ID
      * @param goodsCategoryPo 新的分类信息
      * @return 分类信息
      */
@@ -244,6 +249,7 @@ public class GoodsCategoryController {
 
     /**
      * 删除单个分类
+     *
      * @param id 分类
      * @return Response
      */
