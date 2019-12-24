@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CommentClient {
 
     /**
-     * x
-     * @param productId x
-     * @return x
+     * 调用Comment模块删除评论
+     * @param productId 产品ID
+     * @return 是否成功
      */
     @DeleteMapping("/comments/{productId}")
     Boolean deleteComments(@PathVariable Integer productId);
