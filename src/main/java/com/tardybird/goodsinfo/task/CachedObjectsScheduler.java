@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @author nick
+ */
 @Component
 public class CachedObjectsScheduler {
 
@@ -16,6 +19,9 @@ public class CachedObjectsScheduler {
         this.goodsDao = goodsDao;
     }
 
+    /**
+     * 定时任务，每半个小时刷新一下Redis中的新品和热品
+     */
     @Scheduled(cron = "0 0/30 * * * ? ")
     private void handle() {
         goodsDao.storeHotAndNewObjects();

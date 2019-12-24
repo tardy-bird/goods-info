@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author nick
+ */
 @Component
 public class WriteObject {
 
@@ -16,14 +19,19 @@ public class WriteObject {
     final RedisTemplate<String, ProductPo> redisTemplateOfProduct;
     final ProductMapper productMapper;
 
-    public WriteObject(RedisTemplate<String, List<String>> redisTemplateOfString, RedisTemplate<String, ProductPo> redisTemplateOfProduct, ProductMapper productMapper) {
+    public WriteObject(RedisTemplate<String, List<String>> redisTemplateOfString,
+                       RedisTemplate<String, ProductPo> redisTemplateOfProduct,
+                       ProductMapper productMapper) {
         this.redisTemplateOfString = redisTemplateOfString;
         this.redisTemplateOfProduct = redisTemplateOfProduct;
         this.productMapper = productMapper;
     }
 
+    /**
+     * 定时任务，每秒钟将对产库存的更改写回数据库
+     */
     @Scheduled(cron = "* * * * * ?")
-    private void writeSQL() {
+    private void writeSql() {
         String changeListKey = "Product_Changes";
         List<String> changeList = redisTemplateOfString.opsForValue().get(changeListKey);
         if (changeList != null) {
