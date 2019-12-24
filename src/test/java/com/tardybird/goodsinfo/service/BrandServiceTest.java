@@ -1,12 +1,16 @@
 package com.tardybird.goodsinfo.service;
 
+import com.github.pagehelper.PageInfo;
 import com.tardybird.goodsinfo.domain.Brand;
+import com.tardybird.goodsinfo.po.BrandPo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;oomall_coupon
+import static org.junit.Assert.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 @SpringBootTest
 class BrandServiceTest {
@@ -32,7 +36,7 @@ class BrandServiceTest {
         Boolean ok = brandService.addBrand(brand);
         Assertions.assertTrue(ok);
     }
-
+    //返回Pageinfo对象
     @Test
     void getAllBrands() {
         Integer page = 0;
@@ -41,15 +45,17 @@ class BrandServiceTest {
         String order = "desc";
         Object brands = brandService.getAllBrands(page, limit, sort, order);
         System.out.println(brands);
+        //assertEquals();
     }
 
     @Test
     void getBrandsById() {
-        Integer id = 1;
-        Brand brand = brandService.getBrandById(id);
-        System.out.println(brand);
-    }
+        Integer id = 71;
+        BrandPo brandPo = brandService.getBrandById(id);
+        assertEquals("戴荣华",brandPo.getName());
 
+    }
+    //返回"Pageinfo"对象
     @Test
     void getBrandsByCondition() {
         String id = "1";
@@ -64,16 +70,14 @@ class BrandServiceTest {
         Brand brand = new Brand();
         brand.setId(1);
         brand.setDescription("th is NEW brand, created by nick.");
-//        Boolean ok = brandService.updateBrand(brand);
-//        Assertions.assertTrue(ok);
-
-        brandService.updateBrand(brand);
+        assertEquals(true,brandService.updateBrand(brand));
     }
 
     @Test
     void deleteBrand() {
-        Boolean ok = brandService.deleteBrand(1);
-        Assertions.assertTrue(ok);
+        Brand brand = new Brand();
+        brand.setId(73);
+        assertEquals(true,brandService.deleteBrand(brand.getId()));
     }
 
 }

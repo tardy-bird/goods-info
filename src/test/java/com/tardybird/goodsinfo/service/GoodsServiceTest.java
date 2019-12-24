@@ -2,6 +2,8 @@ package com.tardybird.goodsinfo.service;
 
 import com.tardybird.goodsinfo.dao.GoodsDao;
 import com.tardybird.goodsinfo.domain.Goods;
+import com.tardybird.goodsinfo.po.GoodsPo;
+import static org.junit.Assert.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,43 +27,47 @@ class GoodsServiceTest {
     void tearDown() {
     }
 
-    @Test
-    void getAllGoodsByConditions() {
-    }
-
-    @Test
-    void getHotGoods() {
-    }
+//    @Test
+//    void getAllGoodsByConditions() {
+//        String goodSn="drh-d0001";
+//        String name ="《大吉大利》A(赠四方联）";
+//        Integer page =1;
+//        Integer limit=2;
+//        System.out.println(goodsService.getAllGoodsByConditions(goodSn,name,page,limit));
+//    }
 
     @Test
     void createGoods() {
 
-        Goods goods = new Goods();
+        GoodsPo goods = new Goods();
         goods.setName("new goods");
         goods.setBeDeleted(false);
-
-        goodsService.createGoods(goods);
+        GoodsPo goodsPo =goodsService.createGoods(goods);
+        assertEquals(goods.getName(),goodsPo.getName());
+        assertEquals(goods.getBeDeleted(),goodsPo.getBeDeleted());
     }
-
     @Test
     void getGoodsById() {
+        Integer userId=1;
+        Integer adminId=1;
+       assertEquals("1",goodsService.getGoodsByIdUser(userId).getId());
+       assertEquals("1",goodsService.getGoodsByIdAdmin(adminId).getId());
     }
 
-    @Test
-    void getGoodsCount() {
-    }
-
-    @Test
-    void getGoodsCategory() {
-    }
-
+//    @Test
+//    void findGoodsByCategoryId() {
+//        Integer categoryId=1;
+//        Integer page=1;
+//        Integer limit=5;
+//        System.out.println(goodsService.findGoodsByCategoryId(categoryId,page,limit));
+//    }
+    
     @Test
     void updateGoods() {
-        Goods goods = new Goods();
+        GoodsPo goods = new Goods();
         goods.setId(1);
-
         goods.setName("this is a NEW name");
-        goodsService.updateGoods(goods);
+        assertEquals(true,goodsService.updateGoods(goods));
     }
 
 //    @Test

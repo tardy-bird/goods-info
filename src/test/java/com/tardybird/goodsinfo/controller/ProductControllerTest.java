@@ -28,7 +28,9 @@ class ProductControllerTest {
 
     @Test
     void getProduct() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/products/2"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/products/2")
+                .param("id","1")
+                .param("name",""))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
