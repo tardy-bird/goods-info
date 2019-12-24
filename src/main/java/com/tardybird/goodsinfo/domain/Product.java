@@ -7,9 +7,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @Author: 数据库与对象模型标准组
- * @Description:产品对象
- * @Data:Created in 14:50 2019/12/11
+ * 产品对象
+ *
+ * @author 数据库与对象模型标准组
+ * @date Created in 14:50 2019/12/11
  **/
 @Getter
 @Setter

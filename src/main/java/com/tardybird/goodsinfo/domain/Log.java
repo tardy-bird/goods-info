@@ -2,28 +2,47 @@ package com.tardybird.goodsinfo.domain;
 
 import lombok.Getter;
 
+/**
+ * @author nick
+ */
 public class Log {
 
+    /**
+     * 操作的类型
+     * 0 查询，1 插入，2修改，3删除(逻辑删除)
+     */
     @Getter
     private Integer type;
+    /**
+     * 操作的动作
+     */
     @Getter
     private String actions;
+    /**
+     * 操作的状态，0表示操作失败，1表示操作成功
+     */
     @Getter
-    private Integer status;
+    private Integer statusCode;
+    /**
+     * 操作对象的ID
+     */
     @Getter
     private Integer actionId;
 
     private Log(LogBuilder logBuilder) {
         this.type = logBuilder.type;
         this.actions = logBuilder.actions;
-        this.status = logBuilder.status;
+        this.statusCode = logBuilder.statusCode;
         this.actionId = logBuilder.actionId;
     }
 
+    /**
+     * Builder设计模式
+     */
     public static class LogBuilder {
         private Integer type;
         private String actions;
-        private Integer status;
+        private Integer statusCode;
         private Integer actionId;
 
         public LogBuilder type(Integer type) {
@@ -37,7 +56,7 @@ public class Log {
         }
 
         public LogBuilder status(Integer status) {
-            this.status = status;
+            this.statusCode = status;
             return this;
         }
 
