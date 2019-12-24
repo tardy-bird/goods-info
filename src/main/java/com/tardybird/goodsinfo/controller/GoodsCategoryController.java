@@ -25,7 +25,6 @@ public class GoodsCategoryController {
         this.goodsCategoryService = goodsCategoryService;
         this.logClient = logClient;
     }
-
     /**
      * 获取分类数据
      *

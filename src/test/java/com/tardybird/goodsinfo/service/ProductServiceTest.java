@@ -1,12 +1,13 @@
 package com.tardybird.goodsinfo.service;
 
 import com.tardybird.goodsinfo.domain.Product;
+import com.tardybird.goodsinfo.po.ProductPo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -27,17 +28,17 @@ class ProductServiceTest {
     @Test
     void getProductByGoodsId() {
         Integer goodsId = 100;
-        List<Product> productList = productService.getProductByGoodsId(goodsId);
-        System.out.println(productList);
+        List<ProductPo> productList = productService.getProductByGoodsId(goodsId);
+        assertEquals(3,productList.size());
     }
 
     @Test
     void createProduct() {
-        Product product = new Product();
+        ProductPo product = new Product();
         product.setPicUrl("http://bing.com");
         product.setPrice(BigDecimal.TEN);
         product.setGoodsId(100);
-        productService.createProduct(product);
+        assertEquals(true,productService.createProduct(product));
     }
 
     @Test
@@ -48,20 +49,20 @@ class ProductServiceTest {
 
         product.setId(3);
 
-        productService.updateProduct(product);
+       assertEquals(true,productService.updateProduct(product));
     }
 
     @Test
     void getProductById() {
         Integer id = 1;
         Product product = productService.getProductById(id);
-        System.out.println(product);
+        assertEquals("http://yanxuan.nosdn.127.net/1f67b1970ee20fd572b7202da0ff705d.png",product.getPicUrl());
+        assertEquals("[\"1.5m床垫*1+枕头*2\",\"浅杏粉\"]",product.getSpecifications());
     }
-
     @Test
     void deleteProduct() {
         Product product = new Product();
         product.setId(4);
-        productService.deleteProduct(product.getId());
+        assertEquals(false,productService.deleteProduct(product.getId()));
     }
 }
