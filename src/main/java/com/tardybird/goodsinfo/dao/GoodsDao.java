@@ -7,19 +7,16 @@ import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.po.ProductPo;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author DIX
- * @version 1.0
- * @date 2019/12/6 19:39
- */
 
+/**
+ * @author nick
+ */
 @Repository
 public class GoodsDao {
 
@@ -31,10 +28,12 @@ public class GoodsDao {
     final RedisTemplate<String, List<String>> redisTemplateOfString;
 
 
-    public GoodsDao(RedisConfig redisConfig, RedisTemplate<String, GoodsPo> redisTemplateOfGoods,
+    public GoodsDao(RedisConfig redisConfig,
+                    RedisTemplate<String, GoodsPo> redisTemplateOfGoods,
                     RedisTemplate<String, ProductPo> redisTemplateOfProducts,
                     RedisTemplate<String, List<String>> redisTemplateOfString,
-                    ProductMapper productMapper, GoodsMapper goodsMapper) {
+                    ProductMapper productMapper,
+                    GoodsMapper goodsMapper) {
         this.redisConfig = redisConfig;
         this.redisTemplateOfGoods = redisTemplateOfGoods;
         this.redisTemplateOfProducts = redisTemplateOfProducts;
@@ -43,12 +42,22 @@ public class GoodsDao {
         this.goodsMapper = goodsMapper;
     }
 
-
-    @Transactional
+    /**
+     * 通过商品ID获取产品
+     *
+     * @param id 商品ID
+     * @return 产品列表
+     */
     public List<ProductPo> getProductByGoodsId(Integer id) {
+
+        // 每个商品对应的产品ID列表
         String key = "Goods_Product_" + id;
         List<String> productIds = redisTemplateOfString.opsForValue().get(key);
+
+        // 不存在这样的列表
         if (productIds == null) {
+
+            // 到数据库中查询
             List<Integer> productIdsByGoodsId = productMapper.findProductIdsByGoodsId(id);
 
             productIds = new ArrayList<>();
@@ -56,12 +65,19 @@ public class GoodsDao {
                 productIds.add(productId.toString());
             }
 
+            // 将ID列表缓存到Redis中
             redisTemplateOfString.opsForValue().set(key, productIds, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
+
         List<ProductPo> productPoList = new ArrayList<>();
+
         for (String productId : productIds) {
+
+            // 检查产品信息是否有缓存
             String productKey = "Product_" + productId;
             ProductPo productPo = redisTemplateOfProducts.opsForValue().get(productKey);
+
+            // 到数据库中拿
             if (productPo == null) {
                 productPo = productMapper.getProductById(Integer.valueOf(productId));
             }
@@ -70,12 +86,22 @@ public class GoodsDao {
         return productPoList;
     }
 
-    public List<GoodsPo> findGoodsByCategoryId(Integer id,Integer page,Integer limit) {
+    /**
+     * 通过商品种类拿商品信息
+     *
+     * @param id    种类
+     * @param page  页数
+     * @param limit 每页大小
+     * @return 商品信息
+     */
+    public List<GoodsPo> findGoodsByCategoryId(Integer id, Integer page, Integer limit) {
 
+        // 种类ID对应一个商品ID列表
         String key = "Category_Goods_" + id;
         List<String> goodsIds = redisTemplateOfString.opsForValue().get(key);
+
         if (goodsIds == null) {
-            List<Integer> goodsIdsByCategoryId = goodsMapper.findGoodsIdsByCategoryId(id,page,limit);
+            List<Integer> goodsIdsByCategoryId = goodsMapper.findGoodsIdsByCategoryId(id, page, limit);
 
             if (goodsIdsByCategoryId == null) {
                 return null;
@@ -90,6 +116,7 @@ public class GoodsDao {
             redisTemplateOfString.opsForValue().set(key, goodsIds, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
 
+        // 将查询到的商品装进列表返回
         List<GoodsPo> goodsPos = new ArrayList<>();
         for (String goodsId : goodsIds) {
 
@@ -108,7 +135,12 @@ public class GoodsDao {
         return goodsPos;
     }
 
-
+    /**
+     * 根据ID获取产品信息
+     *
+     * @param id 产品
+     * @return 产品信息
+     */
     public ProductPo findProductById(Integer id) {
         String key = "Product_" + id;
         ProductPo product = redisTemplateOfProducts.opsForValue().get(key);
@@ -123,49 +155,62 @@ public class GoodsDao {
     }
 
     /**
-     * 通过id获得商品（包括他的product）
+     * 通过id获得商品(包括product)
      *
-     * @param id x
-     * @return x
+     * @param id 商品ID
+     * @return 商品信息
      */
     public GoodsPo getGoodsByIdAdmin(Integer id) {
+
         String key = "Goods_" + id;
         GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
+
         if (goodsPo == null) {
             goodsPo = goodsMapper.getGoodsByIdAdmin(id);
             redisTemplateOfGoods.opsForValue().set(key, goodsPo, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
+
         return goodsPo;
     }
 
     /**
-     * 用户获取商品信息（不能看到未上架的）
+     * 用户获取商品信息(不能看到未上架的)
      *
-     * @param id x
-     * @return x
+     * @param id 商品ID
+     * @return 商品信息
      */
     public GoodsPo getGoodsByIdUser(Integer id) {
+
         String key = "Goods_" + id;
         GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
+
         if (goodsPo == null) {
             goodsPo = goodsMapper.getGoodsByIdUser(id);
             redisTemplateOfGoods.opsForValue().set(key, goodsPo, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
         }
+
         return goodsPo;
     }
 
+    /**
+     * 预先将热的新的商品存到Redis中
+     */
     @PostConstruct
     public void storeHotAndNewObjects() {
+
+        // 从数据库中拿到
         List<GoodsPo> cachedGoodsList = goodsMapper.findNewAndHotGoods();
 
         for (GoodsPo goods : cachedGoodsList) {
+
             String key = "Goods_" + goods.getId();
             GoodsPo goodsPo = redisTemplateOfGoods.opsForValue().get(key);
+
             if (goodsPo == null) {
                 redisTemplateOfGoods.opsForValue().set(key, goods, redisConfig.getRedisExpireTime(), TimeUnit.MINUTES);
             }
-        }
 
+        }
     }
 
 }
