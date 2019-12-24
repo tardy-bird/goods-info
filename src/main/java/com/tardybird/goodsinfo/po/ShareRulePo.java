@@ -9,9 +9,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * @Author: 数据库与对象模型标准组
- * @Description: 分享规则
- * @Date: Created in 16:00 2019/12/11
+ * 分享规则
+ *
+ * @author 数据库与对象模型标准组
+ * @date Created in 16:00 2019/12/11
  **/
 @Getter
 @Setter
