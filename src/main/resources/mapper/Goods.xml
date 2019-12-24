@@ -88,12 +88,12 @@
           and goods_category_id = #{id}
     </select>
 
-<!--    <select id="findGoodsByBrandId" parameterType="java.lang.String" resultMap="GoodsPo">-->
-<!--        select *-->
-<!--        from oomall_goods-->
-<!--        where is_deleted = 0-->
-<!--          and brand_id = #{brandId}-->
-<!--    </select>-->
+    <!--    <select id="findGoodsByBrandId" parameterType="java.lang.String" resultMap="GoodsPo">-->
+    <!--        select *-->
+    <!--        from oomall_goods-->
+    <!--        where is_deleted = 0-->
+    <!--          and brand_id = #{brandId}-->
+    <!--    </select>-->
 
     <select id="findGoodsIdsByCategoryId" resultType="java.lang.Integer">
         select id
