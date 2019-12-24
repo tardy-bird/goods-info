@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "logService")
 public interface LogClient {
     /**
-     * x
-     * @param log x
+     * 调用Log模块
+     * @param log Log
      */
     @PostMapping("/log")
     void addLog(@RequestBody Log log);
