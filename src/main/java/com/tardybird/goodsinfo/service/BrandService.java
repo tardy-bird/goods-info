@@ -19,10 +19,8 @@ import java.util.List;
 @Service
 public class BrandService {
 
-    final
-    BrandMapper brandMapper;
-    final
-    GoodsMapper goodsMapper;
+    final BrandMapper brandMapper;
+    final GoodsMapper goodsMapper;
 
     public BrandService(BrandMapper brandMapper, GoodsMapper goodsMapper) {
         this.brandMapper = brandMapper;
@@ -39,14 +37,6 @@ public class BrandService {
     }
 
     public BrandPo getBrandById(Integer id) {
-
-        //
-//        List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
-//        Brand brand = ObjectConversion.brandPo2Brand(brandPo);
-//        brand.setGoodsPoList(goodsPos);
-//
-//        return brand;
-
         return brandMapper.getBrandById(id);
     }
 
@@ -57,8 +47,6 @@ public class BrandService {
     public Object getBrandsByCondition(String id, String name, Integer page,
                                        Integer limit, String sort, String order) {
         PageHelper.startPage(page, limit);
-
-        //        return getObject(brandPos);
         return brandMapper.getBrandsByCondition(id, name, sort, order);
     }
 
@@ -67,8 +55,6 @@ public class BrandService {
         for (BrandPo brandPo : brandPos) {
 
             Brand brand = ObjectConversion.brandPo2Brand(brandPo);
-
-//            List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(String.valueOf(brandPo.getId()));
 
             List<GoodsPo> goodsPos = goodsMapper.findGoodsByBrandId(brandPo.getId());
             brand.setGoodsPoList(goodsPos);
@@ -80,7 +66,6 @@ public class BrandService {
 
 
     public Boolean addBrand(BrandPo brand) {
-//        BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
         Integer affectedRows = brandMapper.addBrand(brand);
         brand.setId(brand.getId());
         return affectedRows > 0;
@@ -92,7 +77,6 @@ public class BrandService {
     }
 
     public Boolean updateBrand(BrandPo brand) {
-//        BrandPo brandPo = ObjectConversion.brand2BrandPo(brand);
         Integer affectedRows = brandMapper.updateBrand(brand);
         return affectedRows > 0;
     }

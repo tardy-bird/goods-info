@@ -4,10 +4,8 @@ import com.tardybird.goodsinfo.domain.GoodsCategory;
 import com.tardybird.goodsinfo.mapper.GoodsCategoryMapper;
 import com.tardybird.goodsinfo.mapper.GoodsMapper;
 import com.tardybird.goodsinfo.po.GoodsCategoryPo;
-import com.tardybird.goodsinfo.po.GoodsPo;
 import com.tardybird.goodsinfo.util.ObjectConversion;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +18,7 @@ import java.util.List;
 @Service
 public class GoodsCategoryService {
 
-    final
-    GoodsCategoryMapper goodsCategoryMapper;
+    final GoodsCategoryMapper goodsCategoryMapper;
     final GoodsMapper goodsMapper;
 
     public GoodsCategoryService(GoodsCategoryMapper goodsCategoryMapper, GoodsMapper goodsMapper) {
@@ -53,7 +50,6 @@ public class GoodsCategoryService {
         for (GoodsCategoryPo goodsCategoryPo : goodsCategoryPos) {
             GoodsCategory goodsCategory = ObjectConversion.goodsCategoryPo2GoodsCategory(goodsCategoryPo);
 
-//            List<GoodsPo> goodsPos = goodsMapper.findGoodsByGoodsCategoryId(String.valueOf(goodsCategory.getId()));
             goodsCategory.setGoodsPoList(null);
 
             goodsCategoryList.add(goodsCategory);
@@ -62,18 +58,18 @@ public class GoodsCategoryService {
     }
 
     public GoodsCategoryPo createCategory(GoodsCategoryPo goodsCategory) {
-//        GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
         Integer affectedRows = goodsCategoryMapper.createCategory(goodsCategory);
+        if (affectedRows <= 0) {
+            return null;
+        }
         return goodsCategory;
     }
 
     public Boolean updateCategory(GoodsCategoryPo goodsCategory) {
-//        GoodsCategoryPo goodsCategoryPo = ObjectConversion.goodsCategory2GoodsCategoryPo(goodsCategory);
         Integer affectedRows = goodsCategoryMapper.updateCategory(goodsCategory);
         return affectedRows > 0;
     }
 
-    @Transactional
     public Boolean deleteCategory(Integer id) {
         GoodsCategoryPo goodsCategoryPo = goodsCategoryMapper.getCategory(id);
         if (goodsCategoryPo == null) {
@@ -82,15 +78,20 @@ public class GoodsCategoryService {
 
         // 一级分类
         if (goodsCategoryPo.getPid() == 0) {
-            goodsCategoryMapper.deleteL2withL1(goodsCategoryPo.getId());
+            Integer rows = goodsCategoryMapper.deleteL2withL1(goodsCategoryPo.getId());
+            if (rows <= 0) {
+                return false;
+            }
             List<GoodsCategoryPo> goodsCategoryPos = goodsCategoryMapper.getLevelTwoByPid(id);
 
             for (GoodsCategoryPo categoryPo : goodsCategoryPos) {
                 Integer goodsCategoryId = categoryPo.getId();
                 // 更新相关商品的种类
-                goodsMapper.updateCategoryId(goodsCategoryId);
+                rows = goodsMapper.updateCategoryId(goodsCategoryId);
+                if (rows <= 0) {
+                    return false;
+                }
             }
-
         }
 
         Integer affectedRows = goodsCategoryMapper.deleteCategory(id);
@@ -101,6 +102,4 @@ public class GoodsCategoryService {
         Integer affectedRows = goodsCategoryMapper.updateParentCategory(goodsCategoryPo);
         return affectedRows > 0;
     }
-
-
 }

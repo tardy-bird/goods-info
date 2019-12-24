@@ -35,7 +35,11 @@ public class GoodsService {
 
     public GoodsService(GoodsMapper goodsMapper,
                         GoodsCategoryMapper goodsCategoryMapper,
-                        GoodsDao goodsDao, ProductMapper productMapper, RedisTemplate<String, GoodsPo> redisTemplateOfGoods, RedisTemplate<String, List<String>> redisTemplateOfString, RedisTemplate<String, ProductPo> redisTemplateOfProduct, CommentClient commentClient) {
+                        GoodsDao goodsDao, ProductMapper productMapper,
+                        RedisTemplate<String, GoodsPo> redisTemplateOfGoods,
+                        RedisTemplate<String, List<String>> redisTemplateOfString,
+                        RedisTemplate<String, ProductPo> redisTemplateOfProduct,
+                        CommentClient commentClient) {
         this.goodsMapper = goodsMapper;
         this.goodsCategoryMapper = goodsCategoryMapper;
         this.goodsDao = goodsDao;
@@ -57,6 +61,10 @@ public class GoodsService {
     public GoodsPo createGoods(GoodsPo goods) {
         Integer affectedRows = goodsMapper.createGoods(goods);
 
+        if (affectedRows <= 0) {
+            return null;
+        }
+
         Integer id = goods.getId();
         goods = goodsMapper.getGoodsByIdAdmin(id);
 
@@ -70,13 +78,10 @@ public class GoodsService {
 
     public Goods getGoodsByIdUser(Integer id) {
         GoodsPo goodsPo = goodsDao.getGoodsByIdUser(id);
-//        Goods goods=ObjectConversion.goodsPo2Goods(goodsPo);
-//        goods.setProductPoList();
         return ObjectConversion.goodsPo2Goods(goodsPo);
     }
 
     public List<GoodsPo> findGoodsByCategoryId(Integer id, Integer page, Integer limit) {
-
         return goodsDao.findGoodsByCategoryId(id, page, limit);
     }
 
@@ -98,7 +103,6 @@ public class GoodsService {
         return status;
     }
 
-    @Transactional
     public Boolean deleteGoods(Integer id) {
 
         String goodsKey = "Goods_" + id;
@@ -118,8 +122,8 @@ public class GoodsService {
                 if (productPo != null) {
                     redisTemplateOfProduct.delete(productKey);
 
+                    // 调用Comment模块删除评论
                     commentClient.deleteComments(productPo.getId());
-
                 }
             }
 
