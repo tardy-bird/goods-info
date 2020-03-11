@@ -15,6 +15,11 @@
 - [Standard Test Cases](https://github.com/Tllokn/OOMall-Test-Standard)
 
 
+**项目架构图**
+<img src="https://raw.githubusercontent.com/tardy-bird/goods-info/master/architecture.png"/>
+
+**组件图**
+<img src="https://github.com/tardy-bird/goods-info/blob/master/component.png"/>
 
 **已经实现的功能。**
 
